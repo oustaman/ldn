@@ -1,0 +1,3533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UX Photography Locations</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4263eb;
+            --primary-light: #edf2ff;
+            --secondary: #748ffc;
+            --text-dark: #343a40;
+            --text-light: #495057;
+            --background: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #e9ecef;
+            --visited: #adb5bd;
+            --success: #40c057;
+            --distance: #20c997;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--background);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .search-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--card-bg);
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-input-container {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            cursor: pointer;
+            display: none;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: var(--background);
+            transition: all 0.2s ease;
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(66, 99, 235, 0.1);
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 4px 0;
+            background-color: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            align-items: center;
+        }
+
+        .action-btn.outline {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .action-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .action-btn:hover {
+            background-color: #3b5bdb;
+        }
+
+        .action-btn.outline:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .action-btn.small {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+
+        .progress-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .progress-count {
+            color: var(--text-dark);
+        }
+        
+        .progress-percentage {
+            color: var(--primary);
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .filter-option {
+            padding: 8px 16px;
+            background-color: var(--background);
+            border-radius: 100px;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .filter-option.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .locations-list, .map-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .city-group {
+            margin-bottom: 8px;
+        }
+
+        .city-header {
+            padding: 12px 16px;
+            background-color: var(--primary-light);
+            font-weight: 600;
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .location-item {
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .location-item:last-child {
+            border-bottom: none;
+        }
+
+        .location-item.hidden {
+            display: none;
+        }
+
+        .location-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  gap: 12px;
+  overflow: hidden;
+}
+
+        .location-header:hover {
+            background-color: var(--primary-light);
+        }
+
+        .location-title-container {
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.location-title {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.location-excerpt {
+  font-size: 14px;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.location-meta {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+        .location-distance {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--distance);
+            font-size: 18px;
+            font-weight: 500;
+            white-space: nowrap;
+            min-width: 90px;
+            justify-content: flex-end;
+            margin-right: 8px;
+        }
+
+        .distance-icon {
+            color: var(--distance);
+            font-size: 20px;
+            margin-right: -2px;
+        }
+
+        .location-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+
+.visited-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border);
+  color: var(--text-light);
+  flex-shrink: 0;
+}
+
+        .visited-btn:hover {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .visited-btn.active {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .expand-btn {
+  display: none !important;
+}
+
+        .expand-btn.active {
+            transform: rotate(180deg);
+            color: var(--primary);
+        }
+
+        .location-details {
+            padding: 0 16px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background-color: var(--background);
+        }
+
+        .location-details.active {
+            max-height: 1000px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .location-notes {
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .notes-section {
+            margin-top: 16px;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            padding: 12px 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .notes-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .notes-bullet {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+        }
+
+        .notes-bullet:last-child {
+            margin-bottom: 0;
+        }
+
+        .notes-bullet:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--primary);
+        }
+
+        .notes-highlight {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .location-item.visited .location-title {
+            text-decoration: line-through;
+            color: var(--visited);
+        }
+
+        #map {
+            height: 70vh;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .map-actions {
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .nearby-info {
+            margin: 0 16px 16px;
+            padding: 12px 16px;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+            border-left: 4px solid var(--primary);
+        }
+
+        .no-locations {
+            padding: 30px 16px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .content {
+                flex-direction: row;
+            }
+
+            .locations-list, .map-container {
+                flex: 1;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+
+            #map {
+                height: 60vh;
+            }
+        }
+
+        /* Mobile bottom navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+        }
+
+        .nav-label {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .container {
+                padding-bottom: 80px;
+            }
+        }
+        html {
+  scroll-padding-top: 500px; /* Adjust this to match or slightly exceed your .search-bar height */
+}
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-bar">
+            <div class="search-input-container">
+                <span class="material-icons search-icon">search</span>
+                <input type="text" id="search-input" placeholder="Search locations or design concepts...">
+                <span class="material-icons clear-search" id="clear-search">close</span>
+            </div>
+            <button id="reset-button" class="action-btn outline">
+                <span class="material-icons">restart_alt</span>
+                Reset
+            </button>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-info">
+                <div class="progress-count"><span id="visited-count">0</span>/<span id="total-count">0</span> visited</div>
+                <div class="progress-percentage"><span id="progress-percentage">0%</span></div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <div class="filter-options">
+            <div class="filter-option active" data-filter="a-z">A-Z</div>
+            <div class="filter-option" data-filter="distance">
+                <span class="material-icons" style="font-size: 16px; vertical-align: text-bottom;">place</span>
+            </div>
+            <div class="filter-option" data-filter="unvisited">Unvisited</div>
+            <div class="filter-option" data-filter="hide-visited">Hide ✓</div>
+            <button id="locate-me" class="action-btn small" style="min-width: 36px; padding: 8px;">
+                <span class="material-icons">my_location</span>
+            </button>
+        </div>
+        
+        <div class="content">
+            <div class="locations-list" id="locations-view">
+                <div id="locations-container"></div>
+            </div>
+            
+            <div class="map-container" id="map-view" style="display: none;">
+                <div id="map"></div>
+                <div class="map-actions">
+                    <button id="find-nearby" class="action-btn">
+                        <span class="material-icons">near_me</span>
+                        Find Nearby
+                    </button>
+                </div>
+                <div id="nearby-info" class="nearby-info"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mobile-nav">
+        <div class="nav-btn active" data-view="locations">
+            <span class="material-icons nav-icon">list</span>
+            <span class="nav-label">Locations</span>
+        </div>
+        <div class="nav-btn" data-view="map">
+            <span class="material-icons nav-icon">map</span>
+            <span class="nav-label">Map</span>
+        </div>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // ====================================
+        // REPLACE THIS ARRAY WITH YOUR OWN DATA
+        // Each location should have the following properties:
+        // - id: a unique identifier
+        // - name: location name
+        // - city: city name for grouping
+        // - lat: latitude
+        // - lng: longitude
+        // - notes: description with UX focus
+        // - design_concepts: array of design concepts (optional)
+        // - ux_focus: array of UX photography focus points in format {name, description} (optional)
+        // - visited: boolean (true/false)
+        // ====================================
+        const allLocations = [
+        {
+    "id": "location-1",
+    "name": "Battersea Park Children's Zoo",
+    "city": "London",
+    "lat": 51.4791,
+    "lng": -0.1569,
+    "notes": "Wayfinding and engagement in child-focused attractions.",
+    "design_concepts": ["Playful navigation", "Interactive elements"],
+    "ux_focus": [
+      { "name": "Signage clarity", "description": "Ensuring directions are understandable for children." },
+      { "name": "Engagement points", "description": "Interactive exhibits to maintain children's interest." },
+      { "name": "Child-eye view", "description": "Capturing perspectives from lower heights to represent children's viewpoint." },
+      { "name": "Color psychology", "description": "Documenting use of bright colors and their effect on wayfinding for young visitors." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-2",
+    "name": "Battersea Park",
+    "city": "London",
+    "lat": 51.4781,
+    "lng": -0.1528,
+    "notes": "User distribution across different activity zones.",
+    "design_concepts": ["Zoning", "User flow"],
+    "ux_focus": [
+      { "name": "Pathway design", "description": "Guiding users to various zones effectively." },
+      { "name": "Activity clustering", "description": "Grouping related activities to manage crowd flow." },
+      { "name": "Rest area utilization", "description": "Documenting how seating areas influence movement patterns and dwell time." },
+      { "name": "Environmental cues", "description": "Capturing how natural elements like trees and water direct visitor behavior." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-3",
+    "name": "Bermondsey Street",
+    "city": "London",
+    "lat": 51.5016,
+    "lng": -0.0820,
+    "notes": "Impact of independent shops on urban experience.",
+    "design_concepts": ["Local identity", "Street engagement"],
+    "ux_focus": [
+      { "name": "Storefront diversity", "description": "Variety in shop designs enhancing street appeal." },
+      { "name": "Pedestrian flow", "description": "Navigating through a mix of commercial and residential spaces." },
+      { "name": "Threshold moments", "description": "Documenting transitions between public street and private business spaces." },
+      { "name": "Identity signifiers", "description": "Capturing visual elements that communicate local character and authenticity." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-4",
+    "name": "Borough High Street",
+    "city": "London",
+    "lat": 51.5019,
+    "lng": -0.0894,
+    "notes": "Shifts in user perception between old and new spaces.",
+    "design_concepts": ["Historical juxtaposition", "Urban renewal"],
+    "ux_focus": [
+      { "name": "Architectural contrast", "description": "Blending historical buildings with modern structures." },
+      { "name": "Cultural landmarks", "description": "Signage highlighting historical significance." },
+      { "name": "Material transitions", "description": "Photographing how building materials change across time periods." },
+      { "name": "Lighting variations", "description": "Documenting natural light interaction with old versus new architectural elements." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-5",
+    "name": "Duke of York Square",
+    "city": "London",
+    "lat": 51.4915,
+    "lng": -0.1570,
+    "notes": "Pedestrian-friendly high-end retail integration.",
+    "design_concepts": ["Luxury accessibility", "Open-air shopping"],
+    "ux_focus": [
+      { "name": "Seating areas", "description": "Providing rest spots amidst shopping." },
+      { "name": "Aesthetic coherence", "description": "Maintaining a consistent upscale ambiance." },
+      { "name": "Spatial rhythm", "description": "Capturing the pacing of storefronts and how it affects movement." },
+      { "name": "Status signifiers", "description": "Documenting visual cues that communicate exclusivity and quality." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-6",
+    "name": "Millennium Bridge",
+    "city": "London",
+    "lat": 51.5095,
+    "lng": -0.0987,
+    "notes": "Vibrational response in high-footfall environments.",
+    "design_concepts": ["Structural dynamics", "Pedestrian comfort"],
+    "ux_focus": [
+      { "name": "Stability perception", "description": "Ensuring users feel secure despite structural movements." },
+      { "name": "Viewpoints", "description": "Designing for scenic pauses without causing congestion." },
+      { "name": "Movement patterns", "description": "Documenting how pedestrians adapt their gait to bridge movement." },
+      { "name": "Weather impact", "description": "Capturing how environmental conditions affect user comfort and bridge usage." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-7",
+    "name": "Liverpool Street Station",
+    "city": "London",
+    "lat": 51.5179,
+    "lng": -0.0822,
+    "notes": "Balancing high traffic with shopping experiences.",
+    "design_concepts": ["Transit-oriented development", "Commercial integration"],
+    "ux_focus": [
+      { "name": "Flow management", "description": "Directing commuter traffic without hindering retail access." },
+      { "name": "Information clarity", "description": "Clear signage for both transit and shopping areas." },
+      { "name": "Threshold moments", "description": "Documenting transitions between transportation and commercial spaces." },
+      { "name": "Temporal patterns", "description": "Capturing how space usage changes during rush hours versus off-peak times." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-8",
+    "name": "Fenchurch Street Station",
+    "city": "London",
+    "lat": 51.5117,
+    "lng": -0.0788,
+    "notes": "User experience in constrained spaces.",
+    "design_concepts": ["Space optimization", "Efficient circulation"],
+    "ux_focus": [
+      { "name": "Queue management", "description": "Organizing lines to minimize space usage." },
+      { "name": "Vertical movement", "description": "Effective use of escalators and lifts in tight areas." },
+      { "name": "Visual compression", "description": "Documenting how architectural elements create sense of confinement or openness." },
+      { "name": "Navigational friction", "description": "Capturing points of confusion or hesitation in user movement." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-9",
+    "name": "Elephant Park",
+    "city": "London",
+    "lat": 51.4935,
+    "lng": -0.0956,
+    "notes": "Community usability in emerging eco-friendly districts.",
+    "design_concepts": ["Sustainable design", "Community engagement"],
+    "ux_focus": [
+      { "name": "Green spaces", "description": "Accessible parks promoting environmental awareness." },
+      { "name": "Public amenities", "description": "Facilities encouraging community gatherings." },
+      { "name": "Eco-feature interactions", "description": "Documenting how users engage with sustainable elements and systems." },
+      { "name": "Inclusive design", "description": "Capturing how spaces accommodate diverse user groups and abilities." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-10",
+    "name": "Parkland Walk",
+    "city": "London",
+    "lat": 51.5710,
+    "lng": -0.1200,
+    "notes": "Pedestrian experience in repurposed transport corridors.",
+    "design_concepts": ["Adaptive reuse", "Urban nature trails"],
+    "ux_focus": [
+      { "name": "Pathway continuity", "description": "Ensuring a seamless walking experience." },
+      { "name": "Natural integration", "description": "Blending built structures with natural surroundings." },
+      { "name": "Historical remnants", "description": "Documenting how past transportation infrastructure informs current usage." },
+      { "name": "Seasonal variations", "description": "Capturing how changing foliage affects path visibility and movement." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-11",
+    "name": "Stamford Bridge",
+    "city": "London",
+    "lat": 51.4818,
+    "lng": -0.1914,
+    "notes": "Crowd movement and ticketing experiences on match days.",
+    "design_concepts": ["Event logistics", "Security screening"],
+    "ux_focus": [
+      { "name": "Entry/exit flow", "description": "Managing large crowds efficiently." },
+      { "name": "Ticket verification", "description": "Streamlining the check-in process." },
+      { "name": "Wayfinding hierarchy", "description": "Documenting how signage priority changes during event days versus normal operation." },
+      { "name": "Crowd density management", "description": "Capturing strategies for preventing dangerous congestion at choke points." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-12",
+    "name": "Greenwich Foot Tunnel",
+    "city": "London",
+    "lat": 51.4864,
+    "lng": -0.0095,
+    "notes": "Heritage preservation vs. accessibility.",
+    "design_concepts": ["Historical preservation", "User accessibility"],
+    "ux_focus": [
+      { "name": "Lighting", "description": "Ensuring adequate illumination for safety and ambiance." },
+      { "name": "Signage", "description": "Clear directional signs to guide users through the tunnel." },
+      { "name": "Acoustic experience", "description": "Documenting sound dynamics and their impact on user comfort." },
+      { "name": "Entry/exit transitions", "description": "Capturing the contrast between bright outdoors and tunnel environment." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-13",
+    "name": "Hampstead High Street",
+    "city": "London",
+    "lat": 51.5558,
+    "lng": -0.1766,
+    "notes": "Luxury shopping street experience.",
+    "design_concepts": ["High-end retail", "Street aesthetics"],
+    "ux_focus": [
+      { "name": "Storefront design", "description": "Elegant facades that reflect the luxury branding." },
+      { "name": "Pedestrian flow", "description": "Wide sidewalks to accommodate shoppers comfortably." },
+      { "name": "Visual merchandising", "description": "Documenting how window displays create desire and exclusivity." },
+      { "name": "Atmospheric elements", "description": "Capturing how lighting, materials, and details create premium feeling." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-14",
+    "name": "Hounslow High Street",
+    "city": "London",
+    "lat": 51.4686,
+    "lng": -0.3613,
+    "notes": "Changing retail trends in outer London.",
+    "design_concepts": ["Retail evolution", "Community engagement"],
+    "ux_focus": [
+      { "name": "Pop-up shops", "description": "Temporary retail spaces reflecting current trends." },
+      { "name": "Public seating", "description": "Areas for social interaction and rest." },
+      { "name": "Cultural diversity", "description": "Documenting how storefronts reflect multicultural community demographics." },
+      { "name": "Adaptive reuse", "description": "Capturing how older buildings are repurposed for new retail concepts." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-15",
+    "name": "Hyde Park Serpentine",
+    "city": "London",
+    "lat": 51.5053,
+    "lng": -0.1694,
+    "notes": "Water interaction and accessibility.",
+    "design_concepts": ["Natural integration", "Recreational design"],
+    "ux_focus": [
+      { "name": "Water access points", "description": "Designated areas for boating and swimming." },
+      { "name": "Pathway design", "description": "Accessible routes around the water for all users." },
+      { "name": "Viewing platforms", "description": "Documenting how designed overlooks frame water experiences." },
+      { "name": "Seasonal adaptations", "description": "Capturing how usage patterns change with weather and seasons." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-16",
+    "name": "Granary Square",
+    "city": "London",
+    "lat": 51.5320,
+    "lng": -0.1253,
+    "notes": "Water feature interaction and seating layout effects.",
+    "design_concepts": ["Interactive public spaces", "Urban design"],
+    "ux_focus": [
+      { "name": "Fountain design", "description": "Engaging water features that invite public interaction." },
+      { "name": "Seating arrangements", "description": "Strategic placement to encourage social gatherings." },
+      { "name": "Play patterns", "description": "Documenting how different age groups engage with water features." },
+      { "name": "Night illumination", "description": "Capturing how lighting transforms the space for evening use." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-17",
+    "name": "Camley Street Natural Park",
+    "city": "London",
+    "lat": 51.5356,
+    "lng": -0.1281,
+    "notes": "Compact green space accessibility in urban settings.",
+    "design_concepts": ["Urban nature", "Space optimization"],
+    "ux_focus": [
+      { "name": "Trail design", "description": "Paths that maximize the small space without feeling cramped." },
+      { "name": "Educational signage", "description": "Informative displays about local flora and fauna." },
+      { "name": "Habitat zones", "description": "Documenting transitions between different ecological areas." },
+      { "name": "Urban contrast", "description": "Capturing the juxtaposition of natural elements against city backdrop." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-18",
+    "name": "Gasholder Park",
+    "city": "London",
+    "lat": 51.5340,
+    "lng": -0.1250,
+    "notes": "Repurposed industrial structures for public use.",
+    "design_concepts": ["Adaptive reuse", "Industrial heritage"],
+    "ux_focus": [
+      { "name": "Structural preservation", "description": "Maintaining historical elements while ensuring safety." },
+      { "name": "Public amenities", "description": "Incorporating seating and green spaces within the structure." },
+      { "name": "Framing vistas", "description": "Documenting how the circular structure creates views of surrounding areas." },
+      { "name": "Material narrative", "description": "Capturing how industrial materials communicate historical context." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-19",
+    "name": "Leicester Square",
+    "city": "London",
+    "lat": 51.5104,
+    "lng": -0.1304,
+    "notes": "User experience in high-density tourism areas.",
+    "design_concepts": ["Tourist engagement", "Event hosting"],
+    "ux_focus": [
+      { "name": "Crowd management", "description": "Designing pathways and open spaces to handle large crowds." },
+      { "name": "Information kiosks", "description": "Providing tourists with easy access to information." },
+      { "name": "Photo opportunity points", "description": "Documenting popular spots for tourist photography." },
+      { "name": "Entertainment density", "description": "Capturing how multiple visual stimuli compete for attention." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-20",
+    "name": "London Bridge Station",
+    "city": "London",
+    "lat": 51.5044,
+    "lng": -0.0857,
+    "notes": "Commuter behavior and signage effectiveness.",
+    "design_concepts": ["Transit efficiency", "Wayfinding"],
+    "ux_focus": [
+      { "name": "Signage clarity", "description": "Ensuring signs are visible and understandable for all commuters." },
+      { "name": "Flow analysis", "description": "Studying movement patterns to optimize space usage." },
+      { "name": "Decision points", "description": "Documenting locations where users pause to orient themselves." },
+      { "name": "Digital-physical integration", "description": "Capturing how mobile apps and physical navigation interact." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-21",
+    "name": "Old Street Roundabout",
+    "city": "London",
+    "lat": 51.5257,
+    "lng": -0.0875,
+    "notes": "Wayfinding in complex road infrastructure.",
+    "design_concepts": ["Urban navigation", "Traffic management"],
+    "ux_focus": [
+      { "name": "Pedestrian crossings", "description": "Safe and intuitive crossings in a busy intersection." },
+      { "name": "Visual cues", "description": "Landmarks and signs aiding in orientation." },
+      { "name": "Modal transitions", "description": "Documenting how users switch between transport types at this junction." },
+      { "name": "Safety perception", "description": "Capturing design elements that create sense of security amid traffic." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-22",
+    "name": "Queen Elizabeth Olympic Park",
+    "city": "London",
+    "lat": 51.5460,
+    "lng": -0.0160,
+    "notes": "Navigation in large-scale repurposed event spaces.",
+    "design_concepts": ["Legacy planning", "Public engagement"],
+    "ux_focus": [
+      { "name": "Pathway networks", "description": "Clear routes connecting various attractions within the park." },
+      { "name": "Event adaptability", "description": "Spaces designed to host various activities." },
+      { "name": "Scale management", "description": "Documenting how monumental spaces are made approachable for daily use." },
+      { "name": "Legacy elements", "description": "Capturing how Olympic history is communicated through design." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-23",
+    "name": "Olympic Park",
+    "city": "London",
+    "lat": 51.5485,
+    "lng": -0.0166,
+    "notes": "Post-event usability of sports facilities.",
+    "design_concepts": ["Legacy design", "Multifunctional space"],
+    "ux_focus": [
+      { "name": "Adaptive use", "description": "Repurposing sports infrastructure for community activities." },
+      { "name": "Public access", "description": "Maintaining accessibility and relevance after major events." },
+      { "name": "Scale transition", "description": "Documenting how monumental Olympic venues work for everyday use." },
+      { "name": "Memorial elements", "description": "Capturing how design preserves Olympic heritage while allowing new uses." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-24",
+    "name": "Spencer Park",
+    "city": "London",
+    "lat": 51.4592,
+    "lng": -0.1698,
+    "notes": "User demographics in small community parks.",
+    "design_concepts": ["Community-centered design", "Scale of use"],
+    "ux_focus": [
+      { "name": "Age-appropriate zones", "description": "Spaces tailored for different age groups." },
+      { "name": "Local identity", "description": "Reflecting neighborhood character in design choices." },
+      { "name": "User proximity", "description": "Documenting how different user groups interact in shared spaces." },
+      { "name": "Territorial behavior", "description": "Capturing how regular visitors claim and customize park areas." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-25",
+    "name": "Regent Street",
+    "city": "London",
+    "lat": 51.5120,
+    "lng": -0.1392,
+    "notes": "Blending flagship stores with historical architecture.",
+    "design_concepts": ["Retail heritage", "Brand architecture"],
+    "ux_focus": [
+      { "name": "Façade integration", "description": "Balancing commercial branding with listed building aesthetics." },
+      { "name": "Window displays", "description": "Visual storytelling that adapts to historical context." },
+      { "name": "Architectural rhythm", "description": "Documenting how consistent building forms create a coherent shopping experience." },
+      { "name": "Brand adaptations", "description": "Capturing how global brands modify their standard formats to fit historic settings." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-26",
+    "name": "Regent's Park",
+    "city": "London",
+    "lat": 51.5313,
+    "lng": -0.1569,
+    "notes": "Wayfinding, path networks, and user clustering.",
+    "design_concepts": ["Spatial legibility", "Park zoning"],
+    "ux_focus": [
+      { "name": "Map design", "description": "Visual clarity for varied users—tourists, joggers, families." },
+      { "name": "Rest areas", "description": "Strategically placed benches and shaded areas for crowd dispersal." },
+      { "name": "Activity zoning", "description": "Documenting how different park areas attract specific user behaviors." },
+      { "name": "Sight lines", "description": "Capturing how vistas and open areas aid in orientation and discovery." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-27",
+    "name": "Richmond Park",
+    "city": "London",
+    "lat": 51.4426,
+    "lng": -0.2734,
+    "notes": "Balancing recreation with nature conservation.",
+    "design_concepts": ["Natural preservation", "User regulation"],
+    "ux_focus": [
+      { "name": "Path boundaries", "description": "Guiding users while protecting wildlife zones." },
+      { "name": "Visitor information", "description": "Educational UX to promote responsible recreation." },
+      { "name": "Conservation markers", "description": "Documenting how protected areas are signified to visitors." },
+      { "name": "Wildlife interaction design", "description": "Capturing designated viewing areas that protect animals while allowing observation." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-28",
+    "name": "Tower Bridge",
+    "city": "London",
+    "lat": 51.5055,
+    "lng": -0.0754,
+    "notes": "Managing tourist flow in a functional space.",
+    "design_concepts": ["Dual-purpose design", "Historic-modern fusion"],
+    "ux_focus": [
+      { "name": "Pedestrian control", "description": "Balancing sightseeing crowds with commuter needs." },
+      { "name": "Information hierarchy", "description": "Organizing signs, plaques, and viewing guides efficiently." },
+      { "name": "Photography spots", "description": "Documenting how designed viewpoints shape visitor experience." },
+      { "name": "Traffic-tourist interface", "description": "Capturing interactions between vehicles and pedestrians in shared space." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-29",
+    "name": "Trafalgar Square",
+    "city": "London",
+    "lat": 51.5080,
+    "lng": -0.1281,
+    "notes": "Open-space user interactions and usability.",
+    "design_concepts": ["Civic space design", "Visual focal points"],
+    "ux_focus": [
+      { "name": "Monument placement", "description": "Guiding movement and framing user views." },
+      { "name": "Flexible zones", "description": "Adapting to protests, events, and passive use." },
+      { "name": "Tourist-local dynamics", "description": "Documenting how different user groups share and navigate the space." },
+      { "name": "Elevation experience", "description": "Capturing how steps and level changes influence behavior and viewpoints." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-30",
+    "name": "Wapping High Street",
+    "city": "London",
+    "lat": 51.5052,
+    "lng": -0.0612,
+    "notes": "Urban regeneration and its effects on users.",
+    "design_concepts": ["Gentrification interface", "Waterfront design"],
+    "ux_focus": [
+      { "name": "Material contrast", "description": "Juxtaposing old docklands with modern developments." },
+      { "name": "Visual narratives", "description": "How heritage is communicated through signage and texture." },
+      { "name": "Socioeconomic boundaries", "description": "Documenting visual cues that delineate gentrified from traditional areas." },
+      { "name": "River relationship", "description": "Capturing how design elements connect or separate users from the Thames." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-31",
+    "name": "Wembley Park",
+    "city": "London",
+    "lat": 51.5580,
+    "lng": -0.2820,
+    "notes": "Managing mass movement on match days.",
+    "design_concepts": ["Crowd logistics", "Public realm design"],
+    "ux_focus": [
+      { "name": "Entrance funneling", "description": "Controlled access and crowd flow at scale." },
+      { "name": "Post-event dispersal", "description": "Designing for safe, fast exits from the venue." },
+      { "name": "Event/non-event transitions", "description": "Documenting how the space transforms between match days and regular use." },
+      { "name": "Crowd density management", "description": "Capturing strategies for preventing dangerous congestion at key points." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-32",
+    "name": "Westminster Bridge",
+    "city": "London",
+    "lat": 51.5009,
+    "lng": -0.1216,
+    "notes": "Balancing sightseeing, commuting, and safety.",
+    "design_concepts": ["Dual-use circulation", "Landmark experience"],
+    "ux_focus": [
+      { "name": "View framing", "description": "Optimizing sightlines to iconic landmarks." },
+      { "name": "Pedestrian safety", "description": "Balustrades, lanes, and police presence in crowded settings." },
+      { "name": "Tourist pause points", "description": "Documenting locations where visitors stop for photos, creating flow disruptions." },
+      { "name": "Commuter-visitor friction", "description": "Capturing interactions between purposeful and leisurely bridge users." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-33",
+    "name": "Alexandra Palace",
+    "city": "London",
+    "lat": 51.5942,
+    "lng": -0.1305,
+    "notes": "Mass movement and crowd experience in historic settings.",
+    "design_concepts": ["Event logistics", "Heritage design"],
+    "ux_focus": [
+      { "name": "Crowd flow", "description": "Managing large audiences in a historic venue." },
+      { "name": "Wayfinding", "description": "Navigating complex layouts with modern signage." },
+      { "name": "Adaptive heritage", "description": "Documenting how historical spaces accommodate contemporary event needs." },
+      { "name": "Viewpoint design", "description": "Capturing how the hilltop location influences visitor experience and movement." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-34",
+    "name": "Angel Central",
+    "city": "London",
+    "lat": 51.5340,
+    "lng": -0.1057,
+    "notes": "Balancing entertainment, retail, and dining experiences.",
+    "design_concepts": ["Mixed-use spaces", "Consumer flow"],
+    "ux_focus": [
+      { "name": "Zone blending", "description": "Transitions between retail, food, and entertainment." },
+      { "name": "Flow incentives", "description": "Design features that guide visitors through the space." },
+      { "name": "Dwell time design", "description": "Documenting areas that encourage longer stays versus quick transactions." },
+      { "name": "Vertical navigation", "description": "Capturing how users are drawn between different floors and activity levels." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-35",
+    "name": "Tate Modern",
+    "city": "London",
+    "lat": 51.5076,
+    "lng": -0.0994,
+    "notes": "Gallery navigation and engagement levels.",
+    "design_concepts": ["Exhibition flow", "Museum interaction"],
+    "ux_focus": [
+      { "name": "Room transitions", "description": "Design that encourages exploration." },
+      { "name": "Resting points", "description": "Strategic seating to manage visitor fatigue." },
+      { "name": "Artwork proximity", "description": "Documenting how spacing between pieces affects viewing behavior." },
+      { "name": "Information access", "description": "Capturing how interpretive materials are integrated into gallery experience." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-36",
+    "name": "Tate Modern Turbine Hall",
+    "city": "London",
+    "lat": 51.5077,
+    "lng": -0.0993,
+    "notes": "Natural pause points vs movement corridors in vast empty spaces.",
+    "design_concepts": ["Scale manipulation", "Spatial choreography"],
+    "ux_focus": [
+      { "name": "Human scale", "description": "Making large spaces feel navigable." },
+      { "name": "Visual anchors", "description": "Drawing attention to key installations." },
+      { "name": "Sound dynamics", "description": "Documenting acoustic properties and their effect on visitor behavior." },
+      { "name": "Group formation", "description": "Capturing how visitors cluster and disperse in the open space." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-37",
+    "name": "Shakespeare's Globe",
+    "city": "London",
+    "lat": 51.5081,
+    "lng": -0.0965,
+    "notes": "Balancing authenticity and modern audience needs.",
+    "design_concepts": ["Historic performance UX", "Reconstruction logic"],
+    "ux_focus": [
+      { "name": "Access upgrades", "description": "Modern accessibility in a replica structure." },
+      { "name": "Experiential design", "description": "Maintaining historical immersion." },
+      { "name": "Authentic constraints", "description": "Documenting how historical limitations shape modern visitor experience." },
+      { "name": "Performance sightlines", "description": "Capturing how different seating positions affect theatrical engagement." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-38",
+    "name": "London Wall",
+    "city": "London",
+    "lat": 51.5183,
+    "lng": -0.0967,
+    "notes": "Blending ancient and modern structures in urban environments.",
+    "design_concepts": ["Time layering", "Architectural contrast"],
+    "ux_focus": [
+      { "name": "Signage tone", "description": "Communicating context for layered structures." },
+      { "name": "Urban flow", "description": "Navigating transitions between old and new areas." },
+      { "name": "Historical prompts", "description": "Documenting how design cues trigger awareness of ancient structures." },
+      { "name": "Contemporary interventions", "description": "Capturing how modern elements frame and highlight historical features." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-39",
+    "name": "Barbican Centre",
+    "city": "London",
+    "lat": 51.5202,
+    "lng": -0.0936,
+    "notes": "User experience in rigid spatial environments.",
+    "design_concepts": ["Brutalist architecture", "Modular design"],
+    "ux_focus": [
+      { "name": "Mechanical details", "description": "Physical controls and exposed systems." },
+      { "name": "Bridge as connector", "description": "Wayfinding through levels and links." },
+      { "name": "Concrete psychology", "description": "Documenting emotional response to raw concrete environments." },
+      { "name": "Navigational complexity", "description": "Capturing user confusion and adaptation to the complex layout." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-40",
+    "name": "The Barbican Highwalks",
+    "city": "London",
+    "lat": 51.5206,
+    "lng": -0.0944,
+    "notes": "Wayfinding in layered environments.",
+    "design_concepts": ["Vertical zoning", "Urban navigation"],
+    "ux_focus": [
+      { "name": "Level confusion", "description": "Challenging navigation across platform levels." },
+      { "name": "Signage and landmarks", "description": "Crucial to orientation in repetitive structures." },
+      { "name": "Vertical transitions", "description": "Documenting how users navigate between different height levels." },
+      { "name": "Spatial memory", "description": "Capturing how architectural uniformity challenges wayfinding and recognition." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-41",
+    "name": "Barking Riverside",
+    "city": "London",
+    "lat": 51.5250,
+    "lng": 0.1227,
+    "notes": "Urban planning usability in developing districts.",
+    "design_concepts": ["New town UX", "Eco district planning"],
+    "ux_focus": [
+      { "name": "Public transport nodes", "description": "Ensuring early integration of connectivity." },
+      { "name": "Street usability", "description": "Navigable roads before retail anchors are built." },
+      { "name": "Temporary wayfinding", "description": "Documenting interim signage solutions during ongoing development." },
+      { "name": "Community formation", "description": "Capturing how early residents create identity in new developments." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-42",
+    "name": "London Wetland Centre",
+    "city": "London",
+    "lat": 51.4781,
+    "lng": -0.2366,
+    "notes": "User engagement in conservation environments.",
+    "design_concepts": ["Natural immersion", "Environmental UX"],
+    "ux_focus": [
+      { "name": "Interpretive signage", "description": "Information that connects visitors with conservation goals." },
+      { "name": "Quiet zones", "description": "Spaces designed to reduce noise and human intrusion." },
+      { "name": "Observation architecture", "description": "Documenting how hides and viewing platforms shape wildlife viewing." },
+      { "name": "Path hierarchies", "description": "Capturing how primary and secondary routes guide different visit intensities." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-43",
+    "name": "Battersea Power Station",
+    "city": "London",
+    "lat": 51.4823,
+    "lng": -0.1466,
+    "notes": "Retail, residential, and public integration.",
+    "design_concepts": ["Mixed-use redevelopment", "Industrial conversion"],
+    "ux_focus": [
+      { "name": "Plaza interaction", "description": "Public areas inviting various user types." },
+      { "name": "Historic retention", "description": "Design that respects and elevates past architecture." },
+      { "name": "Transition spaces", "description": "Documenting interfaces between retail, residential, and public areas." },
+      { "name": "Scale adaptation", "description": "Capturing how industrial monumentality is made approachable for daily use." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-44",
+    "name": "Brick Lane",
+    "city": "London",
+    "lat": 51.5202,
+    "lng": -0.0712,
+    "notes": "Street food market interactions and multicultural dynamics.",
+    "design_concepts": ["Street UX", "Cultural overlay"],
+    "ux_focus": [
+      { "name": "Sensory richness", "description": "Sound, smell, and visuals working together." },
+      { "name": "Cultural signage", "description": "Wayfinding with multiple languages or visual cues." },
+      { "name": "Temporary structures", "description": "Documenting how market stalls transform street experience." },
+      { "name": "Identity markers", "description": "Capturing visual elements that communicate cultural diversity and authenticity." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-45",
+    "name": "Brixton Windmill",
+    "city": "London",
+    "lat": 51.4550,
+    "lng": -0.1204,
+    "notes": "Public engagement with restored industrial sites.",
+    "design_concepts": ["Community heritage", "Historical revival"],
+    "ux_focus": [
+      { "name": "Guided interaction", "description": "Educational design for self-guided exploration." },
+      { "name": "Accessibility", "description": "Modern interventions to aid inclusivity." },
+      { "name": "Interpretive layers", "description": "Documenting how historical information is presented at different depths." },
+      { "name": "Community ownership", "description": "Capturing evidence of local participation and stewardship." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-46",
+    "name": "Electric Avenue, Brixton",
+    "city": "London",
+    "lat": 51.4625,
+    "lng": -0.1146,
+    "notes": "Cultural diversity in retail experiences.",
+    "design_concepts": ["Market street UX", "Cultural blending"],
+    "ux_focus": [
+      { "name": "Visual rhythm", "description": "Color and signage mixing across shopfronts." },
+      { "name": "Pedestrian prioritization", "description": "Spaces that adapt to foot traffic fluctuations." },
+      { "name": "Cultural signifiers", "description": "Documenting visual elements that communicate local identity and heritage." },
+      { "name": "Sensory intensity", "description": "Capturing the multisensory market experience that guides movement and engagement." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-47",
+    "name": "Brixton O2 Academy",
+    "city": "London",
+    "lat": 51.4656,
+    "lng": -0.1142,
+    "notes": "Queue management and venue accessibility.",
+    "design_concepts": ["Event UX", "Queue psychology"],
+    "ux_focus": [
+      { "name": "Holding zones", "description": "Space designed to prevent spillover onto streets." },
+      { "name": "Information timing", "description": "Keeping guests informed while waiting." },
+      { "name": "Security-hospitality balance", "description": "Documenting how entry screening maintains safety while preserving experience." },
+      { "name": "Crowd mood management", "description": "Capturing design elements that maintain positive atmosphere during waiting periods." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-48",
+    "name": "Broadgate Circle",
+    "city": "London",
+    "lat": 51.5181,
+    "lng": -0.0827,
+    "notes": "Blending business, retail, and leisure.",
+    "design_concepts": ["Corporate urbanism", "Multi-use placemaking"],
+    "ux_focus": [
+      { "name": "Transition design", "description": "Smooth blending of work and social zones." },
+      { "name": "Seating hierarchy", "description": "Designing for formal and casual engagement." },
+      { "name": "Temporal patterns", "description": "Documenting how space usage transforms from workday to evening hours." },
+      { "name": "Microclimate creation", "description": "Capturing how architectural form creates comfortable outdoor spaces in urban setting." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-49",
+    "name": "Canada Water Library",
+    "city": "London",
+    "lat": 51.4974,
+    "lng": -0.0497,
+    "notes": "High-tech vs. traditional library user experience.",
+    "design_concepts": ["Knowledge UX", "Public-tech interface"],
+    "ux_focus": [
+      { "name": "Digital zones", "description": "Integrating screen-based tools into reading spaces." },
+      { "name": "Community integration", "description": "Flexible rooms for clubs, talks, and quiet work." },
+      { "name": "Silent-social gradient", "description": "Documenting transitions between quiet study and collaborative areas." },
+      { "name": "User posture", "description": "Capturing how furniture design influences reading and technology interaction." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-50",
+    "name": "Crossrail Place Roof Garden",
+    "city": "London",
+    "lat": 51.5066,
+    "lng": -0.0196,
+    "notes": "Plant density as natural space dividers between quiet/social zones.",
+    "design_concepts": ["Biophilic design", "Microzoning"],
+    "ux_focus": [
+      { "name": "Natural segmentation", "description": "Using vegetation to define experience zones." },
+      { "name": "Shelter design", "description": "Creating comfort with minimal enclosure." },
+      { "name": "Canopy experience", "description": "Documenting the semi-enclosed feeling created by plant structures and roofing." },
+      { "name": "Discovery paths", "description": "Capturing how winding routes create moments of surprise and revelation." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-51",
+    "name": "Canary Wharf Underground Station",
+    "city": "London",
+    "lat": 51.5055,
+    "lng": -0.0235,
+    "notes": "User perception of modern station design.",
+    "design_concepts": ["Modern transit UX", "Material identity"],
+    "ux_focus": [
+      { "name": "Spatial clarity", "description": "Wide, open areas easing navigation." },
+      { "name": "Material consistency", "description": "Steel, glass, and concrete forming brand language." },
+      { "name": "Light management", "description": "Documenting how natural and artificial lighting shape underground experience." },
+      { "name": "Vertical movement", "description": "Capturing how escalators and elevators create transition experiences between levels." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-52",
+    "name": "West India Quay",
+    "city": "London",
+    "lat": 51.5078,
+    "lng": -0.0205,
+    "notes": "Waterfront regeneration and user accessibility.",
+    "design_concepts": ["Dockland revival", "Accessible waterfronts"],
+    "ux_focus": [
+      { "name": "Stair/ramps balance", "description": "Ensuring inclusive access to quay levels." },
+      { "name": "Seating along water", "description": "Encouraging passive engagement with the view." },
+      { "name": "Historical references", "description": "Documenting how design elements communicate maritime heritage." },
+      { "name": "Weather protection", "description": "Capturing strategies for maintaining comfort in exposed waterfront environments." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-53",
+    "name": "King's Road",
+    "city": "London",
+    "lat": 51.4872,
+    "lng": -0.1649,
+    "notes": "Retail experience in affluent neighborhoods.",
+    "design_concepts": ["Luxury UX", "Streetscape curation"],
+    "ux_focus": [
+      { "name": "Window staging", "description": "Elegantly curated storefronts and displays." },
+      { "name": "Foot traffic pacing", "description": "Design that encourages slow, browsing behavior." },
+      { "name": "Brand territory", "description": "Documenting how luxury retailers visually claim and extend their space onto the street." },
+      { "name": "Status signifiers", "description": "Capturing subtle design elements that communicate exclusivity and premium experience." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-54",
+    "name": "Chinatown",
+    "city": "London",
+    "lat": 51.5113797,
+    "lng": -0.1318641,
+    "notes": "Wayfinding and signage in multilingual urban areas.",
+    "design_concepts": ["Multilingual signage", "Cultural navigation"],
+    "ux_focus": [
+      { "name": "Sign clarity", "description": "Ensuring legibility across languages." },
+      { "name": "Cultural symbols", "description": "Using icons familiar to diverse groups." },
+      { "name": "Gateway architecture", "description": "Documenting how entrance points signal cultural transition." },
+      { "name": "Authentic markers", "description": "Capturing visual elements that communicate cultural identity and heritage." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-55",
+    "name": "The Cheesegrater",
+    "city": "London",
+    "lat": 51.5138,
+    "lng": -0.0821,
+    "notes": "User experience in futuristic office design.",
+    "design_concepts": ["Modern office ergonomics", "Vertical circulation"],
+    "ux_focus": [
+      { "name": "Lobby experience", "description": "First impressions through design." },
+      { "name": "Elevator systems", "description": "Efficiency in high-rise transport." },
+      { "name": "Security-hospitality balance", "description": "Documenting how access control is balanced with welcoming atmosphere." },
+      { "name": "Sight lines", "description": "Capturing how the building's form creates unique views and perspectives." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-56",
+    "name": "The Ned",
+    "city": "London",
+    "lat": 51.5135,
+    "lng": -0.0890,
+    "notes": "Blending hotel, restaurant, and workspace experiences.",
+    "design_concepts": ["Mixed-use interior", "Adaptive reuse"],
+    "ux_focus": [
+      { "name": "Space zoning", "description": "Seamless transitions between functions." },
+      { "name": "Acoustic design", "description": "Managing sound in multifunctional areas." },
+      { "name": "Heritage preservation", "description": "Documenting how banking hall features are incorporated in hospitality setting." },
+      { "name": "Status signifiers", "description": "Capturing subtle design elements that communicate exclusivity and membership." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-57",
+    "name": "Bank Junction",
+    "city": "London",
+    "lat": 51.5134,
+    "lng": -0.0890,
+    "notes": "Navigating multi-directional flow spaces.",
+    "design_concepts": ["Urban intersection design", "Pedestrian priority"],
+    "ux_focus": [
+      { "name": "Crossing points", "description": "Safety and efficiency in pedestrian movement." },
+      { "name": "Traffic signaling", "description": "Clarity in complex junctions." },
+      { "name": "Modal priorities", "description": "Documenting how space allocation communicates hierarchy between transport types." },
+      { "name": "Decision points", "description": "Capturing locations where pedestrians pause to orient themselves." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-58",
+    "name": "London Mithraeum",
+    "city": "London",
+    "lat": 51.5124,
+    "lng": -0.0906,
+    "notes": "Ancient site interpretation for modern visitors.",
+    "design_concepts": ["Historical immersion", "Exhibit accessibility"],
+    "ux_focus": [
+      { "name": "Information layering", "description": "Balancing detail for varied audiences." },
+      { "name": "Lighting design", "description": "Enhancing atmosphere without compromising visibility." },
+      { "name": "Sensory storytelling", "description": "Documenting how sound, light, and mist create immersive historical experience." },
+      { "name": "Artifact framing", "description": "Capturing how display design highlights and contextualizes ancient objects." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-59",
+    "name": "The Gherkin",
+    "city": "London",
+    "lat": 51.5144,
+    "lng": -0.0803,
+    "notes": "Entrance accessibility and visitor flow.",
+    "design_concepts": ["Iconic architecture", "Public-private interface"],
+    "ux_focus": [
+      { "name": "Entry sequencing", "description": "Guiding visitors through security to lobby." },
+      { "name": "Wayfinding cues", "description": "Subtle guides in a minimalist space." },
+      { "name": "Security experience", "description": "Documenting how screening is balanced with positive first impressions." },
+      { "name": "Material transitions", "description": "Capturing changes in surfaces and textures from exterior to interior." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-60",
+    "name": "Heron Tower Sky Bar",
+    "city": "London",
+    "lat": 51.5165,
+    "lng": -0.0804,
+    "notes": "Customer journey from ground floor to rooftop venue.",
+    "design_concepts": ["Vertical journey", "Exclusive experience"],
+    "ux_focus": [
+      { "name": "Elevator experience", "description": "Setting the tone for the venue." },
+      { "name": "Arrival impact", "description": "First impressions upon reaching the rooftop." },
+      { "name": "Status signifiers", "description": "Documenting design elements that communicate exclusivity throughout journey." },
+      { "name": "View framing", "description": "Capturing how architectural elements direct attention to specific cityscape vistas." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-61",
+    "name": "The Walkie Talkie",
+    "city": "London",
+    "lat": 51.5133,
+    "lng": -0.0811,
+    "notes": "Public-private space balance.",
+    "design_concepts": ["Corporate-public integration", "Sky garden access"],
+    "ux_focus": [
+      { "name": "Security transitions", "description": "Moving from public to private areas smoothly." },
+      { "name": "Visitor facilities", "description": "Amenities that cater to both tenants and tourists." },
+      { "name": "Reservation systems", "description": "Documenting how digital booking affects physical space experience." },
+      { "name": "Crowd management", "description": "Capturing strategies for maintaining quality experience during peak tourist times." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-62",
+    "name": "The Garden at 120",
+    "city": "London",
+    "lat": 51.5120,
+    "lng": -0.0809,
+    "notes": "User flow in a no-ticket observation deck.",
+    "design_concepts": ["Open access design", "Urban green space"],
+    "ux_focus": [
+      { "name": "Queue management", "description": "Handling peak times without reservations." },
+      { "name": "Space utilization", "description": "Encouraging movement and lingering." },
+      { "name": "Discovery experience", "description": "Documenting the element of surprise for first-time visitors." },
+      { "name": "Capacity indicators", "description": "Capturing how visitors assess crowding and decide whether to stay or leave." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-63",
+    "name": "Sky Garden",
+    "city": "London",
+    "lat": 51.5112,
+    "lng": -0.0831,
+    "notes": "UX in high-altitude public spaces.",
+    "design_concepts": ["Elevated public realm", "Panoramic engagement"],
+    "ux_focus": [
+      { "name": "View framing", "description": "Architectural elements that enhance vistas." },
+      { "name": "Seating arrangements", "description": "Comfort while maximizing capacity." },
+      { "name": "Plant-visitor interaction", "description": "Documenting how greenery creates zones and guides movement." },
+      { "name": "Indoor climate", "description": "Capturing how temperature and humidity affect visitor comfort and dwell time." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-64",
+    "name": "St. Paul's Cathedral",
+    "city": "London",
+    "lat": 51.5138,
+    "lng": -0.0985,
+    "notes": "Queueing and accessibility in historical spaces.",
+    "design_concepts": ["Heritage preservation", "Inclusive design"],
+    "ux_focus": [
+      { "name": "Ramp integration", "description": "Blending modern accessibility with historic fabric." },
+      { "name": "Ticketing systems", "description": "Efficient processing of visitors." },
+      { "name": "Reverence cues", "description": "Documenting design elements that guide appropriate behavior in sacred spaces." },
+      { "name": "Tourist-worshipper balance", "description": "Capturing how design separates or integrates different user purposes." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-65",
+    "name": "Farringdon Station",
+    "city": "London",
+    "lat": 51.5203,
+    "lng": -0.1052,
+    "notes": "New station design and intermodal navigation.",
+    "design_concepts": ["Intermodal connectivity", "Modern transit architecture"],
+    "ux_focus": [
+      { "name": "Platform navigation", "description": "Clear wayfinding for multiple lines." },
+      { "name": "Transfer efficiency", "description": "Minimizing time and confusion when switching modes." },
+      { "name": "Decision points", "description": "Documenting key junctions where users must choose their path." },
+      { "name": "Information hierarchy", "description": "Capturing how signage priority helps users focus on relevant details." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-66",
+    "name": "Covent Garden",
+    "city": "London",
+    "lat": 51.5116,
+    "lng": -0.1230,
+    "notes": "Crowd flow impact on retail experience.",
+    "design_concepts": ["Tourist UX", "Retail streetscape"],
+    "ux_focus": [
+      { "name": "Pedestrian routing", "description": "Managing narrow spaces during peak times." },
+      { "name": "Event overlay", "description": "Blending street shows with commerce." },
+      { "name": "Attraction density", "description": "Documenting how multiple points of interest affect movement patterns." },
+      { "name": "Performance spaces", "description": "Capturing how informal stages create audience gathering and flow disruption." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-67",
+    "name": "Foyles Charing Cross",
+    "city": "London",
+    "lat": 51.5143,
+    "lng": -0.1291,
+    "notes": "User engagement in multi-level retail spaces.",
+    "design_concepts": ["Retail zoning", "Bookstore UX"],
+    "ux_focus": [
+      { "name": "Floor hierarchy", "description": "Encouraging exploration between floors." },
+      { "name": "Seating and browsing", "description": "Design that invites lingering and discovery." },
+      { "name": "Category wayfinding", "description": "Documenting how book classification systems translate to physical navigation." },
+      { "name": "Dwell vs purchase balance", "description": "Capturing design elements that encourage both browsing and buying behavior." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-68",
+    "name": "Epping Forest",
+    "city": "London",
+    "lat": 51.6410,
+    "lng": 0.0412,
+    "notes": "Wayfinding in protected woodland spaces.",
+    "design_concepts": ["Nature UX", "Trail usability"],
+    "ux_focus": [
+      { "name": "Signage placement", "description": "Subtle yet visible guidance in natural settings." },
+      { "name": "Preservation balance", "description": "Avoiding visual clutter in a preserved landscape." },
+      { "name": "Trail markers", "description": "Documenting how path indicators balance visibility with environmental impact." },
+      { "name": "Entrances and boundaries", "description": "Capturing transitional spaces between urban areas and forest environment." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-69",
+    "name": "The O2 Arena",
+    "city": "London",
+    "lat": 51.5030,
+    "lng": 0.0032,
+    "notes": "User navigation in high-capacity entertainment venues.",
+    "design_concepts": ["Mega venue UX", "Pre/post-event flow"],
+    "ux_focus": [
+      { "name": "Queue dispersal", "description": "Strategies for entry and exit flow." },
+      { "name": "Venue zoning", "description": "Guiding different user intents—dining, concerts, etc." },
+      { "name": "Wayfinding clarity", "description": "Documenting how seat numbering and section marking prevent confusion." },
+      { "name": "Transport integration", "description": "Capturing how design connects venue exits with public transit options." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-70",
+    "name": "The Thames Clipper",
+    "city": "London",
+    "lat": 51.5023,
+    "lng": 0.0031,
+    "notes": "Ticketing and boarding UX on public boats.",
+    "design_concepts": ["Water transit", "Integrated ticketing"],
+    "ux_focus": [
+      { "name": "Platform design", "description": "Safe and intuitive boarding processes." },
+      { "name": "Mobile ticketing", "description": "Ease of access with apps and QR codes." },
+      { "name": "Waiting experience", "description": "Documenting pier environments and their shelter from weather elements." },
+      { "name": "Onboard navigation", "description": "Capturing how passengers orient themselves and find seating on vessels." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-71",
+    "name": "Emirates Air Line Cable Car",
+    "city": "London",
+    "lat": 51.5010,
+    "lng": 0.0152,
+    "notes": "Queue management and user onboarding.",
+    "design_concepts": ["Scenic transport", "Boarding UX"],
+    "ux_focus": [
+      { "name": "Preboarding flow", "description": "Keeping queues moving smoothly." },
+      { "name": "Visual anticipation", "description": "Enhancing excitement through waiting areas." },
+      { "name": "Loading assistance", "description": "Documenting how staff guide passengers into moving gondolas." },
+      { "name": "View framing", "description": "Capturing how cabin design directs attention to specific cityscape vistas." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-72",
+    "name": "North Greenwich Bus Station",
+    "city": "London",
+    "lat": 51.5009,
+    "lng": 0.0031,
+    "notes": "Commuter experience in large bus interchanges.",
+    "design_concepts": ["Transit UX", "Station layout"],
+    "ux_focus": [
+      { "name": "Platform visibility", "description": "Clear lines of sight and signs for bus bays." },
+      { "name": "Weather protection", "description": "Canopies and seating under shelter." },
+      { "name": "Real-time information", "description": "Documenting how digital displays affect user confidence and waiting behavior." },
+      { "name": "Transfer efficiency", "description": "Capturing design elements that facilitate switching between transportation modes." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-73",
+    "name": "Hackney Wick",
+    "city": "London",
+    "lat": 51.5412,
+    "lng": -0.0227,
+    "notes": "Gentrification and adaptive reuse of old factory spaces.",
+    "design_concepts": ["Cultural regeneration", "Creative reuse"],
+    "ux_focus": [
+      { "name": "Facade preservation", "description": "Maintaining identity while modernizing inside." },
+      { "name": "Community space integration", "description": "Art galleries, cafes, and co-working harmonized." },
+      { "name": "Industrial aesthetics", "description": "Documenting how raw materials and exposed systems become design features." },
+      { "name": "Edge condition", "description": "Capturing transition zones between regenerated and unchanged areas." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-74",
+    "name": "Haggerston Overground Station",
+    "city": "London",
+    "lat": 51.5387,
+    "lng": -0.0752,
+    "notes": "User behavior in smaller but high-traffic stations.",
+    "design_concepts": ["Compact transit design", "Peak-time UX"],
+    "ux_focus": [
+      { "name": "Flow during rush hours", "description": "Managing surges in a tight footprint." },
+      { "name": "Signage readability", "description": "Maximizing clarity in small spaces." },
+      { "name": "Queue formation", "description": "Documenting how passengers naturally organize while waiting." },
+      { "name": "Platform capacity", "description": "Capturing strategies for preventing dangerous overcrowding." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-75",
+    "name": "Hackney City Farm",
+    "city": "London",
+    "lat": 51.5330,
+    "lng": -0.0594,
+    "notes": "Educational engagement with nature in a city.",
+    "design_concepts": ["Urban agriculture", "Hands-on learning"],
+    "ux_focus": [
+      { "name": "Activity layout", "description": "Designing for school visits and individual visitors alike." },
+      { "name": "Information design", "description": "Kid-friendly visuals and clear signage." },
+      { "name": "Urban-rural contrast", "description": "Documenting the sudden transition from city streets to farm environment." },
+      { "name": "Multi-sensory learning", "description": "Capturing how smell, sound, and touch enhance the educational experience." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-76",
+    "name": "King's Mall Hammersmith",
+    "city": "London",
+    "lat": 51.4921,
+    "lng": -0.2254,
+    "notes": "Changing role of mid-tier shopping centres.",
+    "design_concepts": ["Retail evolution", "Public-private blend"],
+    "ux_focus": [
+      { "name": "Mixed-use strategy", "description": "Repositioning malls for daily needs and events." },
+      { "name": "Anchor redesign", "description": "Replacing department stores with lifestyle services." },
+      { "name": "Threshold experience", "description": "Documenting entrances that blur distinction between mall and street." },
+      { "name": "Dwell spaces", "description": "Capturing how seating areas encourage longer visits and social interaction." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-77",
+    "name": "Hampstead Heath Pergola",
+    "city": "London",
+    "lat": 51.5604,
+    "lng": -0.1786,
+    "notes": "Rustic handrail textures vs modern accessibility ramps.",
+    "design_concepts": ["Tactile experience", "Natural/historic blend"],
+    "ux_focus": [
+      { "name": "Texture storytelling", "description": "Using materials to evoke past eras." },
+      { "name": "Mobility integration", "description": "Preserving aesthetic while meeting access needs." },
+      { "name": "Weathering aesthetics", "description": "Documenting how aging and patina contribute to atmospheric experience." },
+      { "name": "Light filtration", "description": "Capturing how pergola structure creates dappled shadows and light patterns." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-78",
+    "name": "Hampstead Ponds",
+    "city": "London",
+    "lat": 51.5593,
+    "lng": -0.1705,
+    "notes": "Balancing public recreation with environmental needs.",
+    "design_concepts": ["Ecological UX", "Shared natural spaces"],
+    "ux_focus": [
+      { "name": "Swim access design", "description": "Guiding users while minimizing ecological impact." },
+      { "name": "Informational signage", "description": "Clear rules to support safe, respectful use." },
+      { "name": "Behavior cues", "description": "Documenting subtle design elements that encourage appropriate conduct." },
+      { "name": "Capacity management", "description": "Capturing how physical constraints naturally limit visitor numbers." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-79",
+    "name": "Harrow-on-the-Hill",
+    "city": "London",
+    "lat": 51.5794,
+    "lng": -0.3370,
+    "notes": "Balancing educational institutions with daily retail flow.",
+    "design_concepts": ["Institutional-urban integration", "Mixed-use planning"],
+    "ux_focus": [
+      { "name": "Time-based flow", "description": "Varying traffic between school and shopping hours." },
+      { "name": "Pedestrian movement", "description": "Navigating school zones amidst public foot traffic." },
+      { "name": "Uniform visual cues", "description": "Documenting how student dress codes create distinct user groups." },
+      { "name": "Threshold markers", "description": "Capturing transitions between public space and institutional boundaries." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-80",
+    "name": "Highgate Cemetery",
+    "city": "London",
+    "lat": 51.5663,
+    "lng": -0.1466,
+    "notes": "Dark tourism and site navigation challenges.",
+    "design_concepts": ["Experiential wayfinding", "Historical immersion"],
+    "ux_focus": [
+      { "name": "Path design", "description": "Respectful guidance through historic gravesites." },
+      { "name": "Atmospheric cues", "description": "Balancing mood with clarity in directional signage." },
+      { "name": "Narrative elements", "description": "Documenting how interpretive materials tell stories of notable burials." },
+      { "name": "Conservation markers", "description": "Capturing design elements that indicate restricted access or fragile areas." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-81",
+    "name": "Hornsey Road Baths",
+    "city": "London",
+    "lat": 51.5568,
+    "lng": -0.1135,
+    "notes": "User adaptation of former municipal structures.",
+    "design_concepts": ["Architectural repurposing", "Community activation"],
+    "ux_focus": [
+      { "name": "Space reuse", "description": "Transforming bathhouse architecture for new functions." },
+      { "name": "Public familiarity", "description": "Balancing nostalgia with new uses." },
+      { "name": "Functional signals", "description": "Documenting how design elements communicate new purposes for historical spaces." },
+      { "name": "Historical layering", "description": "Capturing how original features are highlighted alongside contemporary additions." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-82",
+    "name": "Holloway Road",
+    "city": "London",
+    "lat": 51.5522,
+    "lng": -0.1151,
+    "notes": "Gentrification and impact on legacy businesses.",
+    "design_concepts": ["Retail transformation", "Cultural shifts"],
+    "ux_focus": [
+      { "name": "Storefront transitions", "description": "Visual shifts from legacy to modern design." },
+      { "name": "Audience mix", "description": "Navigating appeal to different socioeconomic groups." },
+      { "name": "Status signifiers", "description": "Documenting visual cues that communicate changing neighborhood identity." },
+      { "name": "Adaptation strategies", "description": "Capturing how long-standing businesses update to changing environments." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-83",
+    "name": "Hackney Marshes",
+    "city": "London",
+    "lat": 51.5523,
+    "lng": -0.0301,
+    "notes": "Urban green space accessibility and usability.",
+    "design_concepts": ["Nature in the city", "Sport and leisure"],
+    "ux_focus": [
+      { "name": "Entry points", "description": "Access routes from dense urban fabric." },
+      { "name": "Signage scale", "description": "Wayfinding in large open recreational spaces." },
+      { "name": "Activity zoning", "description": "Documenting how spaces for different sports are delineated." },
+      { "name": "Urban-natural transitions", "description": "Capturing the gradient between city infrastructure and natural marshland." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-84",
+    "name": "Serpentine Pavilion",
+    "city": "London",
+    "lat": 51.5047,
+    "lng": -0.1743,
+    "notes": "Temporary spatial experiences and user interaction.",
+    "design_concepts": ["Ephemeral architecture", "Interactive space"],
+    "ux_focus": [
+      { "name": "User flow", "description": "Engaging visitors in non-linear ways." },
+      { "name": "Tactile exploration", "description": "Encouraging sensory interaction with materials." },
+      { "name": "Annual renewal", "description": "Documenting how changing designs create repeated but fresh engagement." },
+      { "name": "Weather experience", "description": "Capturing how pavilion design responds to and frames natural elements." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-85",
+    "name": "The Lexington",
+    "city": "London",
+    "lat": 51.5315,
+    "lng": -0.1070,
+    "notes": "Audience flow in intimate performance spaces.",
+    "design_concepts": ["Small venue UX", "Performance space ergonomics"],
+    "ux_focus": [
+      { "name": "Queue management", "description": "Entry and exit through tight space." },
+      { "name": "Visibility and acoustics", "description": "Design for optimal performance experience." },
+      { "name": "Crowd density", "description": "Documenting how spatial layout affects audience comfort at capacity." },
+      { "name": "Bar-stage relationship", "description": "Capturing the balance between social and performance-focused spaces." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-86",
+    "name": "Kew Gardens",
+    "city": "London",
+    "lat": 51.4780,
+    "lng": -0.2958,
+    "notes": "Wayfinding and accessibility in large green spaces.",
+    "design_concepts": ["Botanical UX", "Large-scale navigation"],
+    "ux_focus": [
+      { "name": "Map orientation", "description": "Ensuring clear layout over vast areas." },
+      { "name": "Rest stops", "description": "Balancing exploration with accessibility." },
+      { "name": "Seasonal wayfinding", "description": "Documenting how navigation changes with plant growth and seasonal displays." },
+      { "name": "Collection storytelling", "description": "Capturing how interpretive materials create cohesive narrative through diverse plants." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-87",
+    "name": "Coal Drops Yard",
+    "city": "London",
+    "lat": 51.5351,
+    "lng": -0.1262,
+    "notes": "Wayfinding in heritage-integrated commercial spaces.",
+    "design_concepts": ["Adaptive reuse", "Retail storytelling"],
+    "ux_focus": [
+      { "name": "Signage vs architecture", "description": "Navigating post-industrial spaces without visual noise." },
+      { "name": "Stairs and levels", "description": "Multi-level orientation across converted structures." },
+      { "name": "Material narrative", "description": "Documenting how brick, steel, and coal heritage inform spatial experience." },
+      { "name": "Discovery design", "description": "Capturing how layout encourages exploration and unexpected findings." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-88",
+    "name": "King's Cross Station",
+    "city": "London",
+    "lat": 51.5308,
+    "lng": -0.1238,
+    "notes": "Navigation of complex transport hubs.",
+    "design_concepts": ["Station UX", "Multimodal navigation"],
+    "ux_focus": [
+      { "name": "Information density", "description": "Reducing overwhelm during transfers." },
+      { "name": "Pedestrian bottlenecks", "description": "Preventing congestion at key nodes." },
+      { "name": "Heritage-modern interface", "description": "Documenting how Victorian architecture integrates with contemporary extensions." },
+      { "name": "Decision points", "description": "Capturing locations where travelers must choose between multiple routes or modes." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-89",
+    "name": "King's Cross Light Tunnel",
+    "city": "London",
+    "lat": 51.5322,
+    "lng": -0.1237,
+    "notes": "Effects of immersive lighting on pedestrian wayfinding.",
+    "design_concepts": ["Lighting design", "Experiential passage"],
+    "ux_focus": [
+      { "name": "Guided transitions", "description": "Lighting as a cue for direction and pace." },
+      { "name": "Mood effect", "description": "Emotional response to immersive illumination." },
+      { "name": "Interactive engagement", "description": "Documenting how lighting responds to movement and creates playful interactions." },
+      { "name": "Utilitarian-aesthetic balance", "description": "Capturing how functional passage becomes memorable experience through light." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-90",
+    "name": "Harrods",
+    "city": "London",
+    "lat": 51.4994,
+    "lng": -0.1635,
+    "notes": "Navigation and premium customer service experience.",
+    "design_concepts": ["Luxury retail UX", "Wayfinding as service"],
+    "ux_focus": [
+      { "name": "Department orientation", "description": "Spatial cues in a maze-like building." },
+      { "name": "Concierge UX", "description": "Navigating elite services and personalization." },
+      { "name": "Material luxury", "description": "Documenting how high-end finishes and details communicate brand values." },
+      { "name": "Staff-customer dynamics", "description": "Capturing how service interactions are choreographed through spatial design." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-91",
+    "name": "Lambeth Palace Gardens",
+    "city": "London",
+    "lat": 51.4940,
+    "lng": -0.1185,
+    "notes": "Private-public space balance.",
+    "design_concepts": ["Institutional space sharing", "Event access UX"],
+    "ux_focus": [
+      { "name": "Gatekeeping design", "description": "Managing expectations for semi-private spaces." },
+      { "name": "Temporal access", "description": "Designing spaces used only at certain times." },
+      { "name": "Boundary communication", "description": "Documenting how physical elements indicate private versus public areas." },
+      { "name": "Ceremonial pathways", "description": "Capturing how routes design enhances institutional significance." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-92",
+    "name": "Little Venice",
+    "city": "London",
+    "lat": 51.5232,
+    "lng": -0.1811,
+    "notes": "Public engagement in waterside environments.",
+    "design_concepts": ["Waterside UX", "Urban relaxation zones"],
+    "ux_focus": [
+      { "name": "Viewpoint framing", "description": "Creating Instagrammable and calming moments." },
+      { "name": "Route continuity", "description": "Connecting to wider canal paths and greenways." },
+      { "name": "Boat-pedestrian interaction", "description": "Documenting interfaces between water and land-based users." },
+      { "name": "Micro-pause design", "description": "Capturing how seating and railings encourage momentary contemplation." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-93",
+    "name": "Little Venice Towpath",
+    "city": "London",
+    "lat": 51.5238,
+    "lng": -0.1799,
+    "notes": "Shared pedestrian and cyclist pathways.",
+    "design_concepts": ["Shared mobility", "Linear path design"],
+    "ux_focus": [
+      { "name": "Conflict zones", "description": "Minimizing friction between user types." },
+      { "name": "Signage pacing", "description": "Visual prompts for behavior change." },
+      { "name": "Width variations", "description": "Documenting how path dimensions affect user interaction and passing behavior." },
+      { "name": "Surface treatments", "description": "Capturing how materials communicate appropriate speeds and activities." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-94",
+    "name": "The Shard Viewing Gallery",
+    "city": "London",
+    "lat": 51.5045,
+    "lng": -0.0865,
+    "notes": "User journey from entrance to skyline view.",
+    "design_concepts": ["Vertical UX", "Skyline engagement"],
+    "ux_focus": [
+      { "name": "Elevator experience", "description": "Smooth and dramatic transitions to the top." },
+      { "name": "Arrival moment", "description": "Emotional peak designed for maximum impact." },
+      { "name": "View interpretation", "description": "Documenting how information displays help visitors understand the cityscape." },
+      { "name": "Digital-physical integration", "description": "Capturing how technology enhances the observation experience." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-95",
+    "name": "London Fields Lido",
+    "city": "London",
+    "lat": 51.5430,
+    "lng": -0.0578,
+    "notes": "User experience in public aquatic facilities.",
+    "design_concepts": ["Recreational UX", "Public wellness"],
+    "ux_focus": [
+      { "name": "Changing areas", "description": "Comfort, safety, and privacy in public facilities." },
+      { "name": "Spectator zones", "description": "Supporting both swimmers and passive users." },
+      { "name": "Weather adaptation", "description": "Documenting how outdoor pool design accommodates variable British climate." },
+      { "name": "Lane management", "description": "Capturing how space organization balances different swimming needs and abilities." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-96",
+    "name": "TFL Digital Information Board",
+    "city": "London",
+    "lat": 51.509865,
+    "lng": -0.118092,
+    "notes": "Real-Time Transport UX.",
+    "design_concepts": ["Live feedback", "Commuter trust"],
+    "ux_focus": [
+      { "name": "Update speed", "description": "Accurate, frequent updates boost confidence." },
+      { "name": "Visual clarity", "description": "Readable information across lighting conditions." },
+      { "name": "User positioning", "description": "Documenting how board placement affects viewing angles and crowd flow." },
+      { "name": "Information hierarchy", "description": "Capturing how critical data is emphasized through size and position." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-97",
+    "name": "The Wallace Collection",
+    "city": "London",
+    "lat": 51.5174,
+    "lng": -0.1537,
+    "notes": "Navigation in historic home-turned-museum spaces.",
+    "design_concepts": ["Domestic spatial UX", "Museum overlay"],
+    "ux_focus": [
+      { "name": "Circulation route", "description": "Directing users through non-linear historical spaces." },
+      { "name": "Labeling strategy", "description": "Avoiding clutter in decorative settings." },
+      { "name": "Threshold moments", "description": "Documenting transitions between rooms with distinct character and collections." },
+      { "name": "Lighting balance", "description": "Capturing the tension between conservation needs and visitor visibility." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-98",
+    "name": "The Cockpit Theatre",
+    "city": "London",
+    "lat": 51.5241,
+    "lng": -0.1675,
+    "notes": "Audience engagement in unconventional seating.",
+    "design_concepts": ["Arena layout", "Immersive theatre"],
+    "ux_focus": [
+      { "name": "Sightline planning", "description": "Ensuring visibility from all angles." },
+      { "name": "Audience flow", "description": "Efficient entry and movement within a circular plan." },
+      { "name": "Social proximity", "description": "Documenting how arena layout impacts audience-performer relationship." },
+      { "name": "Acoustic design", "description": "Capturing how sound quality is maintained in 360-degree environments." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-99",
+    "name": "Oxford Circus",
+    "city": "London",
+    "lat": 51.5154,
+    "lng": -0.1410,
+    "notes": "Large-scale crowd movement and decision-making.",
+    "design_concepts": ["Crowd UX", "Urban node"],
+    "ux_focus": [
+      { "name": "Signal timing", "description": "Balancing traffic and pedestrian safety." },
+      { "name": "Choice overload", "description": "Helping users decide amidst commercial overload." },
+      { "name": "Diagonal crossing", "description": "Documenting how X-crossing design affects pedestrian behavior and efficiency." },
+      { "name": "Underground-street transition", "description": "Capturing the emergence experience from tube to busy intersection." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-100",
+    "name": "Peckham Levels",
+    "city": "London",
+    "lat": 51.4709,
+    "lng": -0.0687,
+    "notes": "Repurposing car parks for cultural spaces.",
+    "design_concepts": ["Vertical reuse", "Grassroots activation"],
+    "ux_focus": [
+      { "name": "Stairway experience", "description": "Turning mundane infrastructure into part of the story." },
+      { "name": "Wayfinding", "description": "Guiding users across transformed levels." },
+      { "name": "Utilitarian aesthetics", "description": "Documenting how parking structure features become design elements." },
+      { "name": "Color coding", "description": "Capturing how vibrant colors aid navigation and create identity." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-101",
+    "name": "Blackwall Tunnel",
+    "city": "London",
+    "lat": 51.5101,
+    "lng": -0.0037,
+    "notes": "Traffic flow and driver perception in under-river transit.",
+    "design_concepts": ["Tunnel UX", "Driver cognition"],
+    "ux_focus": [
+      { "name": "Lane clarity", "description": "Clear markings and lighting in confined space." },
+      { "name": "Psychological compression", "description": "Managing discomfort in tight tunnels." },
+      { "name": "Safety information", "description": "Documenting how emergency instructions are communicated at speed." },
+      { "name": "Lighting transitions", "description": "Capturing entry and exit experiences from daylight to artificial illumination." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-102",
+    "name": "Rotherhithe Tunnel",
+    "city": "London",
+    "lat": 51.5009,
+    "lng": -0.0536,
+    "notes": "Pedestrian experience in mixed-use tunnels.",
+    "design_concepts": ["Shared infrastructure", "Unusual pedestrian routes"],
+    "ux_focus": [
+      { "name": "Safety signaling", "description": "Keeping pedestrians informed and visible." },
+      { "name": "Sound/echo control", "description": "Sensory aspects of pedestrian tunnel walking." },
+      { "name": "Air quality perception", "description": "Documenting how ventilation design affects comfort and usage patterns." },
+      { "name": "Vehicle-pedestrian separation", "description": "Capturing how walkways and barriers create psychological safety." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-103",
+    "name": "The Crystal",
+    "city": "London",
+    "lat": 51.5076,
+    "lng": 0.0173,
+    "notes": "Navigating high-tech interactive exhibits.",
+    "design_concepts": ["Sustainability narrative", "Interactive museum UX"],
+    "ux_focus": [
+      { "name": "Device feedback", "description": "Ensuring clear interaction in digital exhibits." },
+      { "name": "Flow pacing", "description": "Balancing tech complexity with user time." },
+      { "name": "Narrative progression", "description": "Documenting how sustainability story unfolds through exhibit sequence." },
+      { "name": "Accessibility considerations", "description": "Capturing how digital interfaces accommodate diverse user abilities." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-104",
+    "name": "Neal's Yard",
+    "city": "London",
+    "lat": 51.5145,
+    "lng": -0.1253,
+    "notes": "Unplanned user encounters in small-scale spaces.",
+    "design_concepts": ["Serendipity", "Compact place-making"],
+    "ux_focus": [
+      { "name": "Visual surprise", "description": "Sudden shift into colorful hidden courtyard." },
+      { "name": "Spontaneous interaction", "description": "Natural gathering due to layout." },
+      { "name": "Hidden entry points", "description": "Documenting how narrow passages create discovery experiences." },
+      { "name": "Vertical engagement", "description": "Capturing how multiple levels draw eye upward despite small footprint." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-105",
+    "name": "Seven Dials",
+    "city": "London",
+    "lat": 51.5133,
+    "lng": -0.1263,
+    "notes": "Wayfinding complexity and pedestrian interaction.",
+    "design_concepts": ["Radial planning", "Historical navigation"],
+    "ux_focus": [
+      { "name": "Directional ambiguity", "description": "Intersecting roads that confuse and invite." },
+      { "name": "Visual landmarks", "description": "Using the central column for orientation." },
+      { "name": "Choice architecture", "description": "Documenting how multiple options affect decision-making and exploration." },
+      { "name": "Retail sight lines", "description": "Capturing how store visibility influences pedestrian movement patterns." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-106",
+    "name": "Shad Thames",
+    "city": "London",
+    "lat": 51.5032,
+    "lng": -0.0721,
+    "notes": "Reclaimed industrial space and pedestrian UX.",
+    "design_concepts": ["Urban repurposing", "Historic-commercial blend"],
+    "ux_focus": [
+      { "name": "Narrow passages", "description": "Human-scale transitions between buildings." },
+      { "name": "Material continuity", "description": "Using brick and metal bridges to preserve identity." },
+      { "name": "Overhead features", "description": "Documenting how walkways above create unique spatial experience below." },
+      { "name": "River relationship", "description": "Capturing how Thames proximity influences movement and activity patterns." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-107",
+    "name": "The Magic Roundabout",
+    "city": "London",
+    "lat": 51.5261,
+    "lng": -0.0872,
+    "notes": "Social experiences in unexpected places.",
+    "design_concepts": ["Surprise urbanism", "Unconventional venue"],
+    "ux_focus": [
+      { "name": "Hidden access", "description": "Discoverability through escalator entrances." },
+      { "name": "Event intimacy", "description": "Compact layout amplifying shared experience." },
+      { "name": "Infrastructure repurposing", "description": "Documenting how transport elements become leisure features." },
+      { "name": "Urban contrast", "description": "Capturing the jarring juxtaposition between street level and elevated venue." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-108",
+    "name": "Shoreditch Boxpark",
+    "city": "London",
+    "lat": 51.5225,
+    "lng": -0.0720,
+    "notes": "Compact modular shopping spaces.",
+    "design_concepts": ["Pop-up retail", "Container architecture"],
+    "ux_focus": [
+      { "name": "Exploration loops", "description": "Modular layout encouraging roaming." },
+      { "name": "Street spillover", "description": "Blur between exterior and interior spaces." },
+      { "name": "Vertical circulation", "description": "Documenting how stairways and level changes guide exploration patterns." },
+      { "name": "Temporary permanence", "description": "Capturing how shipping containers create both temporary aesthetic and lasting venue." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-109",
+    "name": "Soho",
+    "city": "London",
+    "lat": 51.5138,
+    "lng": -0.1314,
+    "notes": "User navigation in high-density entertainment areas.",
+    "design_concepts": ["Nightlife UX", "Cultural saturation"],
+    "ux_focus": [
+      { "name": "Crowd flow", "description": "Unstructured navigation in lively street networks." },
+      { "name": "Sensory density", "description": "Managing attention in multi-sensory settings." },
+      { "name": "Hidden venues", "description": "Documenting how discrete signage creates insider/outsider dynamics." },
+      { "name": "Temporal transformations", "description": "Capturing how the area changes character from day to night operation." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-110",
+    "name": "London Eye",
+    "city": "London",
+    "lat": 51.5033,
+    "lng": -0.1195,
+    "notes": "Ticketing and waiting time optimization.",
+    "design_concepts": ["Attraction logistics", "Queue experience"],
+    "ux_focus": [
+      { "name": "Timed entry", "description": "Slot-based flow management." },
+      { "name": "Line entertainment", "description": "Distraction techniques during wait." },
+      { "name": "Boarding efficiency", "description": "Documenting how continuous motion affects passenger loading procedures." },
+      { "name": "Experience pacing", "description": "Capturing how the slow rotation creates natural phases for viewing and photography." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-111",
+    "name": "Southbank Centre",
+    "city": "London",
+    "lat": 51.5055,
+    "lng": -0.1160,
+    "notes": "User engagement in open cultural venues.",
+    "design_concepts": ["Public culture", "Layered participation"],
+    "ux_focus": [
+      { "name": "Open foyers", "description": "Encouraging casual entry and lingering." },
+      { "name": "Outside-inside blend", "description": "Spill-out of activities onto the terrace." },
+      { "name": "Information discovery", "description": "Documenting how event details are communicated in multi-use spaces." },
+      { "name": "Accessibility provisions", "description": "Capturing how inclusive design accommodates diverse audiences in cultural setting." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-112",
+    "name": "Southbank Centre Clore Ballroom",
+    "city": "London",
+    "lat": 51.5056,
+    "lng": -0.1162,
+    "notes": "Movable seating configurations enabling space repurposing.",
+    "design_concepts": ["Flexible interiors", "Event modularity"],
+    "ux_focus": [
+      { "name": "Spatial fluidity", "description": "Design that morphs to fit events." },
+      { "name": "Seat layout strategy", "description": "Encouraging interaction or focus." },
+      { "name": "Transformation cues", "description": "Documenting how spaces signal their changing function to visitors." },
+      { "name": "Storage integration", "description": "Capturing how furniture stowage is incorporated without disrupting aesthetics." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-113",
+    "name": "Gabriel's Wharf",
+    "city": "London",
+    "lat": 51.5071,
+    "lng": -0.1119,
+    "notes": "Stall proximity creating accidental discovery vs choice paralysis.",
+    "design_concepts": ["Market density", "Serendipitous exploration"],
+    "ux_focus": [
+      { "name": "Browsing rhythm", "description": "Encouraging movement through clustering." },
+      { "name": "Wayfinding within chaos", "description": "Balancing exploration with signage cues." },
+      { "name": "Vendor individuality", "description": "Documenting how personal expression creates distinct shopping experiences." },
+      { "name": "River sight lines", "description": "Capturing how Thames views are framed and integrated with shopping experience." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-114",
+    "name": "South Kensington Subway",
+    "city": "London",
+    "lat": 51.4943,
+    "lng": -0.1738,
+    "notes": "Commuter experience in a long passageway.",
+    "design_concepts": ["Monotony mitigation", "Underground navigation"],
+    "ux_focus": [
+      { "name": "Visual variation", "description": "Breaking repetition to sustain attention." },
+      { "name": "Lighting zones", "description": "Pacing based on brightness and soundscape." },
+      { "name": "Museum connections", "description": "Documenting how access points to cultural institutions affect movement flow." },
+      { "name": "Acoustic environment", "description": "Capturing how sound affects walking pace and user comfort in enclosed tunnels." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-115",
+    "name": "City Hall",
+    "city": "London",
+    "lat": 51.5048,
+    "lng": -0.0786,
+    "notes": "Public usability in civic administration buildings.",
+    "design_concepts": ["Transparency", "Civic interaction"],
+    "ux_focus": [
+      { "name": "Access to governance", "description": "Design making public feel welcome." },
+      { "name": "Layered security", "description": "Navigation while preserving controlled access." },
+      { "name": "Democratic symbolism", "description": "Documenting how architectural elements communicate civic values." },
+      { "name": "Information presentation", "description": "Capturing how policy and public data is made accessible through design." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-116",
+    "name": "Science Gallery London",
+    "city": "London",
+    "lat": 51.5047,
+    "lng": -0.0896,
+    "notes": "Balancing education and entertainment.",
+    "design_concepts": ["Edutainment", "Exhibit UX"],
+    "ux_focus": [
+      { "name": "Engagement pacing", "description": "Balancing depth with playfulness." },
+      { "name": "Interactive clarity", "description": "Ensuring intuitive use of science exhibits." },
+      { "name": "Multi-generational design", "description": "Documenting how exhibits appeal to different age groups simultaneously." },
+      { "name": "Learning feedback", "description": "Capturing how installations communicate successful interaction." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-117",
+    "name": "The Old Truman Brewery",
+    "city": "London",
+    "lat": 51.5216,
+    "lng": -0.0716,
+    "notes": "Adaptive use of industrial spaces.",
+    "design_concepts": ["Creative reuse", "Cultural layering"],
+    "ux_focus": [
+      { "name": "Event transitions", "description": "Shifting between gallery, market, and retail." },
+      { "name": "Visual cues", "description": "Signposting in a mixed-use industrial site." },
+      { "name": "Industrial aesthetics", "description": "Documenting how brewing heritage informs current spatial experience." },
+      { "name": "Temporary-permanent balance", "description": "Capturing the contrast between fixed structure and changing pop-up contents." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-118",
+    "name": "Spencer House",
+    "city": "London",
+    "lat": 51.5047,
+    "lng": -0.1407,
+    "notes": "Balancing preservation with visitor engagement.",
+    "design_concepts": ["Heritage UX", "Guided circulation"],
+    "ux_focus": [
+      { "name": "Docent interaction", "description": "Enhancing or limiting user freedom." },
+      { "name": "Restricted flow", "description": "Control in fragile historical interiors." },
+      { "name": "Conservation visibility", "description": "Documenting how preservation efforts are communicated through design." },
+      { "name": "Elite lifestyle narrative", "description": "Capturing how spatial arrangement communicates historical social structures." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-119",
+    "name": "St Katharine Docks",
+    "city": "London",
+    "lat": 51.5073,
+    "lng": -0.0722,
+    "notes": "Public interaction with a working dockyard.",
+    "design_concepts": ["Waterfront UX", "Live-infrastructure access"],
+    "ux_focus": [
+      { "name": "Dock barriers", "description": "Balancing safety and openness." },
+      { "name": "Circulation across bridges", "description": "Temporal closures and detours." },
+      { "name": "Marina voyeurism", "description": "Documenting viewing arrangements for boat observation." },
+      { "name": "Weather protection", "description": "Capturing strategies for comfort in exposed waterfront environment." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-120",
+    "name": "British Library",
+    "city": "London",
+    "lat": 51.5299,
+    "lng": -0.1270,
+    "notes": "Physical vs. digital information access.",
+    "design_concepts": ["Knowledge UX", "Digital transition"],
+    "ux_focus": [
+      { "name": "Wayfinding between zones", "description": "Navigating archives, reading rooms, and digital access." },
+      { "name": "Terminal interactions", "description": "UX of search systems for books vs databases." },
+      { "name": "Membership signifiers", "description": "Documenting how access levels are communicated through design elements." },
+      { "name": "Social-solitary balance", "description": "Capturing design strategies for supporting both collaborative and individual study." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-121",
+    "name": "British Library Foyer",
+    "city": "London",
+    "lat": 51.5301,
+    "lng": -0.1272,
+    "notes": "Carpet vs tile flooring creating social soundscape boundaries.",
+    "design_concepts": ["Soundscape UX", "Zoning by material"],
+    "ux_focus": [
+      { "name": "Acoustic transitions", "description": "Perceptual boundary markers between zones." },
+      { "name": "Informal seating", "description": "Encouraging longer stays in carpeted areas." },
+      { "name": "Material psychology", "description": "Documenting how floor textures influence behavior and volume levels." },
+      { "name": "Exhibition integration", "description": "Capturing how display cases and information create movement patterns in open areas." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-122",
+    "name": "Somerset House",
+    "city": "London",
+    "lat": 51.5111,
+    "lng": -0.1172,
+    "notes": "Adapting historical spaces for modern use.",
+    "design_concepts": ["Historic-modern interface", "Cultural activation"],
+    "ux_focus": [
+      { "name": "Interior contrast", "description": "Modern exhibitions in classical halls." },
+      { "name": "Outdoor events", "description": "Flexible use of courtyard space." },
+      { "name": "Seasonal adaptations", "description": "Documenting transformation from summer fountain plaza to winter ice rink." },
+      { "name": "Heritage navigation", "description": "Capturing how original architecture influences contemporary visitor circulation." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-123",
+    "name": "Lea Valley Walkways",
+    "city": "London",
+    "lat": 51.5441,
+    "lng": -0.0064,
+    "notes": "Urban/wilderness boundary markers and their cognitive impact.",
+    "design_concepts": ["Threshold UX", "Hybrid green infrastructure"],
+    "ux_focus": [
+      { "name": "Edge design", "description": "Blending city and nature cues." },
+      { "name": "Navigation rhythm", "description": "Perceptual pacing via terrain and noise shifts." },
+      { "name": "Rewilding signals", "description": "Documenting how managed versus wild areas are distinguished visually." },
+      { "name": "Infrastructure integration", "description": "Capturing how industrial elements are incorporated into natural experience." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-124",
+    "name": "Walthamstow Wetlands",
+    "city": "London",
+    "lat": 51.5878,
+    "lng": -0.0391,
+    "notes": "Navigation through conservation and recreational areas.",
+    "design_concepts": ["Nature-first signage", "Conservation pathfinding"],
+    "ux_focus": [
+      { "name": "Low-impact design", "description": "Minimizing intrusion with subtle cues." },
+      { "name": "Ecological interaction", "description": "Guiding visitors to act as stewards." },
+      { "name": "Wildlife viewing points", "description": "Documenting how observation hides and platforms shape nature experience." },
+      { "name": "Boundary communication", "description": "Capturing visual elements that indicate restricted conservation zones." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-125",
+    "name": "National Gallery",
+    "city": "London",
+    "lat": 51.5089,
+    "lng": -0.1283,
+    "notes": "Visitor attention retention and pacing.",
+    "design_concepts": ["Gallery flow", "Visual fatigue management"],
+    "ux_focus": [
+      { "name": "Visual hierarchy", "description": "Room sequencing to maintain interest." },
+      { "name": "Seating cadence", "description": "Well-placed benches to aid pacing." },
+      { "name": "Information design", "description": "Documenting how artwork labels balance education with aesthetic experience." },
+      { "name": "Crowd management", "description": "Capturing strategies for dispersion around popular masterpieces." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-126",
+    "name": "Eel Pie Island",
+    "city": "London",
+    "lat": 51.4463,
+    "lng": -0.3267,
+    "notes": "Usability in restricted-access environments.",
+    "design_concepts": ["Private-public tension", "Boundary UX"],
+    "ux_focus": [
+      { "name": "Signposted limits", "description": "Clear but polite restriction of access." },
+      { "name": "Pathway definition", "description": "Allowing glimpses without full entry." },
+      { "name": "Temporal access", "description": "Documenting how design changes during special open days versus regular closure." },
+      { "name": "Bridge as threshold", "description": "Capturing how crossing point serves as physical and psychological boundary." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-127",
+    "name": "Vauxhall Pleasure Gardens",
+    "city": "London",
+    "lat": 51.4855,
+    "lng": -0.1224,
+    "notes": "User interaction with open event spaces.",
+    "design_concepts": ["Multi-purpose park UX", "Informal activation"],
+    "ux_focus": [
+      { "name": "Spontaneous use", "description": "Encouraging gathering through openness." },
+      { "name": "Lighting for safety", "description": "Enhancing nighttime perception and comfort." },
+      { "name": "Historical echoes", "description": "Documenting how design references past entertainment heritage." },
+      { "name": "Urban context", "description": "Capturing the contrast between greenspace and surrounding built environment." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-128",
+    "name": "Victoria Station",
+    "city": "London",
+    "lat": 51.4965,
+    "lng": -0.1447,
+    "notes": "Impact of multiple transport modes in one space.",
+    "design_concepts": ["Hub UX", "Crowd management"],
+    "ux_focus": [
+      { "name": "Interchange clarity", "description": "Signs guiding between train, tube, and coach." },
+      { "name": "Flow bottlenecks", "description": "Pinch points where user stress increases." },
+      { "name": "Decision points", "description": "Documenting key junctions where travelers must choose their path." },
+      { "name": "Information overload", "description": "Capturing strategies for managing competing signage and announcements." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-129",
+    "name": "Little Ben",
+    "city": "London",
+    "lat": 51.4966,
+    "lng": -0.1434,
+    "notes": "User expectations in scaled-down urban icons.",
+    "design_concepts": ["Playful mimicry", "Miniature landmarks"],
+    "ux_focus": [
+      { "name": "Recognition speed", "description": "Familiar form draws tourist attention quickly." },
+      { "name": "Photo spots", "description": "Iconic form drives social media interaction." },
+      { "name": "Scale juxtaposition", "description": "Documenting visitor reactions to unexpected proportions." },
+      { "name": "Wayfinding marker", "description": "Capturing how small monument serves as neighborhood orientation point." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-130",
+    "name": "The Vaults",
+    "city": "London",
+    "lat": 51.5028,
+    "lng": -0.1130,
+    "notes": "Experiential event spaces and navigation.",
+    "design_concepts": ["Immersive UX", "Subcultural space"],
+    "ux_focus": [
+      { "name": "Atmospheric lighting", "description": "Enhancing mood and story immersion." },
+      { "name": "Path unpredictability", "description": "Design that disorients deliberately." },
+      { "name": "Industrial authenticity", "description": "Documenting how raw infrastructure becomes part of the experience." },
+      { "name": "Event adaptability", "description": "Capturing how spaces transform between different productions and uses." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-131",
+    "name": "Waterloo Graffiti Tunnel",
+    "city": "London",
+    "lat": 51.5032,
+    "lng": -0.1114,
+    "notes": "Unstructured user interaction in public art spaces.",
+    "design_concepts": ["Open expression", "Non-curated galleries"],
+    "ux_focus": [
+      { "name": "Surface texture", "description": "Physicality of walls affects spray use." },
+      { "name": "Rotating content", "description": "Constantly changing user-submitted input." },
+      { "name": "Social sharing patterns", "description": "Documenting how artwork triggers photography and social media engagement." },
+      { "name": "Artist-audience relationship", "description": "Capturing interactions between creators and observers in shared space." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-132",
+    "name": "Piccadilly Circus",
+    "city": "London",
+    "lat": 51.5101,
+    "lng": -0.1340,
+    "notes": "User attention patterns in high-sensory environments.",
+    "design_concepts": ["Visual saturation", "Urban stimuli"],
+    "ux_focus": [
+      { "name": "Ad hierarchy", "description": "Brightest and boldest visuals win attention." },
+      { "name": "Pedestrian choreography", "description": "Crowd behaviors around screen zones." },
+      { "name": "Digital-physical balance", "description": "Documenting interaction between electronic displays and architectural elements." },
+      { "name": "Tourist congregation", "description": "Capturing how specific features create natural gathering and photo points." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-133",
+    "name": "West Norwood Cemetery",
+    "city": "London",
+    "lat": 51.4322,
+    "lng": -0.1044,
+    "notes": "Navigation in historic graveyards.",
+    "design_concepts": ["Heritage landscape UX", "Path fading"],
+    "ux_focus": [
+      { "name": "Wayfinding decay", "description": "Historic signs blending into surroundings." },
+      { "name": "Emotional pace", "description": "Visitors move differently through sacred space." },
+      { "name": "Visual hierarchy", "description": "Documenting how monument size and elaboration creates natural focal points." },
+      { "name": "Contemplative design", "description": "Capturing elements that encourage reflection and slower movement." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-134",
+    "name": "Wilton's Music Hall",
+    "city": "London",
+    "lat": 51.5112,
+    "lng": -0.0695,
+    "notes": "Preservation of 19th-century entertainment spaces.",
+    "design_concepts": ["Theatre authenticity", "Cracks-as-character"],
+    "ux_focus": [
+      { "name": "Texture storytelling", "description": "Aged surfaces enhance experience." },
+      { "name": "Entrance ambiguity", "description": "Unassuming door hides ornate interior." },
+      { "name": "Conservation transparency", "description": "Documenting how preservation work becomes part of visitor narrative." },
+      { "name": "Period-modern interfaces", "description": "Capturing where contemporary amenities meet historic structures." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-135",
+    "name": "Whitechapel Station",
+    "city": "London",
+    "lat": 51.5190,
+    "lng": -0.0599,
+    "notes": "Integration of Overground, Underground, and Elizabeth Line.",
+    "design_concepts": ["Layered transit design", "Vertical wayfinding"],
+    "ux_focus": [
+      { "name": "Line color coding", "description": "Reducing confusion in complex networks." },
+      { "name": "Interchange intervals", "description": "Estimating transitions and time delays." },
+      { "name": "Decision points", "description": "Documenting critical junctions where passengers must choose directions." },
+      { "name": "Construction adaptation", "description": "Capturing how users navigate through ongoing station development." }
+    ],
+    "visited": false
+  },
+  {
+    "id": "location-136",
+    "name": "Wimbledon Station",
+    "city": "London",
+    "lat": 51.4214,
+    "lng": -0.2060,
+    "notes": "Interchange between train, tube, and tram systems.",
+    "design_concepts": ["Transit flexibility", "Station UX"],
+    "ux_focus": [
+      { "name": "Node clarity", "description": "Helping users understand their location in a transit hub." },
+      { "name": "Time scheduling", "description": "Providing real-time updates across different modes." },
+      { "name": "Transfer efficiency", "description": "Documenting design elements that facilitate switching between transport types." },
+      { "name": "Seasonal fluctuations", "description": "Capturing how tennis tournament affects station operation and crowd management." }
+    ],
+    "visited": false
+  }
+
+  
+          
+        ];
+        // ====================================
+        // END OF DATA ARRAY
+        // ====================================
+
+        // State management
+        const masterLocations = [...allLocations]; // Master copy that never changes
+        let locations = [];
+        let map;
+        let markers = {};
+        let userPosition = null;
+        let activeLocationId = null;
+        let currentFilter = 'a-z';
+        let hideVisited = false;
+        
+        // Add markers to the map
+        function addMarkersToMap() {
+            // Clear existing markers
+            for (const id in markers) {
+                if (id !== 'user') { // Keep user marker if exists
+                    map.removeLayer(markers[id]);
+                    delete markers[id];
+                }
+            }
+            
+            // Add markers for each location
+            locations.forEach(location => {
+                const marker = L.marker([location.lat, location.lng])
+                    .bindPopup(`<strong>${location.name}</strong>`);
+                
+                marker.addTo(map);
+                markers[location.id] = marker;
+            });
+            
+            // Adjust map view to fit all markers if there are any visible locations
+            if (Object.keys(markers).length > 0 && !userPosition) {
+                const allMarkers = Object.values(markers);
+                const group = new L.featureGroup(allMarkers);
+                map.fitBounds(group.getBounds().pad(0.1));
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update localStorage with master locations if it doesn't exist
+            if (!localStorage.getItem('photoLocations')) {
+                localStorage.setItem('photoLocations', JSON.stringify(masterLocations));
+            }
+            
+            // Initialize the progress bar first
+            updateProgressBar();
+            
+            // Initialize the map after defining all helper functions
+            setTimeout(() => {
+                initMap();
+                
+                // Render initial locations list
+                renderLocations();
+            }, 100);
+            
+            // Add event listeners
+            document.getElementById('search-input').addEventListener('input', handleSearch);
+            document.getElementById('clear-search').addEventListener('click', clearSearch);
+            document.getElementById('reset-button').addEventListener('click', resetApp);
+            document.getElementById('find-nearby').addEventListener('click', findNearbySpots);
+            document.getElementById('locate-me').addEventListener('click', findNearbySpots);
+            
+            // Filter options
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    if (this.dataset.filter === 'hide-visited') {
+                        toggleHideVisited();
+                    } else {
+                        setActiveFilter(this.dataset.filter);
+                    }
+                });
+            });
+            
+            // Search input focus event for showing/hiding clear button
+            const searchInput = document.getElementById('search-input');
+            const clearButton = document.getElementById('clear-search');
+            
+            searchInput.addEventListener('input', function() {
+                clearButton.style.display = this.value ? 'block' : 'none';
+            });
+            
+            // Nav button switching
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchView(this.dataset.view);
+                });
+            });
+        });
+
+        // Toggle hide visited locations
+        function toggleHideVisited() {
+            hideVisited = !hideVisited;
+            
+            // Toggle active class on the filter option
+            const hideVisitedOption = document.querySelector('.filter-option[data-filter="hide-visited"]');
+            hideVisitedOption.classList.toggle('active', hideVisited);
+            
+            // Apply current filter
+            applyFilters();
+        }
+
+        // Set active filter
+        function setActiveFilter(filter) {
+            currentFilter = filter;
+            
+            // Update active class on filter options
+            document.querySelectorAll('.filter-option').forEach(option => {
+                if (option.dataset.filter !== 'hide-visited') {
+                    option.classList.toggle('active', option.dataset.filter === filter);
+                }
+            });
+            
+            // Apply filters
+            applyFilters();
+        }
+
+        // Apply current filters
+        function applyFilters() {
+            // First apply sorting
+            sortLocations();
+            
+            // Then apply hide visited if enabled
+            if (hideVisited) {
+                document.querySelectorAll('.location-item').forEach(item => {
+                    const isVisited = item.classList.contains('visited');
+                    item.classList.toggle('hidden', isVisited);
+                });
+            } else {
+                document.querySelectorAll('.location-item.hidden').forEach(item => {
+                    item.classList.remove('hidden');
+                });
+            }
+        }
+
+        // Update progress bar - Simplified and highly defensive version
+        function updateProgressBar() {
+            try {
+                // Get direct DOM references first (avoid any assumptions)
+                const visitedCountEl = document.getElementById('visited-count');
+                const totalCountEl = document.getElementById('total-count');
+                const progressPercentageEl = document.getElementById('progress-percentage');
+                const progressBarEl = document.getElementById('progress-bar');
+                
+                // Safely get data from localStorage
+                let savedLocations = [];
+                try {
+                    const savedData = localStorage.getItem('photoLocations');
+                    if (savedData) {
+                        savedLocations = JSON.parse(savedData);
+                    } else {
+                        savedLocations = [...masterLocations];
+                    }
+                } catch (e) {
+                    console.error("Error reading localStorage:", e);
+                    savedLocations = [...masterLocations];
+                }
+                
+                // Calculate progress values
+                const totalCount = savedLocations.length;
+                let visitedCount = 0;
+                
+                // Count visited locations manually
+                for (let i = 0; i < savedLocations.length; i++) {
+                    if (savedLocations[i] && savedLocations[i].visited === true) {
+                        visitedCount++;
+                    }
+                }
+                
+                const percentage = totalCount > 0 ? Math.round((visitedCount / totalCount) * 100) : 0;
+                
+                // Update DOM elements if they exist
+                if (visitedCountEl) visitedCountEl.textContent = visitedCount;
+                if (totalCountEl) totalCountEl.textContent = totalCount;
+                if (progressPercentageEl) progressPercentageEl.textContent = percentage + "%";
+                if (progressBarEl) progressBarEl.style.width = percentage + "%";
+                
+                console.log("Progress bar updated:", visitedCount, "/", totalCount, "=", percentage + "%");
+            } catch (error) {
+                console.error("Error updating progress bar:", error);
+            }
+        }
+
+        // Switch between list and map views
+        function switchView(viewName) {
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.view === viewName);
+            });
+            
+            // Update content visibility
+            document.getElementById('locations-view').style.display = viewName === 'locations' ? 'block' : 'none';
+            document.getElementById('map-view').style.display = viewName === 'map' ? 'block' : 'none';
+            
+            // Resize map if switching to map view
+            if (viewName === 'map' && map) {
+                setTimeout(() => {
+                    map.invalidateSize();
+                }, 100);
+            }
+        }
+
+        // Initialize the map
+        function initMap() {
+            try {
+                map = L.map('map').setView([51.505, -0.09], 13);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+                
+                // Load locations here to ensure they're available before adding markers
+                locations = JSON.parse(localStorage.getItem('photoLocations')) || [...masterLocations];
+                
+                // Now we can safely add markers since locations is populated
+                addMarkersToMap();
+            } catch (error) {
+                console.error('Error initializing map:', error);
+            }
+        }
+
+        // Clear search input
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('clear-search').style.display = 'none';
+            
+            // Reset locations to all saved locations
+            const savedLocations = JSON.parse(localStorage.getItem('photoLocations')) || [...masterLocations];
+            locations = [...savedLocations];
+            
+            // Apply current filter
+            applyFilters();
+            addMarkersToMap();
+        }
+
+        // Sort locations based on current filter
+        function sortLocations() {
+            switch (currentFilter) {
+                case 'a-z':
+                    locations.sort((a, b) => {
+                        if (a.city === b.city) {
+                            return a.name.localeCompare(b.name);
+                        }
+                        return a.city.localeCompare(b.city);
+                    });
+                    break;
+                case 'distance':
+                    if (userPosition) {
+                        locations.forEach(location => {
+                            location.distance = calculateDistance(
+                                userPosition.lat, userPosition.lng,
+                                location.lat, location.lng
+                            );
+                        });
+                        locations.sort((a, b) => a.distance - b.distance);
+                    } else {
+                        // If no user position, default to alphabetical
+                        locations.sort((a, b) => {
+                            if (a.city === b.city) {
+                                return a.name.localeCompare(b.name);
+                            }
+                            return a.city.localeCompare(b.city);
+                        });
+                    }
+                    break;
+                case 'unvisited':
+                    locations.sort((a, b) => {
+                        if (a.visited === b.visited) {
+                            // If both have the same visited status, sort alphabetically
+                            if (a.city === b.city) {
+                                return a.name.localeCompare(b.name);
+                            }
+                            return a.city.localeCompare(b.city);
+                        }
+                        // Put unvisited items first
+                        return a.visited ? 1 : -1;
+                    });
+                    break;
+            }
+            
+            renderLocations();
+        }
+
+        // Group locations by city
+        function groupLocationsByCity() {
+            try {
+                const cities = {};
+                
+                if (Array.isArray(locations)) {
+                    locations.forEach(location => {
+                        if (location && location.city) {
+                            const city = location.city || 'Other';
+                            if (!cities[city]) {
+                                cities[city] = [];
+                            }
+                            cities[city].push(location);
+                        }
+                    });
+                }
+                
+                return cities;
+            } catch (error) {
+                console.error('Error grouping locations by city:', error);
+                return {};
+            }
+        }
+
+        // Render the locations list
+        function renderLocations() {
+            try {
+                const container = document.getElementById('locations-container');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                if (!Array.isArray(locations) || locations.length === 0) {
+                    container.innerHTML = '<div class="no-locations">No locations found.</div>';
+                    return;
+                }
+                
+                // Group locations by city if not sorting by distance
+                if (currentFilter !== 'distance' || !userPosition) {
+                    const cities = groupLocationsByCity();
+                    const sortedCityNames = Object.keys(cities).sort();
+                    
+                    // Render each city group
+                    sortedCityNames.forEach(cityName => {
+                        const cityLocations = cities[cityName];
+                        
+                        const cityGroup = document.createElement('div');
+                        cityGroup.classList.add('city-group');
+                        
+                        // City header
+                        const cityHeader = document.createElement('div');
+                        cityHeader.classList.add('city-header');
+                        cityHeader.innerHTML = `
+                            <span>${cityName}</span>
+                            <span>${cityLocations.length} locations</span>
+                        `;
+                        cityGroup.appendChild(cityHeader);
+                        
+                        // Location items in this city
+                        cityLocations.forEach(location => {
+                            const locationItem = createLocationItem(location);
+                            cityGroup.appendChild(locationItem);
+                        });
+                        
+                        container.appendChild(cityGroup);
+                    });
+                } else {
+                    // Flat list for distance sorting
+                    locations.forEach(location => {
+                        const locationItem = createLocationItem(location);
+                        container.appendChild(locationItem);
+                    });
+                }
+                
+                // Apply hide visited filter if enabled
+                if (hideVisited) {
+                    document.querySelectorAll('.location-item.visited').forEach(item => {
+                        item.classList.add('hidden');
+                    });
+                }
+            } catch (error) {
+                console.error('Error rendering locations:', error);
+            }
+        }
+
+        // Create location item element
+        function createLocationItem(location) {
+            const locationElement = document.createElement('div');
+            locationElement.classList.add('location-item');
+            locationElement.dataset.id = location.id;
+            if (location.visited) locationElement.classList.add('visited');
+            
+                            // Distance text
+            let distanceText = '';
+            if (userPosition && typeof location.distance !== 'undefined') {
+                const distanceFormatted = location.distance < 1 
+                    ? `${Math.round(location.distance * 1000)}m` 
+                    : `${location.distance.toFixed(1)}km`;
+                distanceText = `
+                    <div class="location-distance">
+                        <span class="material-icons distance-icon">place</span>
+                        ${distanceFormatted}
+                    </div>
+                `;
+            }
+            
+                            // Create header
+            const headerElement = document.createElement('div');
+            headerElement.classList.add('location-header');
+            headerElement.innerHTML = `
+                <div class="location-title-container">
+                    <div class="location-title">${location.name}</div>
+                    <div class="location-excerpt">${location.notes.substring(0, 60)}${location.notes.length > 60 ? '...' : ''}</div>
+                </div>
+                <div class="location-meta">
+                    ${distanceText}
+                    <div class="location-actions">
+                        <button class="visited-btn ${location.visited ? 'active' : ''}" data-id="${location.id}">
+                            <span class="material-icons">${location.visited ? 'check' : 'add'}</span>
+                        </button>
+                    </div>
+                    <div class="expand-btn" data-id="${location.id}">
+                        <span class="material-icons">keyboard_arrow_down</span>
+                    </div>
+                </div>
+            `;
+            
+            // Create details section (initially collapsed)
+            const detailsElement = document.createElement('div');
+            detailsElement.classList.add('location-details');
+            detailsElement.dataset.id = location.id;
+            
+            let notesHtml = `<div class="location-notes">${location.notes}</div>`;
+            
+            if (location.design_concepts && location.design_concepts.length > 0) {
+                notesHtml += `
+                    <div class="notes-section">
+                        <div class="notes-section-title">DESIGN CONCEPTS</div>
+                        ${location.design_concepts.map(concept => `
+                            <div class="notes-bullet">${concept}</div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            if (location.ux_focus && location.ux_focus.length > 0) {
+                notesHtml += `
+                    <div class="notes-section">
+                        <div class="notes-section-title">
+                            <span class="material-icons">photo_camera</span>
+                            UX PHOTOGRAPHY FOCUS
+                        </div>
+                        ${location.ux_focus.map(focus => `
+                            <div class="notes-bullet">
+                                ${focus.name} <span class="notes-highlight">(${focus.description})</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            detailsElement.innerHTML = notesHtml;
+            
+            // Add components to location item
+            locationElement.appendChild(headerElement);
+            locationElement.appendChild(detailsElement);
+            
+            // Add event listener for expanding details
+            headerElement.addEventListener('click', function(e) {
+                // Ignore if clicking on visited button
+                if (!e.target.closest('.visited-btn')) {
+                    const locationId = location.id;
+                    toggleLocationDetails(locationId);
+                }
+            });
+            
+            // Add event listener for visited button
+            const visitedButton = headerElement.querySelector('.visited-btn');
+            visitedButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleVisited(location.id);
+            });
+            
+            return locationElement;
+        }
+
+        // Toggle location details expanded/collapsed
+        function toggleLocationDetails(locationId) {
+            // If this location is already active, close it
+            if (activeLocationId === locationId) {
+                closeLocationDetails();
+                return;
+            }
+            
+            // Close any previously open location
+            closeLocationDetails();
+            
+            // Open the selected location
+            const locationItem = document.querySelector(`.location-item[data-id="${locationId}"]`);
+            const expandButton = locationItem.querySelector('.expand-btn');
+            const detailsElement = locationItem.querySelector('.location-details');
+            
+            expandButton.classList.add('active');
+            detailsElement.classList.add('active');
+            activeLocationId = locationId;
+            
+            // Focus map on this location
+            focusMapOnLocation(locationId);
+            
+            // Scroll to make sure expanded content is visible
+            setTimeout(() => {
+                detailsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+        
+        // Close any open location details
+        function closeLocationDetails() {
+            if (activeLocationId) {
+                const activeExpandButton = document.querySelector(`.expand-btn[data-id="${activeLocationId}"]`);
+                const activeDetails = document.querySelector(`.location-details[data-id="${activeLocationId}"]`);
+                
+                if (activeExpandButton) activeExpandButton.classList.remove('active');
+                if (activeDetails) activeDetails.classList.remove('active');
+                
+                activeLocationId = null;
+            }
+        }
+        
+        // Focus map on a specific location
+        function focusMapOnLocation(locationId) {
+            const location = locations.find(loc => loc.id === locationId);
+            
+            if (location && map) {
+                // Center map on location and zoom in, but don't switch to map view
+                map.setView([location.lat, location.lng], 16);
+                
+                // Open the popup for this marker
+                if (markers[locationId]) {
+                    markers[locationId].openPopup();
+                }
+            }
+        }
+
+        // Handle search functionality
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.getElementById('clear-search').style.display = searchTerm ? 'block' : 'none';
+            
+            // Always search against the saved locations with updated visited statuses
+            const savedLocations = JSON.parse(localStorage.getItem('photoLocations')) || [...masterLocations];
+            
+            if (searchTerm === '') {
+                // If search is empty, restore all locations
+                locations = [...savedLocations];
+            } else {
+                // Only search in location names and design concepts
+                locations = savedLocations.filter(location => 
+                    location.name.toLowerCase().includes(searchTerm) || 
+                    (location.design_concepts && location.design_concepts.some(concept => 
+                        concept.toLowerCase().includes(searchTerm)
+                    ))
+                );
+            }
+            
+            // Apply current filter
+            applyFilters();
+            addMarkersToMap();
+        }
+
+        // Toggle visited status
+        function toggleVisited(id) {
+            const savedLocations = JSON.parse(localStorage.getItem('photoLocations')) || allLocations;
+            
+            // Update the locations array
+            locations = locations.map(location => {
+                if (location.id === id) {
+                    return { ...location, visited: !location.visited };
+                }
+                return location;
+            });
+            
+            // Update in saved locations as well
+            const updatedSavedLocations = savedLocations.map(location => {
+                if (location.id === id) {
+                    return { ...location, visited: !location.visited };
+                }
+                return location;
+            });
+            
+            localStorage.setItem('photoLocations', JSON.stringify(updatedSavedLocations));
+            
+            // Update the UI without full re-render
+            const locationItem = document.querySelector(`.location-item[data-id="${id}"]`);
+            const visitedBtn = locationItem.querySelector('.visited-btn');
+            
+            locationItem.classList.toggle('visited');
+            visitedBtn.classList.toggle('active');
+            visitedBtn.querySelector('.material-icons').textContent = 
+                locationItem.classList.contains('visited') ? 'check' : 'add';
+            
+            // If hide visited is enabled, hide this item if it's now visited
+            if (hideVisited && locationItem.classList.contains('visited')) {
+                locationItem.classList.add('hidden');
+            }
+
+            updateProgressBar();
+        }
+
+
+
+        // Reset the application
+        function resetApp() {
+            // Start with the master copy
+            const locationsToReset = [...masterLocations].map(location => ({ ...location, visited: false }));
+            
+            // Save the reset locations to localStorage
+            localStorage.setItem('photoLocations', JSON.stringify(locationsToReset));
+            
+            // Update the current locations array
+            locations = [...locationsToReset];
+            
+            // Clear search
+            document.getElementById('search-input').value = '';
+            document.getElementById('clear-search').style.display = 'none';
+            
+            // Reset filters
+            setActiveFilter('a-z');
+            
+            // Reset hide visited
+            hideVisited = false;
+            document.querySelector('.filter-option[data-filter="hide-visited"]').classList.remove('active');
+            
+            // Close any open location
+            closeLocationDetails();
+            
+            // Re-render everything
+            renderLocations();
+            addMarkersToMap();
+            
+            // Update progress bar
+            updateProgressBar();
+        }
+
+        // Calculate distance between two points in km using Haversine formula
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the earth in km
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2); 
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+            const distance = R * c; // Distance in km
+            return distance;
+        }
+
+        function deg2rad(deg) {
+            return deg * (Math.PI/180);
+        }
+
+        // Find nearby spots using geolocation
+        function findNearbySpots() {
+            if (navigator.geolocation) {
+                const findNearbyBtn = document.getElementById('find-nearby');
+                findNearbyBtn.disabled = true;
+                findNearbyBtn.innerHTML = '<span class="material-icons">hourglass_top</span> Finding...';
+                
+                navigator.geolocation.getCurrentPosition(
+                    // Success callback
+                    function(position) {
+                        findNearbyBtn.disabled = false;
+                        findNearbyBtn.innerHTML = '<span class="material-icons">near_me</span> Find Nearby';
+                        
+                        userPosition = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        
+                        // Add user marker
+                        if (userPosition) {
+                            // Remove any existing user markers
+                            Object.keys(markers).forEach(id => {
+                                if (id === 'user') {
+                                    map.removeLayer(markers[id]);
+                                    delete markers[id];
+                                }
+                            });
+                            
+                            // Add new user marker
+                            const userMarker = L.marker([userPosition.lat, userPosition.lng], {
+                                icon: L.divIcon({
+                                    html: '<div style="background-color: var(--primary); width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+                                    className: 'user-marker',
+                                    iconSize: [16, 16]
+                                })
+                            }).addTo(map);
+                            
+                            userMarker.bindPopup('Your current location').openPopup();
+                            markers['user'] = userMarker;
+                            
+                            // Center map on user position
+                            map.setView([userPosition.lat, userPosition.lng], 14);
+                            
+                            // Calculate distances for all locations
+                            locations.forEach(location => {
+                                location.distance = calculateDistance(
+                                    userPosition.lat, userPosition.lng,
+                                    location.lat, location.lng
+                                );
+                            });
+                            
+                            // Find nearby locations
+                            const nearbyLocations = locations.filter(location => location.distance <= 2);
+                            
+                            // Display nearby information
+                            const nearbyInfo = document.getElementById('nearby-info');
+                            nearbyInfo.style.display = 'block';
+                            
+                            if (nearbyLocations.length === 0) {
+                                nearbyInfo.innerHTML = '<span class="material-icons">info</span> No locations found within 2km of your position.';
+                            } else if (nearbyLocations.length === 1) {
+                                nearbyInfo.innerHTML = '<span class="material-icons">place</span> 1 location is within 2km of your position.';
+                            } else {
+                                nearbyInfo.innerHTML = `<span class="material-icons">place</span> ${nearbyLocations.length} locations are within 2km of your position.`;
+                            }
+                            
+                            // Switch to distance filter
+                            setActiveFilter('distance');
+                        }
+                    },
+                    // Error callback
+                    function(error) {
+                        findNearbyBtn.disabled = false;
+                        findNearbyBtn.innerHTML = '<span class="material-icons">near_me</span> Find Nearby';
+                        
+                        const nearbyInfo = document.getElementById('nearby-info');
+                        nearbyInfo.style.display = 'block';
+                        
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                nearbyInfo.innerHTML = '<span class="material-icons">error</span> Geolocation permission denied. Please allow location access.';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                nearbyInfo.innerHTML = '<span class="material-icons">error</span> Location information is unavailable.';
+                                break;
+                            case error.TIMEOUT:
+                                nearbyInfo.innerHTML = '<span class="material-icons">error</span> Location request timed out.';
+                                break;
+                            case error.UNKNOWN_ERROR:
+                                nearbyInfo.innerHTML = '<span class="material-icons">error</span> An unknown error occurred while getting location.';
+                                break;
+                        }
+                    }
+                );
+            } else {
+                const nearbyInfo = document.getElementById('nearby-info');
+                nearbyInfo.style.display = 'block';
+                nearbyInfo.innerHTML = '<span class="material-icons">error</span> Geolocation is not supported by your browser.';
+            }
+        }
+    </script>
+</body>
+</html>
