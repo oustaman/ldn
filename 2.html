@@ -1,0 +1,2297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban UI Photography Checklist</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --gray-light: #f3f4f6;
+            --gray: #d1d5db;
+            --gray-dark: #4b5563;
+            --red: #ef4444;
+            --green: #10b981;
+            --yellow: #f59e0b;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --teal: #14b8a6;
+            --indigo: #6366f1;
+            --orange: #f97316;
+            --cyan: #06b6d4;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #111827;
+            background-color: #f9fafb;
+            padding: 1rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .stat-box {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .filter-container {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid var(--gray);
+            border-radius: 9999px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        .search-box {
+            padding: 0.5rem;
+            border: 1px solid var(--gray);
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            display: flex;
+            background: white;
+            border-radius: 0.375rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            flex-direction: column;
+            width: 100%;
+            max-width: calc(50% - 0.5rem);
+            position: relative;
+        }
+
+        @media (max-width: 640px) {
+            .tag {
+                max-width: 100%;
+            }
+        }
+
+        .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tag-header {
+            display: flex;
+            padding: 0.5rem;
+            align-items: center;
+            background: white;
+            gap: 0.5rem;
+        }
+
+        .tag-checkbox {
+            min-width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid var(--gray);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tag-checkbox.checked {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .tag-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            font-size: 0.75rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .tag-title {
+            font-weight: 500;
+            font-size: 0.875rem;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tag-chapter {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 0.625rem;
+            padding: 0.125rem 0.25rem;
+            background: var(--gray-light);
+            border-bottom-left-radius: 0.25rem;
+            color: var(--gray-dark);
+        }
+
+        .tag-details {
+            padding: 0.75rem;
+            border-top: 1px solid var(--gray-light);
+            font-size: 0.8125rem;
+            display: none;
+            background: var(--gray-light);
+        }
+
+        .tag-details.expanded {
+            display: block;
+        }
+
+        .tag-ui-elements {
+            margin-top: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .ui-element {
+            font-size: 0.6875rem;
+            padding: 0.125rem 0.25rem;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 0.25rem;
+        }
+
+        .completed-header {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray);
+        }
+
+        .category-color {
+            width: 0.25rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            display: block;
+        }
+
+        /* Chapter colors */
+        .cat-1 .category-color { background-color: var(--blue); } /* Navigation */
+        .cat-2 .category-color { background-color: var(--red); } /* Interruptions */
+        .cat-3 .category-color { background-color: var(--green); } /* Microinteractions */
+        .cat-4 .category-color { background-color: var(--yellow); } /* Affordances */
+        .cat-5 .category-color { background-color: var(--purple); } /* Errors */
+        .cat-6 .category-color { background-color: var(--pink); } /* Hidden Systems */
+        .cat-7 .category-color { background-color: var(--teal); } /* Joyful Frictions */
+        .cat-8 .category-color { background-color: var(--indigo); } /* Ambient Awareness */
+        .cat-9 .category-color { background-color: var(--green); } /* System Failures */
+        .cat-10 .category-color { background-color: var(--blue); } /* Joyful Frictions */
+        .cat-11 .category-color { background-color: var(--yellow); } /* Accessibility */
+        .cat-12 .category-color { background-color: var(--teal); } /* Urban Play */
+        .cat-13 .category-color { background-color: var(--purple); } /* Sustainability */
+        .cat-14 .category-color { background-color: var(--pink); } /* Urban Harmony */
+
+        .chapter-filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-filter {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            color: white;
+            border: none;
+        }
+
+        .chapter-filter.ch-1 { background-color: var(--blue); }
+        .chapter-filter.ch-2 { background-color: var(--red); }
+        .chapter-filter.ch-3 { background-color: var(--green); }
+        .chapter-filter.ch-4 { background-color: var(--yellow); }
+        .chapter-filter.ch-5 { background-color: var(--purple); }
+        .chapter-filter.ch-6 { background-color: var(--pink); }
+        .chapter-filter.ch-7 { background-color: var(--teal); }
+        .chapter-filter.ch-8 { background-color: var(--indigo); }
+        .chapter-filter.ch-9 { background-color: var(--green); }
+        .chapter-filter.ch-10 { background-color: var(--blue); }
+        .chapter-filter.ch-11 { background-color: var(--yellow); }
+        .chapter-filter.ch-12 { background-color: var(--teal); }
+        .chapter-filter.ch-13 { background-color: var(--purple); }
+        .chapter-filter.ch-14 { background-color: var(--pink); }
+
+        .chapter-filter.inactive {
+            opacity: 0.5;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--gray-light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--green);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Urban UI Photography Checklist</h1>
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-label">Completed</div>
+                <div id="completed-count" class="stat-value">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Remaining</div>
+                <div id="remaining-count" class="stat-value">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">Progress</div>
+                <div id="progress-percent" class="stat-value">0%</div>
+            </div>
+        </div>
+
+        <div class="progress-bar-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="high">High Impact</button>
+            <button class="filter-btn" data-filter="nearby">City Center</button>
+        </div>
+
+        <div class="chapter-filter-container" id="chapter-filters">
+            <!-- Chapter filters will be added here dynamically -->
+        </div>
+
+        <input type="text" id="search-input" class="search-box" placeholder="Search for UI elements or locations...">
+    </div>
+
+    <div id="tags-container" class="tags-container">
+        <!-- Tags will be populated here -->
+    </div>
+
+    <div id="completed-header" class="completed-header" style="display: none;">
+        Completed Items
+    </div>
+
+    <div id="completed-container" class="tags-container">
+        <!-- Completed tags will be moved here -->
+    </div>
+
+    <script>
+        // Define the photo opportunities with detailed information
+        const photoOpportunities = [
+            // CHAPTER 1: NAVIGATION MOMENTS
+            {
+                id: 1,
+                title: "City Skyline Overview",
+                description: "Photograph the London skyline from a high vantage point, showcasing the city's interconnected layout.",
+                elements: ["Navigation Bar", "Overview", "Layout", "Map"],
+                locations: ["Sky Garden", "The Shard", "Primrose Hill", "London Eye"],
+                chapter: 1,
+                category: 1,
+                priority: 2
+            },
+            {
+                id: 2,
+                title: "Bus Route Map",
+                description: "Focus on a bus route map displayed at a stop, highlighting clear paths and connections.",
+                elements: ["Navigation Bar", "Map", "Routes", "Connections"],
+                locations: ["Bus stops", "Transport hubs", "Tourist information centers"],
+                chapter: 1,
+                category: 1,
+                priority: 2
+            },
+            {
+                id: 3,
+                title: "Trail of Fallen Leaves",
+                description: "Capture a sequence of leaves scattered along a park path, symbolizing steps retraced (breadcrumbs).",
+                elements: ["Breadcrumbs", "Sequential Path", "Navigation", "History"],
+                locations: ["Hyde Park", "St. James's Park", "Regent's Park"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 4,
+                title: "Historical Timeline Plaques",
+                description: "Photograph plaques detailing historical events in chronological order.",
+                elements: ["Breadcrumbs", "Timeline", "Sequential Information", "History"],
+                locations: ["Museum exteriors", "Historic buildings", "Memorial sites"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 5,
+                title: "Bookshelves in Libraries",
+                description: "Rows of books organized by genre or section, representing the tab UI element.",
+                elements: ["Tabs", "Categories", "Organization", "Sections"],
+                locations: ["British Library", "Public libraries", "Bookstores"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 6,
+                title: "Market Stalls at Borough Market",
+                description: "Capture visually distinct but connected stalls selling different goods.",
+                elements: ["Tabs", "Categories", "Segments", "Connected Sections"],
+                locations: ["Borough Market", "Camden Market", "Spitalfields Market"],
+                chapter: 1,
+                category: 1,
+                priority: 2
+            },
+            {
+                id: 7,
+                title: "Festival Information Boards",
+                description: "Wide shot of festival boards showing all activities at once, like a mega menu.",
+                elements: ["Mega Menu", "Information Display", "Categories", "Overview"],
+                locations: ["South Bank festivals", "Winter Wonderland", "Food festivals"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 8,
+                title: "Bridges Across the Thames",
+                description: "Capture bridges as physical links between two areas.",
+                elements: ["Link", "Connection", "Path", "Navigation"],
+                locations: ["Millennium Bridge", "Tower Bridge", "Waterloo Bridge", "London Bridge"],
+                chapter: 1,
+                category: 1,
+                priority: 1
+            },
+            {
+                id: 9,
+                title: "Connecting Train Platforms",
+                description: "Focus on signs directing passengers to connecting platforms as links between services.",
+                elements: ["Link", "Connection", "Direction", "Navigation"],
+                locations: ["Kings Cross St. Pancras", "Waterloo", "London Bridge", "Victoria"],
+                chapter: 1,
+                category: 1,
+                priority: 2
+            },
+            {
+                id: 10,
+                title: "Lost & Found Notices",
+                description: "Photograph notices pinned on community boards where people search for lost items.",
+                elements: ["Search Bar", "Query", "Results", "Information Retrieval"],
+                locations: ["Community centers", "Parks", "Universities", "Libraries"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 11,
+                title: "Library Card Catalogs",
+                description: "Capture systems used to search for books, whether physical card catalogs or digital interfaces.",
+                elements: ["Search Bar", "Database", "Filtering", "Information Retrieval"],
+                locations: ["Libraries", "Archives", "University collections"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 12,
+                title: "Step Markers on Hills",
+                description: "Numbered steps leading up a hill or staircase, representing pagination.",
+                elements: ["Pagination", "Sequence", "Progress", "Numbers"],
+                locations: ["Monument", "St. Paul's Cathedral steps", "Hampstead Heath"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 13,
+                title: "Sequential Art Murals",
+                description: "A series of murals that tell a story in parts, like pagination.",
+                elements: ["Pagination", "Sequence", "Narrative", "Steps"],
+                locations: ["Shoreditch", "Brixton", "Camden", "South Bank"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 14,
+                title: "Tour Guide Pamphlets",
+                description: "Open pamphlets showing organized sections for sightseeing, like a table of contents.",
+                elements: ["Table of Contents", "Index", "Organization", "Overview"],
+                locations: ["Tourist information centers", "Major attractions", "Hotels"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 15,
+                title: "Train Timetable Boards",
+                description: "Capture timetables divided into categories for destinations, functioning as a table of contents.",
+                elements: ["Table of Contents", "Schedule", "Organization", "Index"],
+                locations: ["Major train stations", "Kings Cross", "Euston", "Paddington"],
+                chapter: 1,
+                category: 1,
+                priority: 2
+            },
+            {
+                id: 16,
+                title: "Window Shopping Displays",
+                description: "People peeking into shop windows to preview items, representing hover preview.",
+                elements: ["Hover Preview", "Glimpse", "Preview", "Information"],
+                locations: ["Oxford Street", "Covent Garden", "Bond Street", "Regent Street"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 17,
+                title: "Interactive Museum Exhibits",
+                description: "Visitors interacting with touchscreens or previewing exhibit details before engagement.",
+                elements: ["Hover Preview", "Information Display", "Interactive Element", "Preview"],
+                locations: ["Science Museum", "Natural History Museum", "V&A", "Design Museum"],
+                chapter: 1,
+                category: 1,
+                priority: 2
+            },
+            {
+                id: 18,
+                title: "Park Maps with Highlighted Trails",
+                description: "Focus on trail markers within parks, functioning as map markers.",
+                elements: ["Map Marker", "Location Indicator", "Navigation Point", "Landmark"],
+                locations: ["Hyde Park", "Richmond Park", "Hampstead Heath", "Regent's Park"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 19,
+                title: "Tourist Pins on Google Maps",
+                description: "Capture tourists using phones with visible pins on digital maps.",
+                elements: ["Map Marker", "Digital Navigation", "Location", "Wayfinding"],
+                locations: ["Popular tourist spots", "Trafalgar Square", "Covent Garden", "Westminster"],
+                chapter: 1,
+                category: 1,
+                priority: 2
+            },
+            {
+                id: 20,
+                title: "Multilingual Menus at Restaurants",
+                description: "Menus offering translations side-by-side, acting as language switchers.",
+                elements: ["Language Switcher", "Translation", "Localization", "Accessibility"],
+                locations: ["Tourist area restaurants", "Chinatown", "International districts"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 21,
+                title: "Ticket Scanners at Attractions",
+                description: "Capture people scanning tickets for entry permissions.",
+                elements: ["Location Permission", "Authorization", "Access Control", "Entry"],
+                locations: ["Major attractions", "Museums", "Theaters", "Transportation hubs"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            {
+                id: 22,
+                title: "Turnstiles at Tube Stations",
+                description: "Focus on turnstiles granting access after tap-in, representing location permission.",
+                elements: ["Location Permission", "Access Control", "Entry", "Authentication"],
+                locations: ["All Underground stations", "Overground stations", "DLR"],
+                chapter: 1,
+                category: 1,
+                priority: 2
+            },
+            {
+                id: 23,
+                title: "Vertical Garden Walls",
+                description: "Photograph gardens where only part of the greenery is visible until you move closer, like scrollbars.",
+                elements: ["Scrollbar", "Partial View", "Navigation", "Full Content"],
+                locations: ["Modern buildings", "Pop-up installations", "Shopping centers"],
+                chapter: 1,
+                category: 1,
+                priority: 3
+            },
+            
+            // CHAPTER 2: INTERRUPTIONS & FEEDBACK
+            {
+                id: 24,
+                title: "Pop-Up Coffee Stalls",
+                description: "Temporary coffee stands in busy areas, interrupting pedestrian flow and inviting interaction.",
+                elements: ["Modal Window", "Interruption", "Focus", "Temporary UI"],
+                locations: ["Financial district", "Business areas", "Morning commuter spots"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 25,
+                title: "Construction Barriers",
+                description: "Large barriers blocking pathways, forcing people to pause or redirect their movement.",
+                elements: ["Modal Window", "Interruption", "Forced Redirection", "Temporary Obstacle"],
+                locations: ["Throughout London", "Development areas", "Road works"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 26,
+                title: "Street Art Messages",
+                description: "Small, unexpected graffiti or stickers with quick messages on lampposts or walls.",
+                elements: ["Popover", "Unexpected Message", "Brief Information", "Attention Grabber"],
+                locations: ["Shoreditch", "Brick Lane", "Camden", "Hackney"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 27,
+                title: "Interactive Tourist Guides",
+                description: "Guides handing out pamphlets or QR codes for quick information bursts.",
+                elements: ["Popover", "Brief Information", "Interactive Element", "Temporary Focus"],
+                locations: ["Leicester Square", "Covent Garden", "Major attractions", "Tourist hubs"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 28,
+                title: "Shop Sale Signs",
+                description: "Bright sale signs in shop windows grabbing attention as people walk by.",
+                elements: ["Notification", "Alert", "Attention Grabber", "Temporary Message"],
+                locations: ["Oxford Street", "Westfield", "Shopping districts", "High streets"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 29,
+                title: "Bus Departure Boards",
+                description: "Digital screens at bus stops showing imminent departures.",
+                elements: ["Notification", "Real-time Update", "Alert", "Time-sensitive Information"],
+                locations: ["Bus stops", "Transport hubs", "Major interchanges"],
+                chapter: 2,
+                category: 2,
+                priority: 2
+            },
+            {
+                id: 30,
+                title: "Flood Warning Signs",
+                description: "Temporary signs alerting pedestrians about high water levels near the Thames.",
+                elements: ["Alert Box", "Warning", "Safety Information", "Critical Message"],
+                locations: ["Thames path", "Riverside areas", "Flood-prone zones"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 31,
+                title: "Event Cancellation Notices",
+                description: "Posters or electronic signs announcing canceled public events.",
+                elements: ["Alert Box", "Critical Message", "Warning", "Important Update"],
+                locations: ["Theaters", "Venues", "Parks", "Public spaces"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 32,
+                title: "Museum Object Labels",
+                description: "Small explanatory plaques next to artifacts in museums.",
+                elements: ["Tooltip", "Contextual Information", "Details", "Explanation"],
+                locations: ["Museums", "Galleries", "Exhibitions", "Cultural venues"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 33,
+                title: "Park Plant Markers",
+                description: "Informational tags identifying plant species in botanical gardens.",
+                elements: ["Tooltip", "Additional Information", "Description", "Details"],
+                locations: ["Kew Gardens", "Hyde Park", "Regent's Park", "Botanical areas"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 34,
+                title: "Queue Length Indicators",
+                description: "Visual markers showing progress in queues outside attractions like the London Eye.",
+                elements: ["Progress Bar", "Status", "Completion Indicator", "Linear Progress"],
+                locations: ["Popular attractions", "London Eye", "Madame Tussauds", "Tower of London"],
+                chapter: 2,
+                category: 2,
+                priority: 2
+            },
+            {
+                id: 35,
+                title: "Digital Displays at Tube Stations",
+                description: "Information screens showing live arrival times, service updates, or system status.",
+                elements: ["Status Indicator", "Information Display", "Real-time Updates", "System State"],
+                locations: ["All Underground stations", "Major interchanges", "Platform displays"],
+                chapter: 2,
+                category: 2,
+                priority: 1
+            },
+            {
+                id: 36,
+                title: "Tube Tunnel Distance Signs",
+                description: "Signs indicating how far you've walked through pedestrian tunnels.",
+                elements: ["Progress Bar", "Distance Indicator", "Completion Metric", "Journey Status"],
+                locations: ["Underground connecting tunnels", "Long station passages", "Interchanges"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 37,
+                title: "Tube Arrival Notifications",
+                description: "Brief announcements on digital boards showing train arrival times.",
+                elements: ["Toast Message", "Temporary Alert", "Brief Information", "Timed Notification"],
+                locations: ["Underground platforms", "DLR stations", "Overground stations"],
+                chapter: 2,
+                category: 2,
+                priority: 2
+            },
+            {
+                id: 38,
+                title: "Busker Performance Updates",
+                description: "Quick verbal updates from street performers about their next act.",
+                elements: ["Toast Message", "Brief Announcement", "Temporary Information", "Quick Update"],
+                locations: ["Covent Garden", "South Bank", "Tube stations", "Tourist areas"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 39,
+                title: "Rotating Restaurant Signs",
+                description: "Circular signs outside restaurants that spin to attract attention.",
+                elements: ["Spinner", "Loading Indicator", "Attention Device", "Wait Signifier"],
+                locations: ["Soho", "Chinatown", "Restaurant districts", "Food markets"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 40,
+                title: "Waiting Lights at Pedestrian Crossings",
+                description: "Flashing lights indicating a delay before crossing is allowed.",
+                elements: ["Spinner", "Wait Indicator", "Loading State", "Process Indicator"],
+                locations: ["Busy intersections", "Traffic lights", "Pedestrian crossings"],
+                chapter: 2,
+                category: 2,
+                priority: 2
+            },
+            {
+                id: 41,
+                title: "Security Screening Zones",
+                description: "Areas where visitors must pause for bag checks before entering venues.",
+                elements: ["Interstitial", "Mandatory Pause", "Process Step", "Gateway"],
+                locations: ["Major venues", "Wembley Stadium", "The O2", "Museums with security"],
+                chapter: 2,
+                category: 2,
+                priority: 3
+            },
+            {
+                id: 42,
+                title: "ATM Transaction Screens",
+                description: "Screens asking users to confirm withdrawal amounts before proceeding.",
+                elements: ["Confirmation Dialog", "Verification", "Decision Point", "User Approval"],
+                locations: ["Banks", "ATMs throughout London", "Shopping areas"],
+                chapter: 2,
+                category: 2,
+                priority: 2
+            },
+            {
+                id: 43,
+                title: "Digital Advertising Screens at Piccadilly Circus",
+                description: "Large, immersive displays that dominate the visual field.",
+                elements: ["Fullscreen Takeover", "Immersive Display", "Attention Capture", "Visual Dominance"],
+                locations: ["Piccadilly Circus", "Large shopping centers", "Major intersections"],
+                chapter: 2,
+                category: 2,
+                priority: 2
+            },
+            {
+                id: 44,
+                title: "Traffic Signal Lights",
+                description: "Red, amber, and green lights indicating the status of crossings or vehicle movement.",
+                elements: ["Status Indicator", "State Display", "System Condition", "Visual Signal"],
+                locations: ["Traffic intersections", "Pedestrian crossings", "Road junctions"],
+                chapter: 2,
+                category: 2,
+                priority: 2
+            },
+            
+            // CHAPTER 3: MICROINTERACTIONS & FEEDBACK LOOPS
+            {
+                id: 45,
+                title: "Traffic Lights Changing",
+                description: "Capture the moment traffic lights switch between red, amber, and green, symbolizing toggling states.",
+                elements: ["Toggle Switch", "State Change", "Binary Control", "Status Transition"],
+                locations: ["Busy intersections", "Pedestrian crossings", "Traffic signals"],
+                chapter: 3,
+                category: 3,
+                priority: 2
+            },
+            {
+                id: 46,
+                title: "Park Gate Signs",
+                description: "Adjustable signs at park entrances indicating 'Open' or 'Closed'.",
+                elements: ["Toggle Switch", "Binary State", "Status Indicator", "Switch"],
+                locations: ["Park entrances", "Gardens", "Public spaces with controlled access"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 47,
+                title: "Thumbs-Up Graffiti",
+                description: "Street art or stickers showing a thumbs-up symbol, representing approval.",
+                elements: ["Like Button", "Approval", "Positive Feedback", "Rating"],
+                locations: ["Street art areas", "Shoreditch", "Camden", "Urban spaces"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 48,
+                title: "Public Voting Booths",
+                description: "Interactive voting boards where people can cast their opinions on local issues.",
+                elements: ["Like Button", "Rating", "Feedback System", "Public Opinion"],
+                locations: ["Community centers", "Public squares", "Local council buildings"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 49,
+                title: "Restaurant Reviews Displayed",
+                description: "Photograph menus or boards outside restaurants showing customer ratings.",
+                elements: ["Rating Stars", "Feedback Visualization", "Scoring System", "Evaluation"],
+                locations: ["Restaurant districts", "Soho", "Covent Garden", "Any dining area"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 50,
+                title: "Hotel Star Ratings",
+                description: "Capture signage displaying star ratings outside hotels or accommodations.",
+                elements: ["Rating Stars", "Quality Indicator", "Standardized Evaluation", "Hierarchical Rating"],
+                locations: ["Hotel districts", "Tourist areas", "Kensington", "Mayfair"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 51,
+                title: "Contactless Payment in Action",
+                description: "Photograph someone using a contactless payment system, symbolizing automatic saving without explicit confirmation.",
+                elements: ["Auto-Save", "Implicit Action", "Background Process", "Seamless Interaction"],
+                locations: ["Shops", "Cafes", "Transport stations", "Retail environments"],
+                chapter: 3,
+                category: 3,
+                priority: 2
+            },
+            {
+                id: 52,
+                title: "Tube Oyster Card Tap",
+                description: "Capture the seamless process of tapping an Oyster card at Tube gates.",
+                elements: ["Auto-Save", "Instant Process", "Feedback Loop", "Confirmation"],
+                locations: ["Underground stations", "Bus entrances", "Transport gates"],
+                chapter: 3,
+                category: 3,
+                priority: 2
+            },
+            {
+                id: 53,
+                title: "Adjustable Public Fountain Flow",
+                description: "Interactive fountains where users can control water flow or sound intensity.",
+                elements: ["Volume Slider", "Gradual Control", "Adjustable Interface", "Range Input"],
+                locations: ["Modern public squares", "Interactive water features", "Children's play areas"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 54,
+                title: "Speaker Volume Controls at Events",
+                description: "Adjustable volume dials at outdoor music events or public performances.",
+                elements: ["Volume Slider", "Audio Control", "Adjustable Parameter", "Range Input"],
+                locations: ["Outdoor venues", "Public performances", "Street performers with equipment"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 55,
+                title: "Numbered Stairs in Parks",
+                description: "Photograph stairs with numbered markers indicating progress as you climb.",
+                elements: ["Stepper", "Numbered Sequence", "Progress Indicator", "Incremental Navigation"],
+                locations: ["Monument", "Parliament Hill", "Public buildings with prominent stairs"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 56,
+                title: "Fitness Tracking Displays",
+                description: "Digital screens showing step counts in public fitness zones.",
+                elements: ["Stepper", "Counter", "Incremental Progress", "Numeric Indicator"],
+                locations: ["Public gyms", "Park workout areas", "Fitness trails"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 57,
+                title: "Event Posters with Dates",
+                description: "Capture posters advertising events with clear date selections.",
+                elements: ["Calendar Picker", "Date Selection", "Temporal Navigation", "Scheduling"],
+                locations: ["Community boards", "Venue exteriors", "Public spaces with event advertising"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 58,
+                title: "Seasonal Decorations in Shops",
+                description: "Photograph shop displays transitioning between seasonal themes.",
+                elements: ["Calendar Picker", "Temporal Selection", "Seasonal Change", "Date-Based Content"],
+                locations: ["Department stores", "Retail districts", "Shopping centers"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 59,
+                title: "Dual-Language Menus in Restaurants",
+                description: "Menus offering English and another language side by side, allowing users to 'switch' perspectives.",
+                elements: ["Switcher", "Toggle", "Alternative Views", "Mode Selection"],
+                locations: ["International restaurants", "Tourist areas", "Cultural districts"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 60,
+                title: "Interactive Museum Displays",
+                description: "Exhibits that toggle between different modes of information.",
+                elements: ["Switcher", "Mode Toggle", "Alternative Views", "Content Switching"],
+                locations: ["Museums", "Galleries", "Cultural institutions", "Science centers"],
+                chapter: 3,
+                category: 3,
+                priority: 2
+            },
+            {
+                id: 61,
+                title: "Telescopes Overlooking Cityscapes",
+                description: "Public telescopes offering zoom functionality for enhanced views.",
+                elements: ["Zoom Control", "Magnification", "Detail Level", "Focus Adjustment"],
+                locations: ["Greenwich Observatory", "The Shard viewing platform", "Primrose Hill"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 62,
+                title: "Pre-Selected Donation Buttons on Machines",
+                description: "Capture donation kiosks with preset amounts for quick selection.",
+                elements: ["Quick Reply", "Predefined Options", "Fast Selection", "Streamlined Choice"],
+                locations: ["Museums", "Charity locations", "Public attractions", "Transport hubs"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 63,
+                title: "Fast Food Ordering Screens",
+                description: "Interactive screens with quick order options for common meals.",
+                elements: ["Quick Reply", "Predefined Options", "Rapid Selection", "Common Choices"],
+                locations: ["Fast food restaurants", "Self-service kiosks", "Food courts"],
+                chapter: 3,
+                category: 3,
+                priority: 2
+            },
+            {
+                id: 64,
+                title: "Park Rules Agreement Signs",
+                description: "Signs where visitors must check off rules before entering certain areas.",
+                elements: ["Checkbox", "Agreement", "Option Selection", "Binary Choice"],
+                locations: ["Dog exercise areas", "Specialized park zones", "Public facilities"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 65,
+                title: "Community Survey Boards",
+                description: "Public boards asking residents to tick boxes for local surveys or feedback.",
+                elements: ["Checkbox", "Multiple Selection", "Option Toggle", "User Input"],
+                locations: ["Community centers", "Local council buildings", "Public consultation areas"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            {
+                id: 66,
+                title: "Reversible Chalkboards in Cafés",
+                description: "Menus written on chalkboards that can be erased and rewritten, symbolizing undoing actions.",
+                elements: ["Undo Button", "Reversible Action", "Error Recovery", "State Restoration"],
+                locations: ["Independent cafes", "Pubs", "Small restaurants", "Coffee shops"],
+                chapter: 3,
+                category: 3,
+                priority: 3
+            },
+            
+            // CHAPTER 4: AFFORDANCES & CALLS TO ACTION
+            {
+                id: 67,
+                title: "Emergency Exit Buttons",
+                description: "Capture emergency exit buttons in underground Tube stations that clearly invite action.",
+                elements: ["CTA Button", "Action Trigger", "Critical Control", "Urgent Option"],
+                locations: ["Underground stations", "Public buildings", "Shopping centers", "Theaters"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 68,
+                title: "Interactive Museum Panels",
+                description: "Photograph panels with 'Start' or 'Press Here' buttons prompting user interaction.",
+                elements: ["CTA Button", "Interactive Prompt", "Action Invitation", "Engagement Trigger"],
+                locations: ["Museums", "Galleries", "Science centers", "Interactive exhibitions"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 69,
+                title: "Elevator Call Buttons",
+                description: "Prominent buttons for calling lifts in busy office buildings or public spaces.",
+                elements: ["Primary Button", "Action Trigger", "Main Control", "Prominent Option"],
+                locations: ["Office buildings", "Shopping centers", "Hotels", "Public facilities"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 70,
+                title: "Ticket Machine 'Buy' Buttons",
+                description: "Large, visually distinct buttons on ticket machines at train stations.",
+                elements: ["Primary Button", "Transaction Trigger", "Main Action", "Focal Point"],
+                locations: ["Train stations", "Underground stations", "Bus stations", "Airports"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 71,
+                title: "Out-of-Service ATMs",
+                description: "ATMs with taped-off or grayed-out screens/buttons indicating they are unavailable.",
+                elements: ["Disabled Button", "Unavailable Option", "Inactive Control", "Non-interactive Element"],
+                locations: ["Banks", "Shopping areas", "Transport hubs", "High streets"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            {
+                id: 72,
+                title: "Closed Café Signs",
+                description: "Capture 'Closed' signs on café doors with unresponsive push/pull handles.",
+                elements: ["Disabled Button", "Inactive Control", "Non-functional Interface", "Unavailable Option"],
+                locations: ["Cafes", "Restaurants", "Retail spaces", "Service establishments"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            {
+                id: 73,
+                title: "Help Kiosks in Parks",
+                description: "Emergency or assistance kiosks in large parks like Hyde Park that stand out due to their design.",
+                elements: ["Fab Button", "Floating Action", "Prominent Control", "Accessible Feature"],
+                locations: ["Hyde Park", "Regent's Park", "Large public spaces", "Tourist areas"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            {
+                id: 74,
+                title: "Floating Life Buoys Along the Thames",
+                description: "Prominent life-saving devices mounted along the riverbank.",
+                elements: ["Fab Button", "Emergency Control", "Floating Action", "Critical Feature"],
+                locations: ["Thames path", "Riverbanks", "Waterside areas", "Docks"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            {
+                id: 75,
+                title: "Recycling Bin Icons",
+                description: "Universal recycling symbols on public bins, inviting specific actions.",
+                elements: ["Icon Button", "Visual Control", "Symbolic Action", "Signifier"],
+                locations: ["Public spaces", "Parks", "Shopping areas", "Transport hubs"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            {
+                id: 76,
+                title: "Toilet Signage Icons",
+                description: "Clear, universally understood icons directing people to restrooms.",
+                elements: ["Icon Button", "Wayfinding Symbol", "Universal Control", "Visual Direction"],
+                locations: ["Public buildings", "Shopping centers", "Transport stations", "Parks"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 77,
+                title: "Tube Wayfinding Signs",
+                description: "Signs directing commuters to the next step in their journey.",
+                elements: ["Action Card", "Direction Prompt", "Next Step", "Pathway Guidance"],
+                locations: ["Underground stations", "Transport interchanges", "Railway stations"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 78,
+                title: "Bike Rental Docking Stations",
+                description: "Screens showing available bikes and instructions for renting.",
+                elements: ["Action Card", "Process Guide", "Task Flow", "Interactive Instruction"],
+                locations: ["Throughout London", "Major intersections", "Tourist areas", "Parks"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 79,
+                title: "Interactive QR Code Displays",
+                description: "QR codes on public art installations or museum exhibits linking to more information.",
+                elements: ["Link Button", "Connection Point", "Digital Bridge", "Information Access"],
+                locations: ["Museums", "Art installations", "Tourist attractions", "Modern exhibits"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            {
+                id: 80,
+                title: "Restaurant Menus with Links",
+                description: "Menus with scannable QR codes leading to online ordering systems.",
+                elements: ["Link Button", "Digital Connection", "External Reference", "Further Action"],
+                locations: ["Restaurants", "Cafes", "Bars", "Food establishments"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 81,
+                title: "Automatic Sliding Doors at Shops",
+                description: "Capture people triggering sliding doors by approaching them.",
+                elements: ["Gesture", "Motion Trigger", "Proximity Action", "Movement Response"],
+                locations: ["Shopping centers", "Department stores", "Modern buildings", "Supermarkets"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 82,
+                title: "Wave-to-Open Sensors",
+                description: "Hand-gesture-activated doors or dispensers in hospitals or public restrooms.",
+                elements: ["Gesture", "Touchless Control", "Motion Interface", "Contactless Trigger"],
+                locations: ["Hospitals", "Modern public restrooms", "Accessible facilities", "Healthcare settings"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            {
+                id: 83,
+                title: "Interactive Digital Maps",
+                description: "Screens in tourist areas where hovering over a location reveals more details.",
+                elements: ["Hover State", "Information Reveal", "Detail Expansion", "Progressive Disclosure"],
+                locations: ["Tourist information centers", "Modern museums", "Transport hubs", "Shopping centers"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 84,
+                title: "Projection Mapping Installations",
+                description: "Light projections that change as people move closer or interact with them.",
+                elements: ["Hover State", "Proximity Response", "Interactive Display", "Engagement Feedback"],
+                locations: ["Art installations", "Modern museums", "Public light displays", "Cultural events"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            {
+                id: 85,
+                title: "Airport Security Checkpoints",
+                description: "Sequential steps (e.g., bag check, body scan) marked by progress indicators.",
+                elements: ["Progress Step", "Process Sequence", "Stage Indicator", "Linear Progress"],
+                locations: ["Heathrow", "Gatwick", "London City Airport", "Stansted"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            {
+                id: 86,
+                title: "Queue Indicators at Attractions",
+                description: "Signs showing estimated wait times at popular attractions like the London Eye.",
+                elements: ["Progress Step", "Time Estimate", "Stage Indicator", "Queue Management"],
+                locations: ["London Eye", "Madame Tussauds", "Tower of London", "Popular attractions"],
+                chapter: 4,
+                category: 4,
+                priority: 2
+            },
+            {
+                id: 87,
+                title: "Fold-Out Tourist Maps",
+                description: "Maps that expand to reveal additional details when unfolded.",
+                elements: ["Expand Button", "Hidden Content", "Information Reveal", "Detail Expansion"],
+                locations: ["Tourist information centers", "Hotels", "Visitor attractions", "Transport hubs"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            {
+                id: 88,
+                title: "Extendable Café Awnings",
+                description: "Capture awnings being extended or retracted, symbolizing an expandable feature.",
+                elements: ["Expand Button", "Collapsible Element", "Toggle Expansion", "Space Management"],
+                locations: ["Cafes", "Restaurants with outdoor seating", "Street food vendors", "Market stalls"],
+                chapter: 4,
+                category: 4,
+                priority: 3
+            },
+            
+            // CHAPTER 5: ERRORS, FIXES & DEAD ENDS
+            {
+                id: 89,
+                title: "Abandoned Train Tracks",
+                description: "Photograph disused or overgrown tracks that abruptly end, symbolizing a 'lost' path.",
+                elements: ["404 Page", "Dead End", "Broken Path", "Missing Resource"],
+                locations: ["Disused railway stations", "Abandoned lines", "Highgate High Level", "Parkland Walk"],
+                chapter: 5,
+                category: 5,
+                priority: 3
+            },
+            {
+                id: 90,
+                title: "Boarded-Up Shopfronts",
+                description: "Capture closed shops with faded signage, representing spaces that no longer function.",
+                elements: ["404 Page", "Not Found", "Discontinued", "Unavailable Resource"],
+                locations: ["High streets", "Shopping areas", "Urban transition zones", "Development areas"],
+                chapter: 5,
+                category: 5,
+                priority: 3
+            },
+            {
+                id: 91,
+                title: "Parking Ticket Machine Errors",
+                description: "Machines displaying 'Invalid Entry' or similar error messages.",
+                elements: ["Form Validation", "Error Message", "Input Rejection", "Constraint Enforcement"],
+                locations: ["Parking areas", "Car parks", "Street parking zones", "Shopping centers"],
+                chapter: 5,
+                category: 5,
+                priority: 3
+            },
+            {
+                id: 92,
+                title: "Incorrect Tube Card Tap",
+                description: "Oyster card readers flashing red when tapped incorrectly.",
+                elements: ["Form Validation", "Error Feedback", "Failed Action", "Input Rejection"],
+                locations: ["Underground stations", "Bus entrances", "Transport gates", "Oyster readers"],
+                chapter: 5,
+                category: 5,
+                priority: 2
+            },
+            {
+                id: 93,
+                title: "ATM Error Screens",
+                description: "Capture moments when ATMs display 'Out of Service' or transaction failure messages.",
+                elements: ["Error Toast", "Alert Message", "Failure Notification", "System Error"],
+                locations: ["Banks", "Shopping centers", "High streets", "Transport hubs"],
+                chapter: 5,
+                category: 5,
+                priority: 3
+            },
+            {
+                id: 94,
+                title: "Bus Stop Digital Display Failures",
+                description: "Screens showing incomplete or corrupted information.",
+                elements: ["Error Toast", "System Failure", "Corrupted Display", "Malfunction Alert"],
+                locations: ["Bus stops", "Transport information points", "Real-time information screens"],
+                chapter: 5,
+                category: 5,
+                priority: 3
+            },
+            {
+                id: 95,
+                title: "Security Intercoms Requiring Verification",
+                description: "Intercom systems at gated residential areas asking for identity confirmation.",
+                elements: ["Captcha", "Verification", "Human Check", "Security Measure"],
+                locations: ["Gated communities", "Secure buildings", "Private residences", "Controlled access points"],
+                chapter: 5,
+                category: 5,
+                priority: 3
+            },
+            {
+                id: 96,
+                title: "Empty Bike Racks",
+                description: "Photograph bike docking stations with no bikes available, symbolizing a 'broken' connection.",
+                elements: ["Dead Link", "Unavailable Resource", "Failed Connection", "Missing Element"],
+                locations: ["Popular cycle hire locations", "Transport hubs", "Tourist areas", "Business districts"],
+                chapter: 5,
+                category: 5,
+                priority: 3
+            },
+            {
+                id: 97,
+                title: "Closed Tube Entrances",
+                description: "Capture entrances marked as 'Closed' due to maintenance or emergencies.",
+                elements: ["Dead Link", "Blocked Path", "Inaccessible Route", "Service Disruption"],
+                locations: ["Underground stations", "Railway stations", "Transport hubs"],
+                chapter: 5,
+                category: 5,
+                priority: 2
+            },
+            {
+                id: 98,
+                title: "Construction Zones with Temporary Signs",
+                description: "Areas with makeshift signage indicating ongoing updates or repairs.",
+                elements: ["Broken UI", "Temporary Fix", "Incomplete System", "Work in Progress"],
+                locations: ["Construction sites", "Building renovations", "Urban development areas", "Roadworks"],
+                chapter: 5,
+                category: 5,
+                priority: 3
+            },
+            {
+                id: 99,
+                title: "Damaged Public Benches",
+                description: "Benches with missing slats or broken frames, representing incomplete functionality.",
+                elements: ["Broken UI", "Partial Functionality", "Damaged Interface", "Degraded Experience"],
+                locations: ["Parks", "Public spaces", "Street furniture", "Bus stops"],
+                chapter: 5,
+                category: 5,
+                priority: 3
+            },
+            {
+                id: 100,
+                title: "Confusing Detour Signs",
+                description: "Signs pointing in multiple directions without clear guidance.",
+                elements: ["Misleading CTA", "Confusing Direction", "Ambiguous Guidance", "Poor Information"],
+                locations: ["Construction areas", "Road works", "Temporary diversions", "Event redirections"],
+                chapter: 5,
+                category: 5,
+                priority: 3
+            },
+            // CHAPTER 6: HIDDEN SYSTEMS & INVISIBLE UX
+{
+    id: 101,
+    title: "Privacy Warning Stickers",
+    description: "Stickers on shop windows or public spaces warning of CCTV surveillance.",
+    elements: ["Cookie Consent", "Privacy Notice", "Regulatory Disclosure", "Data Collection"],
+    locations: ["Shop entrances", "Public buildings", "ATMs", "Security areas"],
+    chapter: 6,
+    category: 6,
+    priority: 3
+},
+{
+    id: 102,
+    title: "Contactless Payment Systems",
+    description: "People tapping cards at gates, symbolizing invisible backend systems at work.",
+    elements: ["API Layer", "Hidden Process", "Background System", "Infrastructure"],
+    locations: ["Transport gates", "Shop counters", "Cafes", "Ticket machines"],
+    chapter: 6,
+    category: 6,
+    priority: 2
+},
+{
+    id: 103,
+    title: "Multi-Level Transportation Hub",
+    description: "Transportation areas where different modes stack vertically (underground, ground, elevated).",
+    elements: ["Z-Index Layer", "Spatial Layering", "Depth Hierarchy", "Visual Stacking"],
+    locations: ["London Bridge station", "Kings Cross St. Pancras", "Waterloo", "Liverpool Street"],
+    chapter: 6,
+    category: 6,
+    priority: 1
+},
+{
+    id: 104,
+    title: "Footfall Counters",
+    description: "Sensors tracking pedestrian movement in busy areas like Oxford Street.",
+    elements: ["Analytics Tracker", "Data Collection", "Invisible Monitoring", "Usage Metrics"],
+    locations: ["Shopping centers", "Oxford Street", "Museum entrances", "Transport hubs"],
+    chapter: 6,
+    category: 6,
+    priority: 3
+},
+{
+    id: 105,
+    title: "Real-Time Bus Arrivals",
+    description: "Digital boards showing live updates synced with bus locations.",
+    elements: ["Background Sync", "Real-time Updates", "Data Integration", "System Communication"],
+    locations: ["Bus stops", "Transport interchanges", "Transport apps being used"],
+    chapter: 6,
+    category: 6,
+    priority: 2
+},
+{
+    id: 106,
+    title: "Bike Docking Stations",
+    description: "Bike-sharing systems with bicycles automatically positioned for easy access.",
+    elements: ["Smart Defaults", "Optimized Positioning", "User-Centric Design", "Effortless Start"],
+    locations: ["Throughout London", "Tourist areas", "Transport hubs", "Business districts"],
+    chapter: 6,
+    category: 6,
+    priority: 2
+},
+{
+    id: 107,
+    title: "Clock Towers in Distance",
+    description: "Photograph clock towers providing time without requiring active attention.",
+    elements: ["Passive UI", "Ambient Information", "Glanceable Data", "Non-interactive Display"],
+    locations: ["Big Ben", "St Pancras", "Church towers", "Public buildings with clocks"],
+    chapter: 6,
+    category: 6,
+    priority: 3
+},
+{
+    id: 108,
+    title: "Tube Line Maps Above Doors",
+    description: "Maps that passengers can glance at without direct interaction.",
+    elements: ["Passive UI", "Ambient Information", "Effortless Awareness", "Glanceable Data"],
+    locations: ["Underground trains", "Tube carriages", "DLR trains"],
+    chapter: 6,
+    category: 6,
+    priority: 2
+},
+
+// CHAPTER 7: JOYFUL FRICTIONS & URBAN DELIGHT
+{
+    id: 109,
+    title: "Hidden Sculptures in Parks",
+    description: "Small, tucked-away sculptures or carvings that are easy to miss but delightful to find.",
+    elements: ["Easter Egg", "Hidden Delight", "Discovery", "Surprise Element"],
+    locations: ["Hyde Park", "St James's Park", "Regent's Park", "Green spaces"],
+    chapter: 7,
+    category: 7,
+    priority: 3
+},
+{
+    id: 110,
+    title: "Surprise Street Art in Alleyways",
+    description: "Unexpected murals or graffiti in lesser-known areas.",
+    elements: ["Easter Egg", "Hidden Content", "Discovery", "Unexpected Delight"],
+    locations: ["Shoreditch", "Brick Lane", "Camden", "Leake Street Tunnel"],
+    chapter: 7,
+    category: 7,
+    priority: 3
+},
+{
+    id: 111,
+    title: "Witty Chalkboards Outside Pubs",
+    description: "Creative messages on pub or café chalkboards inviting passersby to smile.",
+    elements: ["Microcopy", "Brand Voice", "Personality", "Contextual Writing"],
+    locations: ["Pubs throughout London", "Independent cafes", "Restaurant areas"],
+    chapter: 7,
+    category: 7,
+    priority: 3
+},
+{
+    id: 112,
+    title: "Interactive Water Displays",
+    description: "Photograph fountains with moving water patterns, like those at Somerset House.",
+    elements: ["Animation", "Movement", "Visual Delight", "Interactive Element"],
+    locations: ["Somerset House", "Granary Square", "Trafalgar Square", "Modern public spaces"],
+    chapter: 7,
+    category: 7,
+    priority: 2
+},
+{
+    id: 113,
+    title: "Interactive Public Art",
+    description: "Art installations that react to proximity or touch, revealing new information or visuals.",
+    elements: ["Hover Surprise", "Interactive Element", "Progressive Disclosure", "Engagement"],
+    locations: ["Southbank Centre", "Tate Modern", "King's Cross", "Public installations"],
+    chapter: 7,
+    category: 7,
+    priority: 1
+},
+{
+    id: 114,
+    title: "Community Murals in Neighborhoods",
+    description: "Walls painted by local artists reflecting the culture of the area.",
+    elements: ["Custom Theme", "Personalization", "Local Identity", "Context-Specific Design"],
+    locations: ["Brixton", "Peckham", "Walthamstow", "Community centers"],
+    chapter: 7,
+    category: 7,
+    priority: 3
+},
+{
+    id: 115,
+    title: "Park Benches with Dedications",
+    description: "Benches engraved with personal messages or dedications to loved ones.",
+    elements: ["Personalization", "User Stories", "Emotional Design", "Individual Expression"],
+    locations: ["Hyde Park", "Regent's Park", "Hampstead Heath", "Any London park"],
+    chapter: 7,
+    category: 7,
+    priority: 3
+},
+{
+    id: 116,
+    title: "Free Book Exchange Boxes",
+    description: "Little libraries where people can take or leave books, inviting participation.",
+    elements: ["Delightful CTA", "Community Engagement", "Exchange Economy", "Participation Invite"],
+    locations: ["Residential areas", "Community spaces", "Cafes with book exchanges"],
+    chapter: 7,
+    category: 7,
+    priority: 3
+},
+
+// CHAPTER 8: AMBIENT AWARENESS
+{
+    id: 117,
+    title: "Electric Vehicle Charging Stations",
+    description: "Photograph the subtle glow of lights indicating active charging at EV stations.",
+    elements: ["Status Light", "State Indicator", "Ambient Information", "Passive Signal"],
+    locations: ["Car parks", "Modern developments", "Shopping centers", "Street charging points"],
+    chapter: 8,
+    category: 8,
+    priority: 3
+},
+{
+    id: 118,
+    title: "Emergency Exit Signs in Theaters",
+    description: "Persistent glowing signs that remain visible but unobtrusive.",
+    elements: ["System Tray Icon", "Persistent Information", "Background Awareness", "Ambient Alert"],
+    locations: ["Theaters", "Cinemas", "Concert venues", "Public buildings"],
+    chapter: 8,
+    category: 8,
+    priority: 3
+},
+{
+    id: 119,
+    title: "Building Elevator Floor Indicators",
+    description: "Subtle floor indicators lighting up as elevators arrive.",
+    elements: ["Ambient Indicator", "Status Light", "Peripheral Information", "Awareness Cue"],
+    locations: ["Office buildings", "Hotels", "Department stores", "Modern buildings"],
+    chapter: 8,
+    category: 8,
+    priority: 3
+},
+{
+    id: 120,
+    title: "Mailbox Flags",
+    description: "Small red flags or lights on mailboxes indicating new mail.",
+    elements: ["Notification Dot", "Status Indicator", "Attention Signal", "Unread Marker"],
+    locations: ["Post offices", "Office mailrooms", "Residential mailboxes"],
+    chapter: 8,
+    category: 8,
+    priority: 3
+},
+{
+    id: 121,
+    title: "Solar-Powered Streetlights",
+    description: "Streetlights quietly charging during the day to power themselves at night.",
+    elements: ["Background Process", "Sustainable System", "Passive Operation", "Ambient Function"],
+    locations: ["Modern developments", "Eco-friendly areas", "Parks", "New infrastructure"],
+    chapter: 8,
+    category: 8,
+    priority: 3
+},
+{
+    id: 122,
+    title: "Tube Countdown Timers",
+    description: "Digital boards showing train arrival times designed for quick comprehension.",
+    elements: ["Glanceable UI", "At-a-glance Information", "Immediate Understanding", "Efficient Communication"],
+    locations: ["All Underground stations", "Platform displays", "Transport apps being used"],
+    chapter: 8,
+    category: 8,
+    priority: 2
+},
+{
+    id: 123,
+    title: "Automatic Doors at Supermarkets",
+    description: "Doors opening as someone approaches, triggered by proximity sensors.",
+    elements: ["Proximity Sensor", "Responsive Environment", "Adaptive Interface", "Motion Detection"],
+    locations: ["Supermarkets", "Shopping centers", "Modern buildings", "Department stores"],
+    chapter: 8,
+    category: 8,
+    priority: 2
+},
+{
+    id: 124,
+    title: "Wet Pavement After Cleaning",
+    description: "Subtle environmental cues like wet floors signaling recent cleaning activity.",
+    elements: ["Passive Feedback", "Environmental Signal", "Subtle Indicator", "Contextual Information"],
+    locations: ["Shopping areas", "Public squares", "Pedestrian zones", "Market areas"],
+    chapter: 8,
+    category: 8,
+    priority: 3
+},
+
+// CHAPTER 9: SYSTEM FAILURES & RESILIENCE
+{
+    id: 125,
+    title: "Frozen Digital Timetables",
+    description: "Train or bus station screens stuck on an error or incomplete display.",
+    elements: ["Crash Screen", "System Failure", "Fatal Error", "Technical Breakdown"],
+    locations: ["Train stations", "Bus stations", "Transport hubs", "Information displays"],
+    chapter: 9,
+    category: 9,
+    priority: 3
+},
+{
+    id: 126,
+    title: "Manual Traffic Control",
+    description: "Traffic wardens directing vehicles when lights are down.",
+    elements: ["Failover", "Manual Override", "Backup System", "Human Intervention"],
+    locations: ["Busy intersections during failures", "Construction areas", "Event traffic management"],
+    chapter: 9,
+    category: 9,
+    priority: 3
+},
+{
+    id: 127,
+    title: "Paper Notices During Digital Downtime",
+    description: "Handwritten signs explaining card machine outages.",
+    elements: ["Offline Mode", "Fallback System", "Analog Alternative", "Manual Backup"],
+    locations: ["Shops with technical issues", "Stations during outages", "Ticket offices"],
+    chapter: 9,
+    category: 9,
+    priority: 3
+},
+{
+    id: 128,
+    title: "Backup Generators in Use",
+    description: "Visible generators powering buildings during power cuts.",
+    elements: ["Redundancy", "Backup System", "Failsafe Mechanism", "System Resilience"],
+    locations: ["Construction sites", "Outdoor events", "Emergency situations", "Critical facilities"],
+    chapter: 9,
+    category: 9,
+    priority: 3
+},
+{
+    id: 129,
+    title: "Escalators Converted to Stairs",
+    description: "Escalators that become regular stairs when motors fail.",
+    elements: ["Graceful Degradation", "Functional Fallback", "Reduced Capability", "Partial Service"],
+    locations: ["Underground stations", "Shopping centers", "Department stores", "Transport hubs"],
+    chapter: 9,
+    category: 9,
+    priority: 2
+},
+{
+    id: 130,
+    title: "Rebooting Public Screens",
+    description: "Capture the restart process of a digital timetable or kiosk.",
+    elements: ["Error Recovery", "System Restart", "Reset Process", "Restoration"],
+    locations: ["Transport information screens", "Interactive kiosks", "Public displays"],
+    chapter: 9,
+    category: 9,
+    priority: 3
+},
+{
+    id: 131,
+    title: "Temporary Construction Signs",
+    description: "Makeshift signs replacing damaged permanent ones.",
+    elements: ["Fallback Content", "Temporary Solution", "Content Substitution", "Alternative Display"],
+    locations: ["Construction areas", "Road works", "Building sites", "Transport disruptions"],
+    chapter: 9,
+    category: 9,
+    priority: 3
+},
+{
+    id: 132,
+    title: "Crowd Management at Events",
+    description: "Staff redirecting people to less crowded entrances or exits.",
+    elements: ["Load Balancer", "Traffic Management", "Resource Distribution", "Flow Control"],
+    locations: ["Major events", "Concerts", "Festivals", "Sports venues", "Busy attractions"],
+    chapter: 9,
+    category: 9,
+    priority: 3
+},
+
+// CHAPTER 10: JOYFUL FRICTIONS & URBAN DELIGHT (appears as a duplicate of Ch 7 in original document)
+{
+    id: 133,
+    title: "Digital Advertisements at Piccadilly Circus",
+    description: "Capture the large screens showing continuously looping video advertisements.",
+    elements: ["Looping Video", "Continuous Animation", "Video Content", "Repeated Sequence"],
+    locations: ["Piccadilly Circus", "Large advertising screens", "Digital billboards"],
+    chapter: 10,
+    category: 10,
+    priority: 2
+},
+{
+    id: 134,
+    title: "Reflections in Glass Buildings",
+    description: "How reflections shift as you move past modern skyscrapers.",
+    elements: ["Parallax", "Perspective Shift", "Movement Effect", "Visual Depth"],
+    locations: ["Canary Wharf", "The City", "Modern glass buildings", "Financial district"],
+    chapter: 10,
+    category: 10,
+    priority: 3
+},
+{
+    id: 135,
+    title: "Crosswalk Audio Signals",
+    description: "Record crosswalks that emit sound cues for pedestrians.",
+    elements: ["Audio Feedback", "Accessibility Feature", "Sensory Alert", "Non-visual Signal"],
+    locations: ["Major intersections", "Accessible crossings", "Busy pedestrian areas"],
+    chapter: 10,
+    category: 10,
+    priority: 2
+},
+{
+    id: 136,
+    title: "Playground Interactive Features",
+    description: "Interactive playground elements like spinning wheels or levers with unexpected outcomes.",
+    elements: ["Whimsy Toggle", "Playful Interaction", "Surprise Mechanics", "Engagement"],
+    locations: ["Public playgrounds", "Parks", "Children's play areas", "Interactive installations"],
+    chapter: 10,
+    category: 10,
+    priority: 3
+},
+{
+    id: 137,
+    title: "Light and Dark Transitions",
+    description: "Photograph the transition from daylight to illuminated streets as night falls.",
+    elements: ["Light Mode/Dark Mode", "Visual Transition", "Environmental Theming", "Context Change"],
+    locations: ["Busy streets at dusk", "Shopping areas", "Tourist districts", "River Thames views"],
+    chapter: 10,
+    category: 10,
+    priority: 3
+},
+
+// CHAPTER 11: URBAN ACCESSIBILITY & INCLUSIVITY
+{
+    id: 138,
+    title: "Wheelchair Ramps at Buildings",
+    description: "Photograph ramps with accessibility signs near entrances.",
+    elements: ["Accessibility Icon", "Inclusive Design", "Universal Access", "Barrier-free Design"],
+    locations: ["Public buildings", "Museums", "Modern facilities", "Transport stations"],
+    chapter: 11,
+    category: 11,
+    priority: 2
+},
+{
+    id: 139,
+    title: "Braille Maps in Stations",
+    description: "Close-up of tactile maps designed for visually impaired users.",
+    elements: ["Screen Reader Compatibility", "Tactile Interface", "Accessible Information", "Alternative Format"],
+    locations: ["Major Underground stations", "Tourist information centers", "Modern public buildings"],
+    chapter: 11,
+    category: 11,
+    priority: 2
+},
+{
+    id: 140,
+    title: "High-Contrast Crosswalks",
+    description: "Capture high-contrast zebra crossings designed for visibility.",
+    elements: ["High-Contrast Mode", "Visual Accessibility", "Perceptual Enhancement", "Visibility Design"],
+    locations: ["Pedestrian crossings", "School zones", "Busy intersections", "Accessible routes"],
+    chapter: 11,
+    category: 11,
+    priority: 2
+},
+{
+    id: 141,
+    title: "Tactile Paving at Crossings",
+    description: "Capture the textured ground surfaces guiding visually impaired pedestrians.",
+    elements: ["Keyboard Navigation", "Tactile Interface", "Guided Interaction", "Sensory Wayfinding"],
+    locations: ["Pedestrian crossings", "Train platforms", "Accessible routes", "Transport hubs"],
+    chapter: 11,
+    category: 11,
+    priority: 2
+},
+{
+    id: 142,
+    title: "Pedestrian Crossing Buttons",
+    description: "Photograph large push buttons designed for easy activation.",
+    elements: ["Accessible CTA", "Inclusive Control", "Universal Design", "Ease of Use"],
+    locations: ["Pedestrian crossings", "Accessible traffic signals", "Busy intersections"],
+    chapter: 11,
+    category: 11,
+    priority: 2
+},
+{
+    id: 143,
+    title: "Subtitled Videos in Public Spaces",
+    description: "Screens showing videos with subtitles for accessibility.",
+    elements: ["Closed Captions", "Text Alternative", "Accessible Media", "Information Equivalency"],
+    locations: ["Information displays", "Museums", "Transport hubs", "Public installations"],
+    chapter: 11,
+    category: 11,
+    priority: 3
+},
+{
+    id: 144,
+    title: "Sign Language Interpreters",
+    description: "Capture interpreters working at public talks or performances.",
+    elements: ["Sign Language Support", "Communication Access", "Inclusive Event", "Information Equity"],
+    locations: ["Public events", "Theaters", "Conferences", "Community gatherings"],
+    chapter: 11,
+    category: 11,
+    priority: 3
+},
+{
+    id: 145,
+    title: "Universal Restroom Symbols",
+    description: "Gender-neutral restroom signs combining universal symbols.",
+    elements: ["Universal Symbols", "Inclusive Signage", "Accessible Communication", "Clear Indication"],
+    locations: ["Modern buildings", "Public facilities", "Progressive venues", "Community spaces"],
+    chapter: 11,
+    category: 11,
+    priority: 3
+},
+
+// CHAPTER 12: URBAN PLAY & EXPERIMENTATION
+{
+    id: 146,
+    title: "Interactive Public Games",
+    description: "Outdoor chessboards or hopscotch patterns painted on pavements.",
+    elements: ["Gamification", "Playful Interface", "Engagement Mechanism", "Interactive Experience"],
+    locations: ["Public squares", "Parks", "Pedestrian areas", "Community spaces"],
+    chapter: 12,
+    category: 12,
+    priority: 3
+},
+{
+    id: 147,
+    title: "Sports Facility Scoreboards",
+    description: "Photograph public tennis courts or football pitches with visible scoreboards.",
+    elements: ["Leaderboard", "Progress Display", "Competitive Interface", "Achievement Tracking"],
+    locations: ["Public tennis courts", "Sports centers", "Community pitches", "Recreation areas"],
+    chapter: 12,
+    category: 12,
+    priority: 3
+},
+{
+    id: 148,
+    title: "Parkrun Milestone Markers",
+    description: "Photograph distance markers along running trails in parks.",
+    elements: ["Progress Tracking", "Achievement Metrics", "Milestone Indicator", "Journey Measurement"],
+    locations: ["Regent's Park", "Victoria Park", "Hampstead Heath", "Popular running routes"],
+    chapter: 12,
+    category: 12,
+    priority: 3
+},
+{
+    id: 149,
+    title: "Cafe Loyalty Cards",
+    description: "Photograph loyalty cards being stamped at independent coffee shops.",
+    elements: ["Reward System", "Incentive Mechanism", "Achievement Tracking", "Engagement Loop"],
+    locations: ["Independent cafes", "Coffee shops", "Local businesses", "Neighborhood eateries"],
+    chapter: 12,
+    category: 12,
+    priority: 3
+},
+{
+    id: 150,
+    title: "Musical Benches in Parks",
+    description: "Benches that play sounds or music when interacted with.",
+    elements: ["Playful Interaction", "Sensory Engagement", "Unexpected Feedback", "Interactive Object"],
+    locations: ["Modern parks", "Art installations", "Public spaces", "Children's areas"],
+    chapter: 12,
+    category: 12,
+    priority: 3
+},
+{
+    id: 151,
+    title: "Leake Street Graffiti Tunnel",
+    description: "Photograph areas where the public is encouraged to create their own art.",
+    elements: ["Sandbox Mode", "Creative Freedom", "User-Generated Content", "Experimental Space"],
+    locations: ["Leake Street Tunnel", "Designated street art areas", "Community art walls"],
+    chapter: 12,
+    category: 12,
+    priority: 2
+},
+{
+    id: 152,
+    title: "AR-Enhanced Landmarks",
+    description: "Tourists using phones to view augmented reality overlays on historical sites.",
+    elements: ["Augmented Reality", "Digital Overlay", "Enhanced Perception", "Mixed Reality"],
+    locations: ["Major tourist attractions", "Museums with AR features", "Historic sites with AR guides"],
+    chapter: 12,
+    category: 12,
+    priority: 3
+},
+{
+    id: 153,
+    title: "Interactive Water Fountains",
+    description: "Capture fountains that change patterns based on user interaction.",
+    elements: ["Playful Feedback", "Interactive Response", "Cause-Effect Experience", "Engagement Loop"],
+    locations: ["Granary Square", "Modern public spaces", "Children's play areas", "Art installations"],
+    chapter: 12,
+    category: 12,
+    priority: 2
+},
+
+// CHAPTER 13: SUSTAINABILITY & ECO-CONSCIOUS DESIGN
+{
+    id: 154,
+    title: "Color-Coded Recycling Stations",
+    description: "Photograph multi-bin setups in public spaces, each labeled for specific materials.",
+    elements: ["Recycle Bin", "Categorization System", "Environmental Interface", "Sorting Mechanism"],
+    locations: ["Parks", "Public spaces", "Shopping centers", "Transport hubs"],
+    chapter: 13,
+    category: 13,
+    priority: 2
+},
+{
+    id: 155,
+    title: "Solar Panels on Buildings",
+    description: "Photograph solar panels installed on public buildings or bus stops.",
+    elements: ["Renewable Energy", "Sustainable Technology", "Environmental Design", "Energy Capture"],
+    locations: ["Modern bus shelters", "Public buildings", "Eco-friendly developments", "Green installations"],
+    chapter: 13,
+    category: 13,
+    priority: 3
+},
+{
+    id: 156,
+    title: "Public Drinking Fountains",
+    description: "Capture fountains designed to minimize water waste.",
+    elements: ["Water Conservation", "Sustainable Feature", "Resource Management", "Eco-friendly Design"],
+    locations: ["Parks", "Public spaces", "Transport hubs", "Sports facilities"],
+    chapter: 13,
+    category: 13,
+    priority: 3
+},
+{
+    id: 157,
+    title: "Living Roofs on Bus Stops",
+    description: "Capture bus stops with plants growing on their roofs to promote biodiversity.",
+    elements: ["Green Roofs", "Urban Nature", "Sustainable Architecture", "Ecological Design"],
+    locations: ["Modern bus shelters", "Transport waiting areas", "Eco-friendly installations"],
+    chapter: 13,
+    category: 13,
+    priority: 3
+},
+{
+    id: 158,
+    title: "EV Charging Stations",
+    description: "Capture electric vehicle charging points with cars plugged in.",
+    elements: ["Electric Charging Points", "Sustainable Transport", "Green Infrastructure", "Clean Energy"],
+    locations: ["Car parks", "Shopping centers", "Modern developments", "Public charging stations"],
+    chapter: 13,
+    category: 13,
+    priority: 2
+},
+{
+    id: 159,
+    title: "Public Benches from Recycled Materials",
+    description: "Capture benches or tables made from repurposed materials in public spaces.",
+    elements: ["Upcycling", "Material Reuse", "Sustainable Design", "Circular Economy"],
+    locations: ["Parks", "Public squares", "Modern developments", "Eco-friendly areas"],
+    chapter: 13,
+    category: 13,
+    priority: 3
+},
+{
+    id: 160,
+    title: "Bike-Sharing Stations",
+    description: "Capture rows of rentable bikes promoting eco-friendly travel.",
+    elements: ["Sustainable Transport", "Sharing Economy", "Urban Mobility", "Green Transportation"],
+    locations: ["Throughout London", "Transport hubs", "Tourist areas", "Business districts"],
+    chapter: 13,
+    category: 13,
+    priority: 2
+},
+{
+    id: 161,
+    title: "Community Gardens",
+    description: "Shared urban gardens where residents grow produce together.",
+    elements: ["Urban Farming", "Community Resource", "Sustainable Food", "Local Production"],
+    locations: ["Community spaces", "Housing estates", "Urban neighborhoods", "Converted lots"],
+    chapter: 13,
+    category: 13,
+    priority: 3
+},
+
+// CHAPTER 14: URBAN HARMONY & BALANCE
+{
+    id: 162,
+    title: "Reflections in Water",
+    description: "Photograph symmetrical reflections of buildings or bridges in the Thames or park lakes.",
+    elements: ["Symmetry", "Visual Balance", "Reflection", "Mirroring"],
+    locations: ["St. James's Park lake", "Serpentine", "Canary Wharf docks", "Thames at calm periods"],
+    chapter: 14,
+    category: 14,
+    priority: 3
+},
+{
+    id: 163,
+    title: "Window Grids on Skyscrapers",
+    description: "Capture the repetitive grid patterns on modern office buildings.",
+    elements: ["Grid Layout", "Visual Structure", "Repetition", "Ordered Design"],
+    locations: ["Canary Wharf", "The City", "Modern office buildings", "Financial district"],
+    chapter: 14,
+    category: 14,
+    priority: 3
+},
+{
+    id: 164,
+    title: "Aligned Benches in Parks",
+    description: "Capture evenly spaced benches in parks.",
+    elements: ["Alignment", "Spatial Organization", "Visual Order", "Intentional Placement"],
+    locations: ["Hyde Park", "Regent's Park", "Victoria Park", "Well-designed public spaces"],
+    chapter: 14,
+    category: 14,
+    priority: 3
+},
+{
+    id: 165,
+    title: "Bridge Arches",
+    description: "Photograph the evenly spaced arches of Tower Bridge.",
+    elements: ["Proportional Design", "Structural Balance", "Visual Rhythm", "Architectural Harmony"],
+    locations: ["Tower Bridge", "Millennium Bridge", "London Bridge", "Railway bridges"],
+    chapter: 14,
+    category: 14,
+    priority: 3
+},
+{
+    id: 166,
+    title: "Open Courtyards Framed by Buildings",
+    description: "Photograph spaces like Covent Garden, where open areas are framed by surrounding structures.",
+    elements: ["Negative Space", "Spatial Balance", "Framing", "Architectural Void"],
+    locations: ["Covent Garden", "Somerset House", "Royal Exchange", "Museum courtyards"],
+    chapter: 14,
+    category: 14,
+    priority: 3
+},
+{
+    id: 167,
+    title: "Columns at Museums or Churches",
+    description: "Photograph the repetitive patterns of columns creating rhythm.",
+    elements: ["Rhythm", "Repetition", "Visual Tempo", "Architectural Pattern"],
+    locations: ["British Museum", "St. Paul's Cathedral", "Classical buildings", "Historic structures"],
+    chapter: 14,
+    category: 14,
+    priority: 3
+},
+{
+    id: 168,
+    title: "Old Meets New Architecture",
+    description: "Photograph locations like The Shard next to historic buildings.",
+    elements: ["Contrast", "Juxtaposition", "Visual Tension", "Historical Layering"],
+    locations: ["The Shard area", "City of London", "St. Paul's vicinity", "Historical districts with modern additions"],
+    chapter: 14,
+    category: 14,
+    priority: 2
+},
+{
+    id: 169,
+    title: "Balanced Public Sculptures",
+    description: "Capture sculptures that appear physically balanced in their design.",
+    elements: ["Balance", "Stability", "Visual Weight", "Equilibrium"],
+    locations: ["Public art installations", "Gallery exteriors", "Modern developments", "Cultural spaces"],
+    chapter: 14,
+    category: 14,
+    priority: 3
+}
+        ];
+
+        // DOM elements
+        const tagsContainer = document.getElementById('tags-container');
+        const completedContainer = document.getElementById('completed-container');
+        const completedHeader = document.getElementById('completed-header');
+        const completedCount = document.getElementById('completed-count');
+        const remainingCount = document.getElementById('remaining-count');
+        const progressPercent = document.getElementById('progress-percent');
+        const progressBar = document.getElementById('progress-bar');
+        const searchInput = document.getElementById('search-input');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const chapterFiltersContainer = document.getElementById('chapter-filters');
+
+        // State
+        let checkedItems = JSON.parse(localStorage.getItem('checkedItems')) || [];
+        let currentFilter = 'all';
+        let searchQuery = '';
+        let activeChapters = [];
+
+        // Initialize
+        function init() {
+            createChapterFilters();
+            renderItems();
+            updateStats();
+
+            // Add event listeners
+            searchInput.addEventListener('input', handleSearch);
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderItems();
+                });
+            });
+
+            // Log data for debugging
+            console.log(`Loaded ${photoOpportunities.length} photo opportunities.`);
+            
+            // Count items per chapter
+            const chapterCounts = photoOpportunities.reduce((acc, item) => {
+                acc[item.chapter] = (acc[item.chapter] || 0) + 1;
+                return acc;
+            }, {});
+            
+            console.log('Items per chapter:', chapterCounts);
+        }
+
+        // Create chapter filter buttons
+        function createChapterFilters() {
+            // Get unique chapters
+            const chapters = [...new Set(photoOpportunities.map(item => item.chapter))].sort((a, b) => a - b);
+            
+            // Create a button for each chapter
+            chapters.forEach(chapter => {
+                const btn = document.createElement('button');
+                btn.className = `chapter-filter ch-${chapter}`;
+                btn.textContent = `Ch ${chapter}`;
+                btn.dataset.chapter = chapter;
+                
+                btn.addEventListener('click', () => {
+                    toggleChapterFilter(chapter, btn);
+                });
+                
+                chapterFiltersContainer.appendChild(btn);
+            });
+        }
+
+        // Toggle chapter filter
+        function toggleChapterFilter(chapter, button) {
+            const index = activeChapters.indexOf(Number(chapter));
+            
+            if (index === -1) {
+                // Add chapter to filter
+                activeChapters.push(Number(chapter));
+                button.classList.remove('inactive');
+            } else {
+                // Remove chapter from filter
+                activeChapters.splice(index, 1);
+                button.classList.add('inactive');
+            }
+            
+            renderItems();
+        }
+
+        // Handle search input
+        function handleSearch(e) {
+            searchQuery = e.target.value.toLowerCase().trim();
+            renderItems();
+        }
+
+        // Render all items based on current filter and search
+        function renderItems() {
+            tagsContainer.innerHTML = '';
+            completedContainer.innerHTML = '';
+
+            let opportunities = [...photoOpportunities];
+            
+            // Apply search filter if any
+            if (searchQuery) {
+                opportunities = opportunities.filter(item => {
+                    return (
+                        item.title.toLowerCase().includes(searchQuery) ||
+                        item.description.toLowerCase().includes(searchQuery) ||
+                        (item.elements && item.elements.some(el => el.toLowerCase().includes(searchQuery))) ||
+                        (item.locations && item.locations.some(loc => loc.toLowerCase().includes(searchQuery)))
+                    );
+                });
+            }
+
+            // Apply type filter
+            if (currentFilter === 'high') {
+                opportunities = opportunities.filter(item => item.priority === 1);
+            } else if (currentFilter === 'nearby') {
+                opportunities = opportunities.filter(item => 
+                    item.locations && item.locations.some(loc => 
+                        ['Oxford Street', 'Piccadilly Circus', 'Trafalgar Square', 'Covent Garden', 'Southbank', 'Westminster', 'London Bridge', 'South Bank'].some(central => 
+                            loc.toLowerCase().includes(central.toLowerCase())
+                        )
+                    )
+                );
+            }
+
+            // Apply chapter filter if any
+            if (activeChapters.length > 0) {
+                opportunities = opportunities.filter(item => activeChapters.includes(item.chapter));
+            }
+
+            // Sort by priority (unchecked items first)
+            opportunities.sort((a, b) => {
+                const aChecked = checkedItems.includes(a.id);
+                const bChecked = checkedItems.includes(b.id);
+                
+                if (aChecked && !bChecked) return 1;
+                if (!aChecked && bChecked) return -1;
+                
+                return a.priority - b.priority;
+            });
+
+            // Render each item
+            opportunities.forEach(item => {
+                const isChecked = checkedItems.includes(item.id);
+                const tagElement = createTagElement(item, isChecked);
+                
+                if (isChecked) {
+                    completedContainer.appendChild(tagElement);
+                    completedHeader.style.display = 'block';
+                } else {
+                    tagsContainer.appendChild(tagElement);
+                }
+            });
+
+            // Show/hide completed header based on whether there are completed items
+            completedHeader.style.display = completedContainer.children.length > 0 ? 'block' : 'none';
+        }
+
+        // Create a single tag element
+        function createTagElement(item, isChecked) {
+            const tag = document.createElement('div');
+            tag.className = `tag cat-${item.category}`;
+            tag.dataset.id = item.id;
+            
+            tag.innerHTML = `
+                <span class="category-color"></span>
+                <div class="tag-header">
+                    <div class="tag-checkbox ${isChecked ? 'checked' : ''}"></div>
+                    <div class="tag-title">${item.title}</div>
+                </div>
+                <div class="tag-chapter">Ch ${item.chapter}</div>
+                <div class="tag-details">
+                    <div>${item.description}</div>
+                    <div class="tag-ui-elements">
+                        ${item.elements ? item.elements.map(el => `<span class="ui-element">${el}</span>`).join('') : ''}
+                    </div>
+                    <div style="margin-top: 0.5rem; font-size: 0.75rem;">
+                        <strong>Where to find:</strong> ${item.locations ? item.locations.join(', ') : 'Various locations'}
+                    </div>
+                </div>
+            `;
+
+            // Toggle details on click
+            tag.querySelector('.tag-header').addEventListener('click', (e) => {
+                if (!e.target.classList.contains('tag-checkbox')) {
+                    const details = tag.querySelector('.tag-details');
+                    details.classList.toggle('expanded');
+                }
+            });
+            
+            // Toggle checkbox
+            tag.querySelector('.tag-checkbox').addEventListener('click', () => {
+                toggleCheckbox(item.id);
+            });
+            
+            return tag;
+        }
+
+        // Toggle checkbox state
+        function toggleCheckbox(id) {
+            if (checkedItems.includes(id)) {
+                checkedItems = checkedItems.filter(itemId => itemId !== id);
+            } else {
+                checkedItems.push(id);
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('checkedItems', JSON.stringify(checkedItems));
+            
+            // Re-render and update stats
+            renderItems();
+            updateStats();
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = photoOpportunities.length;
+            const completed = checkedItems.length;
+            const remaining = total - completed;
+            const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+            
+            completedCount.textContent = completed;
+            remainingCount.textContent = remaining;
+            progressPercent.textContent = `${percent}%`;
+            progressBar.style.width = `${percent}%`;
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
