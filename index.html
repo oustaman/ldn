@@ -411,668 +411,1277 @@
 
 
             const locations = [
-    // Regent Street Area
+    // ===== CENTRAL LONDON =====
+    
+    // ----- Regent Street / Oxford Street Area -----
     { id: 'regent-street-wide', name: 'Regent Street (Wide)', neighborhood: 'Regent Street', tubeStop: 'Oxford Circus', tubeLine: 'central', 
-      coordinates: [51.5144, -0.1400],
+      coordinates: [51.5125, -0.1397],
       userBehavior: "Eye is drawn along the curve of the street.", 
       navigationAids: "Architectural curve.", 
-      concept: "Regent Street's curved pathway creates progressive disclosure, revealing destinations gradually as visitors move through the space." },
-      
+      concept: "Regent Street\'s curved pathway creates progressive disclosure, revealing destinations gradually as visitors move through the space." },
+    
     { id: 'north-face-apple', name: 'The North Face/Apple (Close-up)', neighborhood: 'Regent Street', tubeStop: 'Oxford Circus', tubeLine: 'central',
       coordinates: [51.5147, -0.1415],
       userBehavior: "Users approach the store entrance.", 
       navigationAids: "Prominent store entrance, branding.", 
-      concept: "Flagship stores function as 'call-to-action' elements within Regent Street's broader navigational structure." },
-      
+      concept: "Flagship stores function as \'call-to-action\' elements within Regent Street\'s broader navigational structure." },
+    
     { id: 'regent-street-user', name: 'Regent Street (User Behavior)', neighborhood: 'Regent Street', tubeStop: 'Oxford Circus', tubeLine: 'central',
       coordinates: [51.5139, -0.1405],
       userBehavior: "People consulting maps or phones.", 
       navigationAids: "Maps, phones (due to navigation breakdown).", 
       concept: "Navigation breakdowns in physical spaces mirror common patterns in digital interfaces, as users pause to reorient themselves." },
-      
+    
     { id: 'regent-street-arch', name: 'Regent Street (Architectural)', neighborhood: 'Regent Street', tubeStop: 'Oxford Circus', tubeLine: 'central',
       coordinates: [51.5132, -0.1408],
       userBehavior: "Visitors navigate within a unified architectural framework.", 
       navigationAids: "Curved street, unified architecture, brand signs.", 
-      concept: "Regent Street's architectural uniformity creates a design system within which brands express identity—paralleling digital UI frameworks that maintain consistency while enabling customization." },
-      
+      concept: "Regent Street\'s architectural uniformity creates a design system within which brands express identity—paralleling digital UI frameworks that maintain consistency while enabling customization." },
+    
     { id: 'apple-store-entrance', name: 'Apple Store Entrance (Medium)', neighborhood: 'Regent Street', tubeStop: 'Oxford Circus', tubeLine: 'central',
       coordinates: [51.5142, -0.1420],
       userBehavior: "Users enter with minimal hesitation due to transparent design.", 
       navigationAids: "Transparent glass facade, open entrance.", 
-      concept: "Apple's transparent threshold design reduces psychological barriers to entry—a principle directly applicable to digital conversion optimization." },
+      concept: "Apple\'s transparent threshold design reduces psychological barriers to entry—a principle directly applicable to digital conversion optimization." },
     
-    // Neal's Yard Area
-    { id: 'neals-yard-entrance', name: 'Neal\'s Yard Entrance (Close-up)', neighborhood: 'Covent Garden', tubeStop: 'Covent Garden', tubeLine: 'piccadilly',
-      coordinates: [51.5135, -0.1268],
-      userBehavior: "Users might walk past initially, requiring exploration to locate.", 
-      navigationAids: "Narrow, easily-missed entrance.", 
-      concept: "Neal's Yard's concealed entrances exemplify discovery-based navigation, requiring prior knowledge or exploration to locate." },
-      
-    { id: 'neals-yard-contrast', name: 'Neal\'s Yard Contrast Shot', neighborhood: 'Covent Garden', tubeStop: 'Covent Garden', tubeLine: 'piccadilly',
-      coordinates: [51.5137, -0.1267],
-      userBehavior: "Users experience a transition from mundane exterior to vibrant interior.", 
-      navigationAids: "Contrast between entrance and courtyard.", 
-      concept: "The contrast between Neal's Yard's mundane entrances and vibrant interior creates a memorable discovery experience that reinforces spatial memory." },
-    
-    // Battersea Park Area
-    { id: 'battersea-park-aerial', name: 'Battersea Park (Aerial/Map)', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
-      coordinates: [51.4790, -0.1535],
-      userBehavior: "Users orient themselves based on activity zones and connecting pathways.", 
-      navigationAids: "Overall park layout, pathways, different zones.", 
-      concept: "Battersea Park's hub-and-spoke layout creates a zonal navigation system where users orient by activity areas rather than sequential paths." },
-      
-    { id: 'battersea-park-decision', name: 'Battersea Park (Decision Point)', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
-      coordinates: [51.4808, -0.1548],
-      userBehavior: "Users look at signage or visual cues before choosing a path at an intersection.", 
-      navigationAids: "Signage, visual cues.", 
-      concept: "Decision points in physical navigation provide insights for designing effective choice architecture in digital interfaces." },
-      
-    { id: 'battersea-park-user', name: 'Battersea Park (User Distribution)', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
-      coordinates: [51.4785, -0.1512],
-      userBehavior: "Different user groups naturally gather in their preferred activity zones.", 
-      navigationAids: "Natural grouping based on activities.", 
-      concept: "Different user segments naturally gravitate toward their preferred zones, demonstrating intuitive activity-based wayfinding." },
-      
-    { id: 'battersea-park-zoo', name: 'Battersea Park Children\'s Zoo Entrance', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
-      coordinates: [51.4800, -0.1552],
-      userBehavior: "Users transition from the general park environment to the specific visual language of the zoo.", 
-      navigationAids: "Entrance design, signage at child height.", 
-      concept: "Threshold design: The zoo entrance creates a narrowing of focus and introduction of the zoo's visual language—similar to an effective digital onboarding sequence." },
-      
-    { id: 'zoo-exhibit-panel', name: 'Zoo Exhibit Information Panel', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
-      coordinates: [51.4798, -0.1556],
-      userBehavior: "Child interacts with information displayed at their height level.", 
-      navigationAids: "Height positioning, potentially multi-sensory elements.", 
-      concept: "Information architecture in physical form: Content hierarchy designed for primary users (children) while remaining accessible to all." },
-      
-    { id: 'zoo-feeding-time', name: 'Zoo Feeding Time Demonstration', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
-      coordinates: [51.4795, -0.1558],
-      userBehavior: "Visitors gather for a scheduled event, and the space accommodates the crowd.", 
-      navigationAids: "Timed event, spatial organization.", 
-      concept: "Timed engagement points create rhythm and structure in physical experiences, similar to well-designed notification systems." },
-      
-    { id: 'battersea-power-station', name: 'Battersea Power Station (Contrast)', neighborhood: 'Battersea', tubeStop: 'Battersea Power Station', tubeLine: 'northern',
-      coordinates: [51.4817, -0.1440],
-      userBehavior: "Visitors observe the blend of historic structure and modern functionality.", 
-      navigationAids: "Historic elements, modern additions.", 
-      concept: "Battersea Power Station's blend of historic structure and modern functionality mirrors the challenge of modernizing legacy digital systems." },
-    
-    // Hyde Park
-    { id: 'hyde-park-serpentine', name: 'Hyde Park Serpentine Water Edge', neighborhood: 'Hyde Park', tubeStop: 'Hyde Park Corner', tubeLine: 'piccadilly',
-      coordinates: [51.5053, -0.1652],
-      userBehavior: "Users can choose their level of interaction with the water based on access points.", 
-      navigationAids: "Gradual water access points, safety features.", 
-      concept: "Progressive disclosure in physical space: Users can self-select their level of engagement with the water." },
-    
-    // Olympic Park
-    { id: 'olympic-park-wayfinding', name: 'Olympic Park Wayfinding Junction', neighborhood: 'Olympic Park', tubeStop: 'Stratford', tubeLine: 'central',
-      coordinates: [51.5431, -0.0140],
-      userBehavior: "Users make choices at a junction with multiple path options, potentially using landmarks and signage.", 
-      navigationAids: "Multiple path options, visible landmarks, signage.", 
-      concept: "Decision architecture: How physical spaces guide choices through environmental cues rather than explicit instructions." },
-      
-    { id: 'olympic-park-transitional', name: 'Olympic Park (Transitional)', neighborhood: 'Olympic Park', tubeStop: 'Stratford', tubeLine: 'central',
-      coordinates: [51.5425, -0.0133],
-      userBehavior: "Visitors experience multi-purpose spaces that reconfigure based on crowd size and contextual needs.", 
-      navigationAids: "Adaptable physical spaces.", 
-      concept: "Olympic Park's adaptable spaces mirror responsive digital design, reconfiguring based on contextual needs." },
-      
-    { id: 'olympic-park-wayfinding2', name: 'Olympic Park (Wayfinding)', neighborhood: 'Olympic Park', tubeStop: 'Stratford', tubeLine: 'central',
-      coordinates: [51.5416, -0.0120],
-      userBehavior: "Users encounter strategically placed wayfinding at decision points, reducing cognitive load.", 
-      navigationAids: "Wayfinding elements at decision points.", 
-      concept: "Strategic placement of wayfinding elements at decision points reduces cognitive load—a principle equally valuable in digital interface design." },
-    
-    // Children's Playground
-    { id: 'childrens-playground', name: 'Children\'s Playground Equipment', neighborhood: 'Various Parks', tubeStop: 'Various', tubeLine: 'multiple',
-      coordinates: [51.5114, -0.1587],
-      userBehavior: "Children intuitively understand and use play elements without explicit instruction.", 
-      navigationAids: "Affordances of the equipment.", 
-      concept: "Physical affordances telegraph function without instruction—the ultimate goal of intuitive UI design." },
-    
-    // Hounslow
-    { id: 'hounslow-high-wide', name: 'Hounslow High Street (Wide)', neighborhood: 'Hounslow', tubeStop: 'Hounslow Central', tubeLine: 'piccadilly',
-      coordinates: [51.4705, -0.3666],
-      userBehavior: "Pedestrians naturally follow the curved architecture of the plaza.", 
-      navigationAids: "Semi-circular plaza architecture.", 
-      concept: "Curved architecture creates implicit pathways—physical manifestations of digital default settings." },
-      
-    { id: 'hounslow-high-transition', name: 'Hounslow High Street (Transition)', neighborhood: 'Hounslow', tubeStop: 'Hounslow Central', tubeLine: 'piccadilly',
-      coordinates: [51.4713, -0.3670],
-      userBehavior: "Different paving materials subtly indicate different functional zones.", 
-      navigationAids: "Changes in paving materials.", 
-      concept: "Material changes subtly communicate functional zones without explicit signage—the urban equivalent of well-designed UI affordances." },
-      
-    { id: 'hounslow-high-cultural', name: 'Hounslow High Street (Cultural)', neighborhood: 'Hounslow', tubeStop: 'Hounslow Central', tubeLine: 'piccadilly',
-      coordinates: [51.4717, -0.3653],
-      userBehavior: "Architectural details on building facades reflect multicultural influences.", 
-      navigationAids: "Architectural details with cultural references.", 
-      concept: "Inclusive defaults acknowledge diverse user populations through cultural references." },
-    
-    // Westminster Bridge
-    { id: 'westminster-bridge-benches', name: 'Westminster Bridge (Multi-height Benches)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
-      coordinates: [51.5006, -0.1242],
-      userBehavior: "Diverse park visitors use benches designed for different body types and ages.", 
-      navigationAids: "Multi-height interactive benches.", 
-      concept: "Elephant Park's seating designs accommodate different body types, ages, and usage patterns—demonstrating how thoughtful defaults can create inclusive experiences without calling attention to accommodations." },
-      
-    { id: 'westminster-bridge-traffic', name: 'Westminster Bridge (Traffic Flow)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
-      coordinates: [51.5008, -0.1230],
-      userBehavior: "Pedestrians, cyclists, and vehicles navigate the bridge, with tourists causing congestion.", 
-      navigationAids: "Wide pavements, separated lanes, safety barriers.", 
-      concept: "Competing priorities: Westminster Bridge must simultaneously serve tourists, commuters, and vehicles while maintaining safety for all." },
-      
-    { id: 'westminster-bridge-barriers', name: 'Westminster Bridge (Safety Barriers)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
-      coordinates: [51.5010, -0.1225],
-      userBehavior: "Safety barriers are integrated with the historic structure, impacting the user experience.", 
-      navigationAids: "Safety barriers.", 
-      concept: "Necessary friction: safety features balanced with heritage preservation and user experience." },
-      
-    { id: 'westminster-bridge-congestion', name: 'Westminster Bridge (Tourist Congestion)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
-      coordinates: [51.5013, -0.1220],
-      userBehavior: "Tourists stop for photos, creating unplanned congestion points.", 
-      navigationAids: "Iconic views.", 
-      concept: "Unplanned use cases: designers must anticipate how users will actually behave, not just how they should behave." },
-      
-    { id: 'westminster-bridge-paths', name: 'Westminster Bridge (Segregated Paths)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
-      coordinates: [51.5015, -0.1235],
-      userBehavior: "Cyclists and pedestrians use physically separated lanes based on their mode of transport.", 
-      navigationAids: "Separated cycle paths and pedestrian areas.", 
-      concept: "Segregated paths on Westminster Bridge create 'user lanes' based on intent and speed—a physical manifestation of digital user journey separation." },
-      
-    { id: 'westminster-bridge-crossing', name: 'Westminster Bridge (Zebra Crossing)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
-      coordinates: [51.5017, -0.1240],
-      userBehavior: "Pedestrians consciously cross the cycle lane at a zebra crossing near a bus stop bypass.", 
-      navigationAids: "Zebra crossing.", 
-      concept: "The zebra crossing functions as a modal dialog—a deliberate friction point requiring conscious action to ensure safety." },
-      
-    { id: 'westminster-bridge-goals', name: 'Westminster Bridge (Competing Goals)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
-      coordinates: [51.5014, -0.1238],
-      userBehavior: "Tourists stop for photos while commuters navigate around them in the shared space.", 
-      navigationAids: "Shared environment, different user behaviors.", 
-      concept: "Multiple user types with competing goals share the same environment—a common challenge in both physical and digital spaces." },
-    
-    // Greenwich Foot Tunnel
-    { id: 'greenwich-foot-tunnel-wide', name: 'Greenwich Foot Tunnel (Wide)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
-      coordinates: [51.4834, -0.0095],
-      userBehavior: "Users choose between stairs and a lift based on signage and their needs.", 
-      navigationAids: "Staircase, lift entrances, directional signage.", 
-      concept: "Decision points at the Greenwich Foot Tunnel entrance: heritage preservation meets accessibility requirements, creating divergent user journeys." },
-      
-    { id: 'greenwich-foot-tunnel-lift', name: 'Greenwich Foot Tunnel (Lift Controls)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
-      coordinates: [51.4836, -0.0097],
-      userBehavior: "Users interact with modern lift controls added to the historic structure.", 
-      navigationAids: "Lift controls, information signage.", 
-      concept: "Retrofitted accessibility: modern interface elements added to century-old infrastructure highlight the challenges of adapting legacy systems." },
-      
-    { id: 'greenwich-foot-tunnel-user', name: 'Greenwich Foot Tunnel (User Behavior)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
-      coordinates: [51.4833, -0.0092],
-      userBehavior: "Some users wait for the lift while others use the stairs freely, leading to different experiences.", 
-      navigationAids: "Stairs, lift, user choices.", 
-      concept: "Divergent experiences: some users navigate the tunnel efficiently while others wait for accessibility accommodations." },
-      
-    { id: 'greenwich-foot-tunnel-rotunda', name: 'Greenwich Foot Tunnel (Exterior Rotunda)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
-      coordinates: [51.4830, -0.0094],
-      userBehavior: "The historic red-brick rotunda entrance with Thames backdrop establishes heritage context.", 
-      navigationAids: "Red-brick rotunda, Thames background.", 
-      concept: "The 1902 Greenwich Foot Tunnel entrance, whose heritage status constrains modernization efforts." },
-      
-    { id: 'greenwich-foot-tunnel-status', name: 'Greenwich Foot Tunnel (Lift Status)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
-      coordinates: [51.4831, -0.0093],
-      userBehavior: "Digital display shows the status of the lift in the historic structure.", 
-      navigationAids: "Digital lift status display.", 
-      concept: "Digital monitoring adds a layer of usefulness to the historic structure without altering it—a common approach in legacy interfaces." },
-      
-    { id: 'greenwich-foot-tunnel-phones', name: 'Greenwich Foot Tunnel (Checking Phones)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
-      coordinates: [51.4835, -0.0094],
-      userBehavior: "Visitors check lift status on their phones before committing to the journey due to unreliability.", 
-      navigationAids: "Phones, lack of reliable physical information.", 
-      concept: "Users develop workarounds when heritage systems prove unreliable—checking status before committing to the journey." },
-      
-    { id: 'cutty-sark-pier', name: 'Cutty Sark Pier (Modal Transition)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
-      coordinates: [51.4825, -0.0090],
-      userBehavior: "Signage guides passengers transitioning between ferry and land transport systems.", 
-      navigationAids: "Signage at system boundaries.", 
-      concept: "Modal transition interface: Signage at system boundaries guides users between different transportation networks." },
-    
-    // Oxford Circus
     { id: 'oxford-circus-peak', name: 'Oxford Circus (Peak Hour)', neighborhood: 'Oxford Street', tubeStop: 'Oxford Circus', tubeLine: 'central',
       coordinates: [51.5152, -0.1410],
       userBehavior: "High pedestrian density maintains flow through clear pathways and signals.", 
       navigationAids: "Clear signage, multiple exit paths, visual cues.", 
       concept: "High-density environments require clear pathways and signals—whether in physical or digital space." },
-      
+    
     { id: 'oxford-circus-signage', name: 'Oxford Circus (Signage)', neighborhood: 'Oxford Street', tubeStop: 'Oxford Circus', tubeLine: 'central',
       coordinates: [51.5154, -0.1414],
       userBehavior: "Clear directional signage and exit markings are crucial under pressure.", 
       navigationAids: "Underground exit signs, street signage.", 
       concept: "Clear signaling becomes increasingly important as user density increases—a principle true in both physical and digital environments." },
-      
+    
     { id: 'oxford-circus-user', name: 'Oxford Circus (User Behavior)', neighborhood: 'Oxford Street', tubeStop: 'Oxford Circus', tubeLine: 'central',
       coordinates: [51.5153, -0.1418],
       userBehavior: "People naturally form lanes and follow efficient patterns during crowded periods.", 
       navigationAids: "Natural pedestrian flow.", 
       concept: "Users naturally create efficient patterns when given appropriate environmental cues—good design works with these natural tendencies." },
+
+    { id: 'oxford-crossroads-choice', name: 'Oxford Circus (Choice Overload)', neighborhood: 'Oxford Circus', tubeStop: 'Oxford Circus', tubeLine: 'central',
+      coordinates: [51.5154, -0.1410],
+      userBehavior: "Shoppers face multiple directions and brand stimuli at once.",
+      navigationAids: "Crossroads layout, store signs.",
+      concept: "Too many choices can cause user paralysis—UX needs prioritization." },
+      
+    // ----- Bond Street / Mayfair Area -----
+    { id: 'bondstreet-premium-ui', name: 'Bond Street (Premium UX)', neighborhood: 'Bond Street', tubeStop: 'Bond Street', tubeLine: 'central',
+      coordinates: [51.5144, -0.1501],
+      userBehavior: "Luxury shoppers engage with high-touch storefronts.",
+      navigationAids: "Minimalist signage, doormen, windows.",
+      concept: "Premium UIs rely on spacing, polish, and restraint rather than dense information." },
     
-    // Southbank
-    { id: 'southbank-centre-brutalist', name: 'Southbank Centre (Brutalist)', neighborhood: 'Southbank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
-      coordinates: [51.5066, -0.1164],
-      userBehavior: "Brutalist architecture adapted with integrated ramps and lifts for accessibility.", 
-      navigationAids: "Concrete structure, integrated ramps/lifts.", 
-      concept: "The Southbank Centre's brutalist architecture has been adapted for accessibility without compromising its essential character." },
-      
-    { id: 'southbank-centre-signage', name: 'Southbank Centre (Signage)', neighborhood: 'Southbank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
-      coordinates: [51.5062, -0.1162],
-      userBehavior: "Accessibility signage is designed to complement the brutalist aesthetic.", 
-      navigationAids: "Accessibility signage matching the aesthetic.", 
-      concept: "Accessibility signage designed to complement rather than conflict with the brutalist aesthetic—a model for integrated rather than appended solutions." },
-      
-    { id: 'southbank-centre-users', name: 'Southbank Centre (Diverse Users)', neighborhood: 'Southbank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
-      coordinates: [51.5064, -0.1160],
-      userBehavior: "Users of different abilities successfully navigate and use the space.", 
-      navigationAids: "Accessible design, diverse users.", 
-      concept: "The result of successful integration: a heritage space that welcomes users of all abilities." },
-      
-    { id: 'southbank-river-walk', name: 'Southbank (River Walk)', neighborhood: 'Southbank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
-      coordinates: [51.5068, -0.1175],
-      userBehavior: "Users navigate with the River Thames as a constant reference point.", 
-      navigationAids: "River Thames.", 
-      concept: "The River Thames provides a constant reference point along Southbank—similar to how persistent headers orient users in digital interfaces." },
+    { id: 'mayfair-hidden-entry', name: 'Mayfair (Hidden Entry)', neighborhood: 'Mayfair', tubeStop: 'Green Park', tubeLine: 'jubilee',
+      coordinates: [51.5097, -0.1452],
+      userBehavior: "Exclusive shops are accessed via small doors or alleys.",
+      navigationAids: "Low signage, discrete design.",
+      concept: "Exclusive features hidden from public UI—like VIP or admin controls." },
     
-    // Wembley
-    { id: 'wembley-park-match', name: 'Wembley Park (Match Day)', neighborhood: 'Wembley', tubeStop: 'Wembley Park', tubeLine: 'metropolitan',
-      coordinates: [51.5632, -0.2790],
-      userBehavior: "Dense crowds selectively process wayfinding cues while navigating.", 
-      navigationAids: "Multiple information touchpoints, dense crowds.", 
-      concept: "Information filtering in action: Match day attendees at Wembley Park Station selectively process wayfinding cues while navigating through dense crowds—a physical manifestation of the same cognitive processes users employ when landing on feature-rich digital interfaces." },
-      
-    { id: 'wembley-temporary-signage', name: 'Wembley Temporary Signage', neighborhood: 'Wembley', tubeStop: 'Wembley Park', tubeLine: 'metropolitan',
-      coordinates: [51.5634, -0.2793],
-      userBehavior: "Temporary, event-specific signage is overlaid on permanent wayfinding.", 
-      navigationAids: "Temporary signage, permanent wayfinding.", 
-      concept: "Context-aware information: Temporary match day signage at Wembley Park demonstrates how physical environments adapt information presentation based on contextual factors—a principle that should guide adaptive digital interfaces." },
-      
-    { id: 'wembley-approach-wide', name: 'Wembley Approach (Wide)', neighborhood: 'Wembley', tubeStop: 'Wembley Park', tubeLine: 'metropolitan',
-      coordinates: [51.5560, -0.2795],
-      userBehavior: "Generous width of Olympic Way handles mass movement, preventing bottlenecks.", 
-      navigationAids: "Wide pedestrian approach (Olympic Way).", 
-      concept: "Olympic Way's generous width serves as a physical manifestation of digital load balancing, designed to prevent bottlenecks during peak flows." },
-      
-    { id: 'boxpark-wembley-mixed', name: 'BOXPARK Wembley (Mixed Scale)', neighborhood: 'Wembley', tubeStop: 'Wembley Park', tubeLine: 'metropolitan',
-      coordinates: [51.5625, -0.2805],
-      userBehavior: "Auxiliary spaces absorb excess crowd capacity before and after events.", 
-      navigationAids: "Gathering spaces (BOXPARK).", 
-      concept: "BOXPARK Wembley functions as a system buffer, absorbing excess crowd capacity before and after events to prevent stadium bottlenecks." },
+    // ----- Marble Arch Area -----
+    { id: 'marblearch-historic-anchor', name: 'Marble Arch (Historic Anchor)', neighborhood: 'Marble Arch', tubeStop: 'Marble Arch', tubeLine: 'central',
+      coordinates: [51.5136, -0.1586],
+      userBehavior: "People use arch as photo and navigation landmark.",
+      navigationAids: "Structure itself, radial paths.",
+      concept: "Anchor elements (e.g. logos, hero images) reinforce brand navigation in UX." },
     
-    // Liverpool Street
-    { id: 'liverpool-street-info', name: 'Liverpool Street (Info Board)', neighborhood: 'Liverpool Street', tubeStop: 'Liverpool Street', tubeLine: 'central',
-      coordinates: [51.5183, -0.0818],
-      userBehavior: "Commuters scan information boards for relevant departure details.", 
-      navigationAids: "Information boards with timetables.", 
-      concept: "Users selectively filter information based on relevance to their journey." },
-      
-    { id: 'liverpool-street-concourse', name: 'Liverpool Street Concourse (Wide)', neighborhood: 'Liverpool Street', tubeStop: 'Liverpool Street', tubeLine: 'central',
-      coordinates: [51.5185, -0.0822],
-      userBehavior: "Travelers orient themselves within the station concourse.", 
-      navigationAids: "Open architectural space, visible pathways.", 
-      concept: "The open concourse design provides natural orientation through spatial hierarchy." },
-      
-    { id: 'liverpool-street-elevator', name: 'Liverpool Street Elevator (Detail)', neighborhood: 'Liverpool Street', tubeStop: 'Liverpool Street', tubeLine: 'central',
-      coordinates: [51.5188, -0.0820],
-      userBehavior: "Users choose between stairs and elevators based on needs and signage.", 
-      navigationAids: "Elevator interfaces, accessibility signage.", 
-      concept: "Diverse navigation options catering to different user capabilities and preferences." },
+    // ----- Marylebone Area -----
+    { id: 'marylebone-village-layout', name: 'Marylebone (Village UX)', neighborhood: 'Marylebone', tubeStop: 'Baker Street', tubeLine: 'bakerloo',
+      coordinates: [51.5205, -0.1548],
+      userBehavior: "Users explore low-rise, human-scale shopping streets.",
+      navigationAids: "Sidewalk cafes, no rush.",
+      concept: "Low-complexity UX environments invite relaxed discovery—like leisure apps or dashboards." },
     
-    // Victoria
-    { id: 'victoria-station-concourse', name: 'Victoria Station Concourse', neighborhood: 'Victoria', tubeStop: 'Victoria', tubeLine: 'victoria',
-      coordinates: [51.4952, -0.1438],
-      userBehavior: "Travelers navigate through a high-volume transitional space.", 
-      navigationAids: "Clear signage, architectural cues.", 
-      concept: "Victoria Station's design manages high volume user flow through clear directional cues." },
+    // ----- Soho / Chinatown Area -----
+    { id: 'soho-creative-overload', name: 'Soho (Creative Overload)', neighborhood: 'Soho', tubeStop: 'Tottenham Court Road', tubeLine: 'central',
+      coordinates: [51.5136, -0.1313],
+      userBehavior: "People navigate dense media, colors, and store fronts.",
+      navigationAids: "Posters, neon, pop-ups.",
+      concept: "Visually dense UI can overwhelm—needs clear hierarchy and context." },
     
-    // Legible London
-    { id: 'legible-london-display', name: 'Legible London Display', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
-      coordinates: [51.5100, -0.1350],
-      userBehavior: "Pedestrians orient themselves using the mapped information.", 
-      navigationAids: "Map display, directional information.", 
-      concept: "Legible London provides consistent orienting information throughout the city." },
-      
-    { id: 'legible-london-pillar', name: 'Legible London Pillar (Detail)', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
-      coordinates: [51.5088, -0.1272],
-      userBehavior: "Users approach and interact with wayfinding elements.", 
-      navigationAids: "Pillar design, consistent mapping.", 
-      concept: "Consistent design language creates system recognition across the city." },
-      
-    { id: 'legible-london-signage', name: 'Legible London Signage (Detail)', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
-      coordinates: [51.5065, -0.1260],
-      userBehavior: "Pedestrians read and interpret directional signage.", 
-      navigationAids: "Walking time indicators, directional arrows.", 
-      concept: "Information density adjusted based on user needs at specific decision points." },
+    { id: 'soho-backlane-navigation', name: 'Soho (Backlane Navigation)', neighborhood: 'Soho', tubeStop: 'Tottenham Court Road', tubeLine: 'central',
+      coordinates: [51.5130, -0.1310],
+      userBehavior: "Users find cut-through alleys to navigate faster.",
+      navigationAids: "Narrow passages, visual familiarity.",
+      concept: "Backdoors in UI (e.g. shortcuts, hotkeys) can increase expert efficiency." },
     
-    // Barbican
-    { id: 'barbican-junction', name: 'Barbican Junction Point', neighborhood: 'Barbican', tubeStop: 'Barbican', tubeLine: 'metropolitan',
-      coordinates: [51.5204, -0.0970],
-      userBehavior: "Users navigate complex pathways in the brutalist architecture.", 
-      navigationAids: "Architectural cues, signage.", 
-      concept: "The Barbican's complex pathway system requires strategic wayfinding interventions." },
-      
-    { id: 'barbican-signage', name: 'Barbican Signage Detail', neighborhood: 'Barbican', tubeStop: 'Barbican', tubeLine: 'metropolitan',
-      coordinates: [51.5201, -0.0975],
-      userBehavior: "Visitors follow specialized signage within the complex.", 
-      navigationAids: "Custom signage system integrated with architecture.", 
-      concept: "Barbican's unique signage system matches its distinctive architectural identity." },
-      
-    { id: 'barbican-hidden', name: 'Barbican Hidden Destination', neighborhood: 'Barbican', tubeStop: 'Barbican', tubeLine: 'metropolitan',
-      coordinates: [51.5208, -0.0977],
-      userBehavior: "Visitors discover hidden or less obvious destinations.", 
-      navigationAids: "Subtle architectural cues, minimal signage.", 
-      concept: "The Barbican rewards exploration with discovery of unexpected spaces." },
+    { id: 'chinatown-cultural-layering', name: 'Chinatown (Cultural Layering)', neighborhood: 'Chinatown', tubeStop: 'Leicester Square', tubeLine: 'northern',
+      coordinates: [51.5112, -0.1319],
+      userBehavior: "Users navigate layered signs in multiple languages.",
+      navigationAids: "Bilingual signage, arches.",
+      concept: "Multilingual interfaces reflect inclusivity—user diversity needs layered communication." },
     
-    // Kings Cross
-    { id: 'kings-cross-transition', name: 'King\'s Cross Level Transition', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
-      coordinates: [51.5308, -0.1244],
-      userBehavior: "Users navigate vertical transitions between levels.", 
-      navigationAids: "Staircases, escalators, visual connections.", 
-      concept: "King's Cross station's redesign creates clear vertical navigation between different functional levels." },
-      
-    { id: 'kings-cross-material', name: 'King\'s Cross Material Continuity', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
-      coordinates: [51.5310, -0.1240],
-      userBehavior: "Travelers follow continuous material cues through the space.", 
-      navigationAids: "Consistent materials, architectural elements.", 
-      concept: "Material consistency creates intuitive pathways through complex spaces." },
+    { id: 'chinatown-sensory-navigation', name: 'Chinatown (Sensory Navigation)', neighborhood: 'Chinatown', tubeStop: 'Leicester Square', tubeLine: 'northern',
+      coordinates: [51.5114, -0.1318],
+      userBehavior: "People follow food smells and sound to locate destinations.",
+      navigationAids: "Scent trails, street vendors.",
+      concept: "Non-visual cues guide user attention—similar to sound feedback or haptics in UX." },
     
-    // Old Street
-    { id: 'old-street-roundabout', name: 'Old Street Roundabout Aerial', neighborhood: 'Old Street', tubeStop: 'Old Street', tubeLine: 'northern',
-      coordinates: [51.5263, -0.0878],
-      userBehavior: "Multiple transportation types converge and navigate a complex junction.", 
-      navigationAids: "Traffic signals, lane markings, barriers.", 
-      concept: "The roundabout manages conflicting user types and intentions in a shared space." },
-      
-    { id: 'old-street-exit', name: 'Old Street Exit Decision', neighborhood: 'Old Street', tubeStop: 'Old Street', tubeLine: 'northern',
-      coordinates: [51.5266, -0.0880],
-      userBehavior: "Commuters choose between multiple exits based on their destination.", 
-      navigationAids: "Exit numbering, local area maps.", 
-      concept: "Multiple exits create a decision point requiring clear information." },
+    // ----- Piccadilly Circus Area -----
+    { id: 'piccadilly-flash-ui', name: 'Piccadilly Circus (Flash UI)', neighborhood: 'Piccadilly', tubeStop: 'Piccadilly Circus', tubeLine: 'bakerloo',
+      coordinates: [51.5101, -0.1337],
+      userBehavior: "People pause to absorb flashing ads, light walls.",
+      navigationAids: "Digital billboards, crowd movement.",
+      concept: "Flashy UI may attract attention but reduce usability—visual hierarchy matters." },
     
-    // Tokyo (for comparison)
-    { id: 'tokyo-station-comparative', name: 'Tokyo Station Comparative', neighborhood: 'International', tubeStop: 'N/A', tubeLine: 'multiple',
-      coordinates: [51.5118, -0.1271], // This is actually shown in London for comparative display
-      userBehavior: "Foreign visitors navigate using universal design principles.", 
-      navigationAids: "Universal symbols, color coding.", 
-      concept: "Tokyo's station design uses universal principles that transcend language barriers." },
-    
-    // Leicester Square
+    // ----- Leicester Square Area -----
     { id: 'leicester-square-wide', name: 'Leicester Square (Wide)', neighborhood: 'Leicester Square', tubeStop: 'Leicester Square', tubeLine: 'piccadilly',
       coordinates: [51.5110, -0.1281],
       userBehavior: "Tourists and locals share a busy public space with different goals.", 
       navigationAids: "Open plaza design, focal points.", 
       concept: "Leicester Square balances needs of tourists seeking entertainment and locals in transit." },
-      
+    
     { id: 'leicester-square-decision', name: 'Leicester Square (Decision Point)', neighborhood: 'Leicester Square', tubeStop: 'Leicester Square', tubeLine: 'piccadilly',
       coordinates: [51.5105, -0.1285],
       userBehavior: "Visitors make choices at key junction points in the area.", 
       navigationAids: "Commercial signage, architectural landmarks.", 
       concept: "Commercial environments create competing visual hierarchies for user attention." },
     
-    // Borough
-    { id: 'borough-high-wide', name: 'Borough High Street (Wide)', neighborhood: 'Borough', tubeStop: 'Borough', tubeLine: 'northern',
-      coordinates: [51.5011, -0.0945],
-      userBehavior: "Pedestrians navigate a historic streetscape with modern elements.", 
-      navigationAids: "Historic architecture, street patterns.", 
-      concept: "Borough High Street blends historic navigation patterns with modern interventions." },
-      
-    { id: 'borough-high-transition', name: 'Borough High Street (Transition)', neighborhood: 'Borough', tubeStop: 'Borough', tubeLine: 'northern',
-      coordinates: [51.5008, -0.0943],
-      userBehavior: "Users transition between different neighborhood characters.", 
-      navigationAids: "Architectural shifts, changing streetscape.", 
-      concept: "Street transitions signal different neighborhood zones and functions." },
-      
-    { id: 'borough-high-closeup', name: 'Borough High Street (Close-up)', neighborhood: 'Borough', tubeStop: 'Borough', tubeLine: 'northern',
-      coordinates: [51.5014, -0.0947],
-      userBehavior: "Pedestrians engage with street-level details and businesses.", 
-      navigationAids: "Shopfronts, signage, street furniture.", 
-      concept: "Street-level details create engagement within the larger urban framework." },
+    // ----- Covent Garden / Neal's Yard Area -----
+    { id: 'neals-yard-entrance', name: 'Neal\'s Yard Entrance (Close-up)', neighborhood: 'Covent Garden', tubeStop: 'Covent Garden', tubeLine: 'piccadilly',
+      coordinates: [51.5135, -0.1268],
+      userBehavior: "Users might walk past initially, requiring exploration to locate.", 
+      navigationAids: "Narrow, easily-missed entrance.", 
+      concept: "Neal\'s Yard\'s concealed entrances exemplify discovery-based navigation, requiring prior knowledge or exploration to locate." },
     
-    // Farringdon
-    { id: 'farringdon-external', name: 'Farringdon (External View)', neighborhood: 'Farringdon', tubeStop: 'Farringdon', tubeLine: 'elizabeth',
-      coordinates: [51.5203, -0.1053],
-      userBehavior: "Commuters approach the station entrance from multiple directions.", 
-      navigationAids: "Architectural prominence, station signage.", 
-      concept: "Farringdon's design clearly signals its function as a transportation hub." },
-      
-    { id: 'farringdon-junction', name: 'Farringdon (Junction)', neighborhood: 'Farringdon', tubeStop: 'Farringdon', tubeLine: 'elizabeth',
-      coordinates: [51.5200, -0.1050],
-      userBehavior: "Travelers navigate between different transportation systems.", 
-      navigationAids: "Transfer signage, architectural connections.", 
-      concept: "Junction points between transportation systems require clear transitional guidance." },
+    { id: 'neals-yard-contrast', name: 'Neal\'s Yard Contrast Shot', neighborhood: 'Covent Garden', tubeStop: 'Covent Garden', tubeLine: 'piccadilly',
+      coordinates: [51.5137, -0.1267],
+      userBehavior: "Users experience a transition from mundane exterior to vibrant interior.", 
+      navigationAids: "Contrast between entrance and courtyard.", 
+      concept: "The contrast between Neal\'s Yard\'s mundane entrances and vibrant interior creates a memorable discovery experience that reinforces spatial memory." },
     
-    // Canary Wharf
-    { id: 'canary-wharf-wide', name: 'Canary Wharf (Wide)', neighborhood: 'Canary Wharf', tubeStop: 'Canary Wharf', tubeLine: 'jubilee',
-      coordinates: [51.5055, -0.0175],
-      userBehavior: "Users navigate a controlled corporate environment.", 
-      navigationAids: "Planned layout, consistent design language.", 
-      concept: "Canary Wharf's master-planned environment creates predictable navigation patterns." },
-      
-    { id: 'canary-wharf-decision', name: 'Canary Wharf (Decision Points)', neighborhood: 'Canary Wharf', tubeStop: 'Canary Wharf', tubeLine: 'jubilee',
-      coordinates: [51.5050, -0.0180],
-      userBehavior: "Office workers and visitors navigate decision points in the complex.", 
-      navigationAids: "Directional signage, maps, architectural cues.", 
-      concept: "Well-designed decision points reduce cognitive load in complex environments." },
-      
-    { id: 'canary-wharf-underground', name: 'Canary Wharf (Underground)', neighborhood: 'Canary Wharf', tubeStop: 'Canary Wharf', tubeLine: 'jubilee',
-      coordinates: [51.5040, -0.0170],
-      userBehavior: "Commuters transition between underground transport and surface environment.", 
-      navigationAids: "Architectural transitions, escalators, light wells.", 
-      concept: "The station's design creates a gradual transition from underground to surface environments." },
+    // ----- Tottenham Court Road Area -----
+    { id: 'tcr-device-interface', name: 'Tottenham Court Road (Device Interface)', neighborhood: 'Tottenham Court Road', tubeStop: 'Tottenham Court Road', tubeLine: 'central',
+      coordinates: [51.5162, -0.1300],
+      userBehavior: "Users shop for digital devices amid layered retail signage.",
+      navigationAids: "Tech store displays, brand repetition.",
+      concept: "Redundant call-to-actions and branded zones need unified interface control." },
     
-    // Duke of York Square
-    { id: 'duke-of-york-seating', name: 'Duke of York Square (Seating)', neighborhood: 'Chelsea', tubeStop: 'Sloane Square', tubeLine: 'district',
-      coordinates: [51.4918, -0.1590],
-      userBehavior: "Visitors pause and occupy the public space for different durations.", 
-      navigationAids: "Seating arrangements, spatial organization.", 
-      concept: "Seating design influences flow, lingering, and social interaction patterns." },
+    // ----- Bloomsbury Area (Euston to Holborn) -----
+    { id: 'euston-russell-wayfinding', name: 'Euston to Russell Square (Wayfinding)', neighborhood: 'Bloomsbury', tubeStop: 'Euston', tubeLine: 'northern',
+      coordinates: [51.5281, -0.1332],
+      userBehavior: "Pedestrians transition via signs and memory routes.",
+      navigationAids: "University signage, wide pavements.",
+      concept: "Task continuity between pages—breadcrumbs and persistent headers help users bridge contexts." },
     
-    // Trafalgar Square
+    { id: 'russell-holborn-intellectual-ux', name: 'Russell Square to Holborn (Academic Flow)', neighborhood: 'Bloomsbury', tubeStop: 'Russell Square', tubeLine: 'piccadilly',
+      coordinates: [51.5224, -0.1246],
+      userBehavior: "Users browse academic buildings and libraries as part of mental journey.",
+      navigationAids: "Maps, signs, plaques.",
+      concept: "Knowledge-dense UX like documentation, search tools, or academic portals benefit from slow, layered flows." },
+    
+    // ----- Trafalgar Square Area -----
     { id: 'trafalgar-square-wide', name: 'Trafalgar Square (Wide)', neighborhood: 'Trafalgar Square', tubeStop: 'Charing Cross', tubeLine: 'northern',
       coordinates: [51.5080, -0.1280],
       userBehavior: "Tourists and locals navigate a major public space with multiple focal points.", 
       navigationAids: "Landmarks, open sight lines, spatial hierarchy.", 
-      concept: "Trafalgar Square's design creates natural focal points and circulation patterns." },
-      
+      concept: "Trafalgar Square\'s design creates natural focal points and circulation patterns." },
+    
     { id: 'trafalgar-square-user', name: 'Trafalgar Square (User Behavior)', neighborhood: 'Trafalgar Square', tubeStop: 'Charing Cross', tubeLine: 'northern',
       coordinates: [51.5078, -0.1284],
       userBehavior: "Different visitor types create distinct usage patterns in the space.", 
       navigationAids: "Self-organizing crowd patterns, desire lines.", 
       concept: "Observing how different user types create distinct spatial usage patterns." },
     
-    // Spencer Park
-    { id: 'spencer-park-entrance', name: 'Spencer Park (Entrance)', neighborhood: 'Wandsworth', tubeStop: 'Wandsworth Town', tubeLine: 'overground',
-      coordinates: [51.4605, -0.1860],
-      userBehavior: "Local residents access a semi-private community park.", 
-      navigationAids: "Gated entrance, community signage.", 
-      concept: "The park entrance balances accessibility with community ownership." },
-      
-    { id: 'spencer-park-users', name: 'Spencer Park (Regular Users)', neighborhood: 'Wandsworth', tubeStop: 'Wandsworth Town', tubeLine: 'overground',
-      coordinates: [51.4608, -0.1865],
-      userBehavior: "Regular users navigate familiar space with established patterns.", 
-      navigationAids: "Familiarity, community knowledge.", 
-      concept: "Regular users develop efficient navigation patterns through familiarity." },
-      
-    { id: 'spencer-park-hierarchy', name: 'Spencer Park (Spatial Hierarchy)', neighborhood: 'Wandsworth', tubeStop: 'Wandsworth Town', tubeLine: 'overground',
-      coordinates: [51.4610, -0.1862],
-      userBehavior: "Visitors navigate between different activity zones in the park.", 
-      navigationAids: "Spatial organization, pathway hierarchy.", 
-      concept: "The park's spatial hierarchy guides users to appropriate activity zones." },
+    // ----- Westminster Area -----
+    { id: 'westminster-bridge-benches', name: 'Westminster Bridge (Multi-height Benches)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
+      coordinates: [51.5006, -0.1242],
+      userBehavior: "Diverse park visitors use benches designed for different body types and ages.", 
+      navigationAids: "Multi-height interactive benches.", 
+      concept: "Elephant Park\'s seating designs accommodate different body types, ages, and usage patterns—demonstrating how thoughtful defaults can create inclusive experiences without calling attention to accommodations." },
     
-    // Camley Street
-    { id: 'camley-street-entrance', name: 'Camley Street (Entrance Sequence)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
-      coordinates: [51.5344, -0.1258],
-      userBehavior: "Visitors transition from urban environment to nature reserve.", 
-      navigationAids: "Entrance sequence, transitional design.", 
-      concept: "The entrance sequence prepares visitors for a shift in context and attention." },
-      
-    { id: 'camley-street-richness', name: 'Camley Street (Compact Richness)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
-      coordinates: [51.5346, -0.1260],
-      userBehavior: "Visitors explore densely-designed small space with multiple elements.", 
-      navigationAids: "Pathway design, interpretive elements.", 
-      concept: "The nature park demonstrates how to create richness in a compact space." },
-      
-    { id: 'camley-street-behavior', name: 'Camley Street (Visitor Behavior)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
-      coordinates: [51.5348, -0.1262],
-      userBehavior: "Nature reserve visitors demonstrate different engagement patterns.", 
-      navigationAids: "Interpretive signage, viewing platforms.", 
-      concept: "Observing how different visitor types engage with educational elements." },
+    { id: 'westminster-bridge-traffic', name: 'Westminster Bridge (Traffic Flow)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
+      coordinates: [51.5008, -0.1230],
+      userBehavior: "Pedestrians, cyclists, and vehicles navigate the bridge, with tourists causing congestion.", 
+      navigationAids: "Wide pavements, separated lanes, safety barriers.", 
+      concept: "Competing priorities: Westminster Bridge must simultaneously serve tourists, commuters, and vehicles while maintaining safety for all." },
     
-    // Gasholder Park
-    { id: 'gasholder-park-approach', name: 'Gasholder Park (Approach)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
-      coordinates: [51.5354, -0.1253],
-      userBehavior: "Visitors approach and discover the repurposed industrial structure.", 
-      navigationAids: "Visual landmark, architectural framing.", 
-      concept: "The gasholders create a distinctive landmark that signals a destination." },
-      
-    { id: 'gasholder-park-frame', name: 'Gasholder Park (Internal Frame)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
-      coordinates: [51.5356, -0.1252],
-      userBehavior: "Users experience the contrast between industrial structure and green space.", 
-      navigationAids: "Circular framework, central green.", 
-      concept: "The industrial frame creates a distinctive context for the park experience." },
-      
-    { id: 'gasholder-park-positioning', name: 'Gasholder Park (User Positioning)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
-      coordinates: [51.5355, -0.1251],
-      userBehavior: "Visitors position themselves within the circular space.", 
-      navigationAids: "Circular pathways, central lawn.", 
-      concept: "The circular form creates natural positioning and circulation patterns." },
-      
-    { id: 'gasholder-park-lighting', name: 'Gasholder Park (Night Lighting)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
-      coordinates: [51.5357, -0.1250],
-      userBehavior: "Night visitors navigate and experience the illuminated structure.", 
-      navigationAids: "Architectural lighting, pathway illumination.", 
-      concept: "Lighting transforms the user experience and navigation during night hours." },
+    { id: 'westminster-bridge-barriers', name: 'Westminster Bridge (Safety Barriers)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
+      coordinates: [51.5010, -0.1225],
+      userBehavior: "Safety barriers are integrated with the historic structure, impacting the user experience.", 
+      navigationAids: "Safety barriers.", 
+      concept: "Necessary friction: safety features balanced with heritage preservation and user experience." },
     
-    // Camden Market
-    { id: 'camden-market-entrance', name: 'Camden Market Entrance', neighborhood: 'Camden', tubeStop: 'Camden Town', tubeLine: 'northern',
-      coordinates: [51.5394, -0.1427],
-      userBehavior: "Visitors enter a complex, organic marketplace environment.", 
-      navigationAids: "Gateway architecture, commercial signage.", 
-      concept: "The market entrance signals transition to a different commercial environment." },
-      
-    { id: 'camden-market-pathway', name: 'Camden Market Pathway', neighborhood: 'Camden', tubeStop: 'Camden Town', tubeLine: 'northern',
-      coordinates: [51.5398, -0.1428],
-      userBehavior: "Shoppers navigate narrow, winding paths with high visual complexity.", 
-      navigationAids: "Pathway design, overhead signage.", 
-      concept: "Market pathways balance discovery with navigability." },
-      
-    { id: 'camden-market-stall', name: 'Camden Market Stall Detail', neighborhood: 'Camden', tubeStop: 'Camden Town', tubeLine: 'northern',
-      coordinates: [51.5396, -0.1430],
-      userBehavior: "Customers interact with individual market stalls amidst visual complexity.", 
-      navigationAids: "Stall design, product displays.", 
-      concept: "Stall design must attract attention within a visually competitive environment." },
+    { id: 'westminster-bridge-congestion', name: 'Westminster Bridge (Tourist Congestion)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
+      coordinates: [51.5013, -0.1220],
+      userBehavior: "Tourists stop for photos, creating unplanned congestion points.", 
+      navigationAids: "Iconic views.", 
+      concept: "Unplanned use cases: designers must anticipate how users will actually behave, not just how they should behave." },
     
-    // Hampstead
-    { id: 'hampstead-luxury', name: 'Hampstead (Luxury Shopfronts)', neighborhood: 'Hampstead', tubeStop: 'Hampstead', tubeLine: 'northern',
-      coordinates: [51.5570, -0.1782],
-      userBehavior: "Shoppers engage with high-end retail environments.", 
-      navigationAids: "Luxury signaling, storefront design.", 
-      concept: "Retail design elements that signal premium experiences." },
-      
-    { id: 'hampstead-window', name: 'Hampstead (Window Display)', neighborhood: 'Hampstead', tubeStop: 'Hampstead', tubeLine: 'northern',
-      coordinates: [51.5566, -0.1778],
-      userBehavior: "Pedestrians pause to engage with curated window displays.", 
-      navigationAids: "Window design, product curation.", 
-      concept: "Window displays create moments of engagement in the pedestrian journey." },
+    { id: 'westminster-bridge-paths', name: 'Westminster Bridge (Segregated Paths)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
+      coordinates: [51.5015, -0.1235],
+      userBehavior: "Cyclists and pedestrians use physically separated lanes based on their mode of transport.", 
+      navigationAids: "Separated cycle paths and pedestrian areas.", 
+      concept: "Segregated paths on Westminster Bridge create \'user lanes\' based on intent and speed—a physical manifestation of digital user journey separation." },
     
-    // Bermondsey
-    { id: 'bermondsey-street-character', name: 'Bermondsey Street (Character)', neighborhood: 'Bermondsey', tubeStop: 'Bermondsey', tubeLine: 'jubilee',
-      coordinates: [51.4982, -0.0635],
-      userBehavior: "Visitors experience the distinctive character of the historic street.", 
-      navigationAids: "Historic architecture, street width.", 
-      concept: "The street's character creates a distinctive experiential context." },
-      
-    { id: 'bermondsey-street-cafe', name: 'Bermondsey Street (Café)', neighborhood: 'Bermondsey', tubeStop: 'Bermondsey', tubeLine: 'jubilee',
-      coordinates: [51.4986, -0.0637],
-      userBehavior: "People linger in the transitional space between cafe and street.", 
-      navigationAids: "Outdoor seating, facade design.", 
-      concept: "Cafe frontage creates a social buffer zone between public and private." },
-      
-    { id: 'bermondsey-street-material', name: 'Bermondsey Street (Material)', neighborhood: 'Bermondsey', tubeStop: 'Bermondsey', tubeLine: 'jubilee',
-      coordinates: [51.4984, -0.0633],
-      userBehavior: "Pedestrians navigate using material and textural cues.", 
-      navigationAids: "Street materials, textural changes.", 
-      concept: "Material changes subtly communicate functional zones and transitions." },
+    { id: 'westminster-bridge-crossing', name: 'Westminster Bridge (Zebra Crossing)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
+      coordinates: [51.5017, -0.1240],
+      userBehavior: "Pedestrians consciously cross the cycle lane at a zebra crossing near a bus stop bypass.", 
+      navigationAids: "Zebra crossing.", 
+      concept: "The zebra crossing functions as a modal dialog—a deliberate friction point requiring conscious action to ensure safety." },
     
-    // Friction Examples
-    { id: 'good-bad-friction', name: 'Good vs. Bad Friction (Comparative)', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
-      coordinates: [51.5070, -0.1100],
-      userBehavior: "Users navigate intentional vs. unintentional friction points.", 
-      navigationAids: "Various intentional and unintentional barriers.", 
-      concept: "Comparing examples of helpful friction (for safety) vs. unhelpful friction (poor design)." },
+    { id: 'westminster-bridge-goals', name: 'Westminster Bridge (Competing Goals)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
+      coordinates: [51.5014, -0.1238],
+      userBehavior: "Tourists stop for photos while commuters navigate around them in the shared space.", 
+      navigationAids: "Shared environment, different user behaviors.", 
+      concept: "Multiple user types with competing goals share the same environment—a common challenge in both physical and digital spaces." },
     
-    // London Bridge
-    { id: 'london-bridge-wide', name: 'London Bridge Station (Wide)', neighborhood: 'London Bridge', tubeStop: 'London Bridge', tubeLine: 'northern',
-      coordinates: [51.5050, -0.0865],
-      userBehavior: "Commuters navigate a major transportation hub with multiple systems.", 
-      navigationAids: "Architectural organization, signage systems.", 
-      concept: "The station design organizes multiple transportation systems clearly." },
-      
-    { id: 'london-bridge-decision', name: 'London Bridge Station (Decision Point)', neighborhood: 'London Bridge', tubeStop: 'London Bridge', tubeLine: 'northern',
-      coordinates: [51.5055, -0.0870],
-      userBehavior: "Travelers make choices at critical junction points.", 
-      navigationAids: "Decision-point signage, sight lines.", 
-      concept: "Station redesign places clear information at key decision points." },
-      
-    { id: 'london-bridge-user', name: 'London Bridge Station (User Behavior)', neighborhood: 'London Bridge', tubeStop: 'London Bridge', tubeLine: 'northern',
-      coordinates: [51.5052, -0.0868],
-      userBehavior: "Different user types (tourists, commuters) create varied movement patterns.", 
-      navigationAids: "Observing natural user flows and pain points.", 
-      concept: "Observing how different user types navigate the same environment." },
+    { id: 'westminster-user-intent-clash', name: 'Westminster Bridge (User Intent Clash)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
+      coordinates: [51.5009, -0.1216],
+      userBehavior: "Tourists pause while commuters try to cross quickly.",
+      navigationAids: "Pedestrian congestion, camera angles.",
+      concept: "Mixed user goals cause friction—like enterprise software used by different personas." },
     
-    // Fenchurch Street
+    { id: 'westminster-anchor-navigation', name: 'Westminster Bridge (Anchor Navigation)', neighborhood: 'Westminster', tubeStop: 'Westminster', tubeLine: 'jubilee',
+      coordinates: [51.5011, -0.1214],
+      userBehavior: "Big Ben acts as a visual waypoint for urban orientation.",
+      navigationAids: "Clock tower, skyline marker.",
+      concept: "Persistent UI anchors (like fixed nav icons) help orient the user across changing contexts." },
+    
+    // ----- Victoria Area -----
+    { id: 'victoria-station-concourse', name: 'Victoria Station Concourse', neighborhood: 'Victoria', tubeStop: 'Victoria', tubeLine: 'victoria',
+      coordinates: [51.4952, -0.1438],
+      userBehavior: "Travelers navigate through a high-volume transitional space.", 
+      navigationAids: "Clear signage, architectural cues.", 
+      concept: "Victoria Station\'s design manages high volume user flow through clear directional cues." },
+    
+    { id: 'victoria-multi-system-handoff', name: 'Victoria (Multi-System Handoff)', neighborhood: 'Victoria', tubeStop: 'Victoria', tubeLine: 'victoria',
+      coordinates: [51.4964, -0.1439],
+      userBehavior: "Travelers switch between trains, buses, and underground systems.",
+      navigationAids: "Overhead signage, zone markers.",
+      concept: "Handoff between platforms reflects cross-device user flows or third-party integrations." },
+    
+    { id: 'victoria-checkout-friction', name: 'Victoria (Checkout Friction)', neighborhood: 'Victoria', tubeStop: 'Victoria', tubeLine: 'victoria',
+      coordinates: [51.4960, -0.1435],
+      userBehavior: "Stressed users navigate ticket machines and crowds.",
+      navigationAids: "Digital kiosks, printouts, floor lines.",
+      concept: "Complex checkout flows with poor UX create user stress—especially at high volume touchpoints." },
+    
+    // ----- Hyde Park Area -----
+    { id: 'hyde-park-serpentine', name: 'Hyde Park Serpentine Water Edge', neighborhood: 'Hyde Park', tubeStop: 'Hyde Park Corner', tubeLine: 'piccadilly',
+      coordinates: [51.5053, -0.1694],
+      userBehavior: "Users can choose their level of interaction with the water based on access points.", 
+      navigationAids: "Gradual water access points, safety features.", 
+      concept: "Progressive disclosure in physical space: Users can self-select their level of engagement with the water." },
+    
+    { id: 'hyde-central-flow', name: 'Hyde Park (Main Flow)', neighborhood: 'Hyde Park', tubeStop: 'Lancaster Gate', tubeLine: 'central',
+      coordinates: [51.5085, -0.1657],
+      userBehavior: "Joggers and walkers move down central axis.",
+      navigationAids: "Wide paths, visual corridor.",
+      concept: "Primary user flows dominate content hierarchy—like key actions on landing pages." },
+    
+    { id: 'hyde-edge-discovery', name: 'Hyde Park (Edge Discovery)', neighborhood: 'Hyde Park', tubeStop: 'Knightsbridge', tubeLine: 'piccadilly',
+      coordinates: [51.5050, -0.1630],
+      userBehavior: "Users find quiet spaces along park perimeters.",
+      navigationAids: "Benches, signs, trees.",
+      concept: "Peripheral UI zones contain hidden features—low-key discovery boosts retention." },
+    
+    // ----- Regent's Park Area -----
+    { id: 'regents-park-network', name: 'Regent\'s Park (Path Network)', neighborhood: 'Regent\'s Park', tubeStop: 'Regent\'s Park', tubeLine: 'bakerloo',
+      coordinates: [51.5260, -0.1460],
+      userBehavior: "Park visitors navigate an extensive path network with multiple options.", 
+      navigationAids: "Path hierarchy, landmark features.", 
+      concept: "The park\'s network design offers multiple valid routes to destinations." },
+    
+    { id: 'regents-park-map', name: 'Regent\'s Park (Map Usage)', neighborhood: 'Regent\'s Park', tubeStop: 'Regent\'s Park', tubeLine: 'bakerloo',
+      coordinates: [51.5255, -0.1456],
+      userBehavior: "Visitors consult maps to orient in the extensive space.", 
+      navigationAids: "Park maps, you-are-here indicators.", 
+      concept: "Maps provide necessary context in extensive environments with many options." },
+    
+    { id: 'regents-central-grid', name: 'Regent\'s Park (Formal Grid)', neighborhood: 'Regent\'s Park', tubeStop: 'Regent\'s Park', tubeLine: 'bakerloo',
+      coordinates: [51.5261, -0.1464],
+      userBehavior: "Visitors walk a formal grid layout of paths.",
+      navigationAids: "Path hierarchy, aligned trees.",
+      concept: "Grid systems establish clarity and scalability—just like front-end UI frameworks." },
+    
+    { id: 'regents-exit-wander', name: 'Regent\'s Park (Wander Exit)', neighborhood: 'Regent\'s Park', tubeStop: 'Great Portland Street', tubeLine: 'circle',
+      coordinates: [51.5265, -0.1440],
+      userBehavior: "Users wander off grid into informal areas near exits.",
+      navigationAids: "Low signage, benches.",
+      concept: "Free exploration zones reflect sandbox modes or browse states." },
+    
+    // ----- Chelsea Area -----
+    { id: 'duke-of-york-seating', name: 'Duke of York Square (Seating)', neighborhood: 'Chelsea', tubeStop: 'Sloane Square', tubeLine: 'district',
+      coordinates: [51.4918, -0.1590],
+      userBehavior: "Visitors pause and occupy the public space for different durations.", 
+      navigationAids: "Seating arrangements, spatial organization.", 
+      concept: "Seating design influences flow, lingering, and social interaction patterns." },
+    
+    // ===== EAST LONDON =====
+    
+    // ----- Liverpool Street Area -----
+    { id: 'liverpool-street-info', name: 'Liverpool Street (Info Board)', neighborhood: 'Liverpool Street', tubeStop: 'Liverpool Street', tubeLine: 'central',
+      coordinates: [51.5183, -0.0818],
+      userBehavior: "Commuters scan information boards for relevant departure details.", 
+      navigationAids: "Information boards with timetables.", 
+      concept: "Users selectively filter information based on relevance to their journey." },
+    
+    { id: 'liverpool-street-concourse', name: 'Liverpool Street Concourse (Wide)', neighborhood: 'Liverpool Street', tubeStop: 'Liverpool Street', tubeLine: 'central',
+      coordinates: [51.5185, -0.0822],
+      userBehavior: "Travelers orient themselves within the station concourse.", 
+      navigationAids: "Open architectural space, visible pathways.", 
+      concept: "The open concourse design provides natural orientation through spatial hierarchy." },
+    
+    { id: 'liverpool-street-elevator', name: 'Liverpool Street Elevator (Detail)', neighborhood: 'Liverpool Street', tubeStop: 'Liverpool Street', tubeLine: 'central',
+      coordinates: [51.5188, -0.0820],
+      userBehavior: "Users choose between stairs and elevators based on needs and signage.", 
+      navigationAids: "Elevator interfaces, accessibility signage.", 
+      concept: "Diverse navigation options catering to different user capabilities and preferences." },
+    
+    // ----- Barbican Area -----
+    { id: 'barbican-junction', name: 'Barbican Junction Point', neighborhood: 'Barbican', tubeStop: 'Barbican', tubeLine: 'metropolitan',
+      coordinates: [51.5204, -0.0970],
+      userBehavior: "Users navigate complex pathways in the brutalist architecture.", 
+      navigationAids: "Architectural cues, signage.", 
+      concept: "The Barbican\'s complex pathway system requires strategic wayfinding interventions." },
+    
+    { id: 'barbican-signage', name: 'Barbican Signage Detail', neighborhood: 'Barbican', tubeStop: 'Barbican', tubeLine: 'metropolitan',
+      coordinates: [51.5201, -0.0975],
+      userBehavior: "Visitors follow specialized signage within the complex.", 
+      navigationAids: "Custom signage system integrated with architecture.", 
+      concept: "Barbican\'s unique signage system matches its distinctive architectural identity." },
+    
+    { id: 'barbican-hidden', name: 'Barbican Hidden Destination', neighborhood: 'Barbican', tubeStop: 'Barbican', tubeLine: 'metropolitan',
+      coordinates: [51.5208, -0.0977],
+      userBehavior: "Visitors discover hidden or less obvious destinations.", 
+      navigationAids: "Subtle architectural cues, minimal signage.", 
+      concept: "The Barbican rewards exploration with discovery of unexpected spaces." },
+    
+    // ----- Farringdon Area -----
+    { id: 'farringdon-external', name: 'Farringdon (External View)', neighborhood: 'Farringdon', tubeStop: 'Farringdon', tubeLine: 'elizabeth',
+      coordinates: [51.5203, -0.1053],
+      userBehavior: "Commuters approach the station entrance from multiple directions.", 
+      navigationAids: "Architectural prominence, station signage.", 
+      concept: "Farringdon\'s design clearly signals its function as a transportation hub." },
+    
+    { id: 'farringdon-junction', name: 'Farringdon (Junction)', neighborhood: 'Farringdon', tubeStop: 'Farringdon', tubeLine: 'elizabeth',
+      coordinates: [51.5200, -0.1050],
+      userBehavior: "Travelers navigate between different transportation systems.", 
+      navigationAids: "Transfer signage, architectural connections.", 
+      concept: "Junction points between transportation systems require clear transitional guidance." },
+    
+    // ----- Old Street Area -----
+    { id: 'old-street-roundabout', name: 'Old Street Roundabout Aerial', neighborhood: 'Old Street', tubeStop: 'Old Street', tubeLine: 'northern',
+      coordinates: [51.5263, -0.0878],
+      userBehavior: "Multiple transportation types converge and navigate a complex junction.", 
+      navigationAids: "Traffic signals, lane markings, barriers.", 
+      concept: "The roundabout manages conflicting user types and intentions in a shared space." },
+    
+    { id: 'old-street-exit', name: 'Old Street Exit Decision', neighborhood: 'Old Street', tubeStop: 'Old Street', tubeLine: 'northern',
+      coordinates: [51.5266, -0.0880],
+      userBehavior: "Commuters choose between multiple exits based on their destination.", 
+      navigationAids: "Exit numbering, local area maps.", 
+      concept: "Multiple exits create a decision point requiring clear information." },
+    
+    // ----- City of London Area -----
     { id: 'fenchurch-street-inconsistency', name: 'Fenchurch Street (Inconsistency)', neighborhood: 'City of London', tubeStop: 'Tower Hill', tubeLine: 'circle',
       coordinates: [51.5115, -0.0780],
       userBehavior: "Users navigate despite inconsistent or contradictory information.", 
       navigationAids: "Inconsistent or outdated signage elements.", 
       concept: "Documenting how inconsistent navigation systems create confusion." },
     
-    // User Behavior
-    { id: 'user-behavior-decision', name: 'User Behavior (Decision Point)', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
-      coordinates: [51.5085, -0.1290],
-      userBehavior: "People pause and orient at key decision points.", 
-      navigationAids: "Observing orientation behaviors at junctions.", 
-      concept: "Documenting common behavioral patterns at navigation decision points." },
-      
-    { id: 'user-behavior-intersection', name: 'User Behavior (Intersection)', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
-      coordinates: [51.5095, -0.1300],
-      userBehavior: "People negotiate shared space at pathway intersections.", 
-      navigationAids: "Observing social navigation protocols.", 
-      concept: "How users develop informal protocols for navigating shared spaces." },
+    // ----- King's Cross / St Pancras Area -----
+    { id: 'kings-cross-transition', name: 'King\'s Cross Level Transition', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
+      coordinates: [51.5308, -0.1244],
+      userBehavior: "Users navigate vertical transitions between levels.", 
+      navigationAids: "Staircases, escalators, visual connections.", 
+      concept: "King\'s Cross station\'s redesign creates clear vertical navigation between different functional levels." },
     
-    // Parkland Walk
+    { id: 'kings-cross-material', name: 'King\'s Cross Material Continuity', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
+      coordinates: [51.5310, -0.1240],
+      userBehavior: "Travelers follow continuous material cues through the space.", 
+      navigationAids: "Consistent materials, architectural elements.", 
+      concept: "Material consistency creates intuitive pathways through complex spaces." },
+    
+    { id: 'camley-street-entrance', name: 'Camley Street (Entrance Sequence)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
+      coordinates: [51.5344, -0.1258],
+      userBehavior: "Visitors transition from urban environment to nature reserve.", 
+      navigationAids: "Entrance sequence, transitional design.", 
+      concept: "The entrance sequence prepares visitors for a shift in context and attention." },
+    
+    { id: 'camley-street-richness', name: 'Camley Street (Compact Richness)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
+      coordinates: [51.5346, -0.1260],
+      userBehavior: "Visitors explore densely-designed small space with multiple elements.", 
+      navigationAids: "Pathway design, interpretive elements.", 
+      concept: "The nature park demonstrates how to create richness in a compact space." },
+    
+    { id: 'camley-street-behavior', name: 'Camley Street (Visitor Behavior)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
+      coordinates: [51.5348, -0.1262],
+      userBehavior: "Nature reserve visitors demonstrate different engagement patterns.", 
+      navigationAids: "Interpretive signage, viewing platforms.", 
+      concept: "Observing how different visitor types engage with educational elements." },
+    
+    { id: 'gasholder-park-approach', name: 'Gasholder Park (Approach)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
+      coordinates: [51.5354, -0.1253],
+      userBehavior: "Visitors approach and discover the repurposed industrial structure.", 
+      navigationAids: "Visual landmark, architectural framing.", 
+      concept: "The gasholders create a distinctive landmark that signals a destination." },
+    
+    { id: 'gasholder-park-frame', name: 'Gasholder Park (Internal Frame)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
+      coordinates: [51.5356, -0.1252],
+      userBehavior: "Users experience the contrast between industrial structure and green space.", 
+      navigationAids: "Circular framework, central green.", 
+      concept: "The industrial frame creates a distinctive context for the park experience." },
+    
+    { id: 'gasholder-park-positioning', name: 'Gasholder Park (User Positioning)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
+      coordinates: [51.5355, -0.1251],
+      userBehavior: "Visitors position themselves within the circular space.", 
+      navigationAids: "Circular pathways, central lawn.", 
+      concept: "The circular form creates natural positioning and circulation patterns." },
+    
+    { id: 'gasholder-park-lighting', name: 'Gasholder Park (Night Lighting)', neighborhood: 'King\'s Cross', tubeStop: 'King\'s Cross', tubeLine: 'northern',
+      coordinates: [51.5357, -0.1250],
+      userBehavior: "Night visitors navigate and experience the illuminated structure.", 
+      navigationAids: "Architectural lighting, pathway illumination.", 
+      concept: "Lighting transforms the user experience and navigation during night hours." },
+    
+    // ----- Camden Area -----
+    { id: 'camden-market-entrance', name: 'Camden Market Entrance', neighborhood: 'Camden', tubeStop: 'Camden Town', tubeLine: 'northern',
+      coordinates: [51.5394, -0.1427],
+      userBehavior: "Visitors enter a complex, organic marketplace environment.", 
+      navigationAids: "Gateway architecture, commercial signage.", 
+      concept: "The market entrance signals transition to a different commercial environment." },
+    
+    { id: 'camden-market-pathway', name: 'Camden Market Pathway', neighborhood: 'Camden', tubeStop: 'Camden Town', tubeLine: 'northern',
+      coordinates: [51.5398, -0.1428],
+      userBehavior: "Shoppers navigate narrow, winding paths with high visual complexity.", 
+      navigationAids: "Pathway design, overhead signage.", 
+      concept: "Market pathways balance discovery with navigability." },
+    
+    { id: 'camden-market-stall', name: 'Camden Market Stall Detail', neighborhood: 'Camden', tubeStop: 'Camden Town', tubeLine: 'northern',
+      coordinates: [51.5396, -0.1430],
+      userBehavior: "Customers interact with individual market stalls amidst visual complexity.", 
+      navigationAids: "Stall design, product displays.", 
+      concept: "Stall design must attract attention within a visually competitive environment." },
+    
+    // ----- Hampstead Area -----
+    { id: 'hampstead-luxury', name: 'Hampstead (Luxury Shopfronts)', neighborhood: 'Hampstead', tubeStop: 'Hampstead', tubeLine: 'northern',
+      coordinates: [51.5570, -0.1782],
+      userBehavior: "Shoppers engage with high-end retail environments.", 
+      navigationAids: "Luxury signaling, storefront design.", 
+      concept: "Retail design elements that signal premium experiences." },
+    
+    { id: 'hampstead-window', name: 'Hampstead (Window Display)', neighborhood: 'Hampstead', tubeStop: 'Hampstead', tubeLine: 'northern',
+      coordinates: [51.5566, -0.1778],
+      userBehavior: "Pedestrians pause to engage with curated window displays.", 
+      navigationAids: "Window design, product curation.", 
+      concept: "Window displays create moments of engagement in the pedestrian journey." },
+    
+    // ----- Finsbury Park Area -----
     { id: 'parkland-walk-linear', name: 'Parkland Walk (Linear)', neighborhood: 'Finsbury Park', tubeStop: 'Finsbury Park', tubeLine: 'victoria',
       coordinates: [51.5642, -0.1066],
       userBehavior: "Users follow a linear path with limited decision points.", 
       navigationAids: "Clear pathway, sequential experience.", 
       concept: "Linear paths create simple navigation with focus on the journey experience." },
-      
+    
     { id: 'parkland-walk-junction', name: 'Parkland Walk (Junction)', neighborhood: 'Finsbury Park', tubeStop: 'Finsbury Park', tubeLine: 'victoria',
       coordinates: [51.5645, -0.1068],
       userBehavior: "Walkers make choices at path junctions with limited information.", 
       navigationAids: "Junction design, limited signage.", 
       concept: "Junction design influences decision-making with minimal explicit guidance." },
     
-    // Regent's Park
-    { id: 'regents-park-network', name: 'Regent\'s Park (Path Network)', neighborhood: 'Regent\'s Park', tubeStop: 'Regent\'s Park', tubeLine: 'bakerloo',
-      coordinates: [51.5260, -0.1460],
-      userBehavior: "Park visitors navigate an extensive path network with multiple options.", 
-      navigationAids: "Path hierarchy, landmark features.", 
-      concept: "The park's network design offers multiple valid routes to destinations." },
-      
-    { id: 'regents-park-map', name: 'Regent\'s Park (Map Usage)', neighborhood: 'Regent\'s Park', tubeStop: 'Regent\'s Park', tubeLine: 'bakerloo',
-      coordinates: [51.5255, -0.1456],
-      userBehavior: "Visitors consult maps to orient in the extensive space.", 
-      navigationAids: "Park maps, you-are-here indicators.", 
-      concept: "Maps provide necessary context in extensive environments with many options." }
-];
+    // ----- Olympic Park Area -----
+    { id: 'olympic-park-wayfinding', name: 'Olympic Park Wayfinding Junction', neighborhood: 'Olympic Park', tubeStop: 'Stratford', tubeLine: 'central',
+      coordinates: [51.5439, -0.0154],
+      userBehavior: "Users make choices at a junction with multiple path options, potentially using landmarks and signage.", 
+      navigationAids: "Multiple path options, visible landmarks, signage.", 
+      concept: "Decision architecture: How physical spaces guide choices through environmental cues rather than explicit instructions." },
+    
+    { id: 'olympic-park-transitional', name: 'Olympic Park (Transitional)', neighborhood: 'Olympic Park', tubeStop: 'Stratford', tubeLine: 'central',
+      coordinates: [51.5425, -0.0133],
+      userBehavior: "Visitors experience multi-purpose spaces that reconfigure based on crowd size and contextual needs.", 
+      navigationAids: "Adaptable physical spaces.", 
+      concept: "Olympic Park\'s adaptable spaces mirror responsive digital design, reconfiguring based on contextual needs." },
+    
+    { id: 'olympic-park-wayfinding2', name: 'Olympic Park (Wayfinding)', neighborhood: 'Olympic Park', tubeStop: 'Stratford', tubeLine: 'central',
+      coordinates: [51.5416, -0.0120],
+      userBehavior: "Users encounter strategically placed wayfinding at decision points, reducing cognitive load.", 
+      navigationAids: "Wayfinding elements at decision points.", 
+      concept: "Strategic placement of wayfinding elements at decision points reduces cognitive load—a principle equally valuable in digital interface design." },
+    
+    // ----- Poplar Area -----
+    { id: 'poplar-legacy-systems', name: 'Poplar (Legacy Systems)', neighborhood: 'Poplar', tubeStop: 'Poplar', tubeLine: 'dlr',
+      coordinates: [51.5090, -0.0170],
+      userBehavior: "Navigating confusing or outdated estate signage.", 
+      navigationAids: "Street signs, plaques, inconsistent labels.", 
+      concept: "Older estates reflect legacy systems—still in use but poorly mapped." },
+    
+    { id: 'poplar-desire-lines', name: 'Poplar (Desire Lines)', neighborhood: 'Poplar', tubeStop: 'Poplar', tubeLine: 'dlr',
+      coordinates: [51.5088, -0.0167],
+      userBehavior: "Users cut across green spaces or informal paths.", 
+      navigationAids: "Worn grass paths, broken fences.", 
+      concept: "Desire lines show natural user flows that bypass poor navigation design." },
+    
+    { id: 'poplar-broken-affordance', name: 'Poplar (Broken Affordance)', neighborhood: 'Poplar', tubeStop: 'Poplar', tubeLine: 'dlr',
+      coordinates: [51.5085, -0.0165],
+      userBehavior: "People avoid broken benches or misused street furniture.", 
+      navigationAids: "Damaged urban elements.", 
+      concept: "Physical affordances can mislead when broken—like inactive buttons in UI." },
+    
+    // ----- Canary Wharf Area -----
+    { id: 'canary-wharf-wide', name: 'Canary Wharf (Wide)', neighborhood: 'Canary Wharf', tubeStop: 'Canary Wharf', tubeLine: 'jubilee',
+      coordinates: [51.5055, -0.0175],
+      userBehavior: "Users navigate a controlled corporate environment.", 
+      navigationAids: "Planned layout, consistent design language.", 
+      concept: "Canary Wharf\'s master-planned environment creates predictable navigation patterns." },
+    
+    { id: 'canary-wharf-decision', name: 'Canary Wharf (Decision Points)', neighborhood: 'Canary Wharf', tubeStop: 'Canary Wharf', tubeLine: 'jubilee',
+      coordinates: [51.5050, -0.0180],
+      userBehavior: "Office workers and visitors navigate decision points in the complex.", 
+      navigationAids: "Directional signage, maps, architectural cues.", 
+      concept: "Well-designed decision points reduce cognitive load in complex environments." },
+    
+    { id: 'canary-wharf-underground', name: 'Canary Wharf (Underground)', neighborhood: 'Canary Wharf', tubeStop: 'Canary Wharf', tubeLine: 'jubilee',
+      coordinates: [51.5040, -0.0170],
+      userBehavior: "Commuters transition between underground transport and surface environment.", 
+      navigationAids: "Architectural transitions, escalators, light wells.", 
+      concept: "The station\'s design creates a gradual transition from underground to surface environments." },
+    
+    { id: 'canary-predictable-paths', name: 'Canary Wharf (Predictable Paths)', neighborhood: 'Canary Wharf', tubeStop: 'Canary Wharf', tubeLine: 'jubilee',
+      coordinates: [51.5055, -0.0175],
+      userBehavior: "Workers and visitors follow smooth flow along glass-walled corridors.",
+      navigationAids: "Escalators, straight-line corridors, mirrored glass.",
+      concept: "Highly optimized flows reflect default user journeys in enterprise UIs." },
+    
+    { id: 'canary-overdesign', name: 'Canary Wharf (Overdesign)', neighborhood: 'Canary Wharf', tubeStop: 'Canary Wharf', tubeLine: 'jubilee',
+      coordinates: [51.5060, -0.0172],
+      userBehavior: "People feel detached or lost despite polished design.", 
+      navigationAids: "Perfectly clean signage, lack of contrast.",
+      concept: "Too much predictability can make UI feel sterile or uninviting." },
+    
+    { id: 'canary-dark-patterns', name: 'Canary Wharf (Dark Patterns)', neighborhood: 'Canary Wharf', tubeStop: 'Canary Wharf', tubeLine: 'jubilee',
+      coordinates: [51.5050, -0.0170],
+      userBehavior: "Users are nudged toward shops through layout bias.", 
+      navigationAids: "One-way corridors, escalator placement.",
+      concept: "Subtle architectural nudges manipulate user flow like dark patterns in UI." },
+    
+    // ----- Isle of Dogs Area -----
+    { id: 'isle-edge-interface', name: 'Isle of Dogs (Edge Interface)', neighborhood: 'Isle of Dogs', tubeStop: 'Island Gardens', tubeLine: 'dlr',
+      coordinates: [51.4870, -0.0090],
+      userBehavior: "Users drift toward waterfront despite lack of signage.", 
+      navigationAids: "Riverfront barriers, natural path curves.", 
+      concept: "Edges of systems (like sidebars or secondary menus) shape user behavior subtly." },
+    
+    { id: 'isle-looped-paths', name: 'Isle of Dogs (Looped Paths)', neighborhood: 'Isle of Dogs', tubeStop: 'Island Gardens', tubeLine: 'dlr',
+      coordinates: [51.4875, -0.0085],
+      userBehavior: "Walkers circle back unintentionally due to housing loops.", 
+      navigationAids: "Dead-ends, looping roads.",
+      concept: "Poor information architecture can trap users in looped journeys." },
+    
+    { id: 'isle-silent-ui', name: 'Isle of Dogs (Silent Interface)', neighborhood: 'Isle of Dogs', tubeStop: 'Island Gardens', tubeLine: 'dlr',
+      coordinates: [51.4880, -0.0092],
+      userBehavior: "Few visual cues guide users in quiet, open areas.", 
+      navigationAids: "Minimal signage, wide open spaces.",
+      concept: "Lack of interface feedback causes hesitation—like blank UI screens." },
+    
+    // ===== SOUTH LONDON =====
+    
+    // ----- Greenwich Area -----
+    { id: 'greenwich-foot-tunnel-wide', name: 'Greenwich Foot Tunnel (Wide)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
+      coordinates: [51.4834, -0.0095],
+      userBehavior: "Users choose between stairs and a lift based on signage and their needs.", 
+      navigationAids: "Staircase, lift entrances, directional signage.", 
+      concept: "Decision points at the Greenwich Foot Tunnel entrance: heritage preservation meets accessibility requirements, creating divergent user journeys." },
+    
+    { id: 'greenwich-foot-tunnel-lift', name: 'Greenwich Foot Tunnel (Lift Controls)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
+      coordinates: [51.4836, -0.0097],
+      userBehavior: "Users interact with modern lift controls added to the historic structure.", 
+      navigationAids: "Lift controls, information signage.", 
+      concept: "Retrofitted accessibility: modern interface elements added to century-old infrastructure highlight the challenges of adapting legacy systems." },
+    
+    { id: 'greenwich-foot-tunnel-user', name: 'Greenwich Foot Tunnel (User Behavior)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
+      coordinates: [51.4833, -0.0092],
+      userBehavior: "Some users wait for the lift while others use the stairs freely, leading to different experiences.", 
+      navigationAids: "Stairs, lift, user choices.", 
+      concept: "Divergent experiences: some users navigate the tunnel efficiently while others wait for accessibility accommodations." },
+    
+    { id: 'greenwich-foot-tunnel-rotunda', name: 'Greenwich Foot Tunnel (Exterior Rotunda)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
+      coordinates: [51.4830, -0.0094],
+      userBehavior: "The historic red-brick rotunda entrance with Thames backdrop establishes heritage context.", 
+      navigationAids: "Red-brick rotunda, Thames background.", 
+      concept: "The 1902 Greenwich Foot Tunnel entrance, whose heritage status constrains modernization efforts." },
+    
+    { id: 'greenwich-foot-tunnel-status', name: 'Greenwich Foot Tunnel (Lift Status)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
+      coordinates: [51.4831, -0.0093],
+      userBehavior: "Digital display shows the status of the lift in the historic structure.", 
+      navigationAids: "Digital lift status display.", 
+      concept: "Digital monitoring adds a layer of usefulness to the historic structure without altering it—a common approach in legacy interfaces." },
+    
+    { id: 'greenwich-foot-tunnel-phones', name: 'Greenwich Foot Tunnel (Checking Phones)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
+      coordinates: [51.4835, -0.0094],
+      userBehavior: "Visitors check lift status on their phones before committing to the journey due to unreliability.", 
+      navigationAids: "Phones, lack of reliable physical information.", 
+      concept: "Users develop workarounds when heritage systems prove unreliable—checking status before committing to the journey." },
+    
+    { id: 'cutty-sark-pier', name: 'Cutty Sark Pier (Modal Transition)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
+      coordinates: [51.4825, -0.0090],
+      userBehavior: "Signage guides passengers transitioning between ferry and land transport systems.", 
+      navigationAids: "Signage at system boundaries.", 
+      concept: "Modal transition interface: Signage at system boundaries guides users between different transportation networks." },
+    
+    { id: 'greenwich-tunnel-decision', name: 'Greenwich Tunnel (Decision Point)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
+      coordinates: [51.4834, -0.0095],
+      userBehavior: "Users choose between stairs and lift.",
+      navigationAids: "Signage, visual hierarchy.",
+      concept: "Decision architecture guides diverging user flows at tunnel entrance." },
+    
+    { id: 'greenwich-tunnel-linear-flow', name: 'Greenwich Tunnel (Linear Flow)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
+      coordinates: [51.4833, -0.0093],
+      userBehavior: "Pedestrians walk a single continuous tunnel.", 
+      navigationAids: "No branches or interruptions.",
+      concept: "Tunnels model single-path UI—like checkout flows or wizards." },
+    
+    { id: 'greenwich-tunnel-lift', name: 'Greenwich Tunnel (Lift Interface)', neighborhood: 'Greenwich', tubeStop: 'Cutty Sark', tubeLine: 'dlr',
+      coordinates: [51.4836, -0.0097],
+      userBehavior: "Users press digital lift buttons inside historic structure.", 
+      navigationAids: "Modern lift UI, tactile buttons.",
+      concept: "Layering modern controls over legacy systems shows progressive enhancement." },
+    
+    // ----- Deptford Area -----
+    { id: 'deptford-visual-noise', name: 'Deptford (Visual Noise)', neighborhood: 'Deptford', tubeStop: 'Deptford', tubeLine: 'overground',
+      coordinates: [51.4798, -0.0220],
+      userBehavior: "Users navigate competing signs, sounds, and colors.", 
+      navigationAids: "Multilingual signs, posters, street vendors.", 
+      concept: "Visually noisy UIs require design hierarchy and clear affordances to reduce overload." },
+    
+    { id: 'deptford-desire-lines', name: 'Deptford (Desire Lines)', neighborhood: 'Deptford', tubeStop: 'Deptford', tubeLine: 'overground',
+      coordinates: [51.4805, -0.0210],
+      userBehavior: "People take shortcuts across grass and alleys.",
+      navigationAids: "Informal trails, foot-worn shortcuts.",
+      concept: "User-created paths expose preferred flows—an opportunity for improved navigation design." },
+    
+    // ----- New Cross / New Cross Gate Area -----
+    { id: 'newcross-modal-switch', name: 'New Cross (Modal Switch)', neighborhood: 'New Cross', tubeStop: 'New Cross', tubeLine: 'overground',
+      coordinates: [51.4754, -0.0312],
+      userBehavior: "Users switch between buses, trains, and shops seamlessly.",
+      navigationAids: "Timetable boards, pedestrian flows.",
+      concept: "Multiple services converge like tabs in a multi-modal app interface." },
+    
+    { id: 'newcross-user-generated-wayfinding', name: 'New Cross (User Wayfinding)', neighborhood: 'New Cross', tubeStop: 'New Cross', tubeLine: 'overground',
+      coordinates: [51.4757, -0.0308],
+      userBehavior: "Murals and graffiti act as informal signposts.",
+      navigationAids: "Wall art, visual anchors.",
+      concept: "User-generated markers guide navigation where official UI lacks support." },
+    
+    { id: 'fordham-desire-flow', name: 'Fordham Park (Desire Path Flow)', neighborhood: 'New Cross', tubeStop: 'New Cross Gate', tubeLine: 'overground',
+      coordinates: [51.4751, -0.0334],
+      userBehavior: "Pedestrians cut across fields ignoring paved paths.",
+      navigationAids: "Footworn shortcuts, minimal fencing.",
+      concept: "User-generated pathways reflect actual behavior over designed navigation." },
+    
+    { id: 'telegraphhill-context-shift', name: 'Telegraph Hill (Contextual Elevation)', neighborhood: 'New Cross', tubeStop: 'New Cross Gate', tubeLine: 'overground',
+      coordinates: [51.4669, -0.0468],
+      userBehavior: "Users climb to reach a high vantage overlooking southeast London.",
+      navigationAids: "Stairs, sloped paths, city skyline.",
+      concept: "Elevation shift mirrors system-wide view change—like admin dashboards or analytics overlays." },
+    
+    { id: 'newcrossgate-friction-junction', name: 'New Cross Gate (Friction Junction)', neighborhood: 'New Cross Gate', tubeStop: 'New Cross Gate', tubeLine: 'overground',
+      coordinates: [51.4740, -0.0355],
+      userBehavior: "Users struggle with confusing crossings and long walks.",
+      navigationAids: "Busy roads, barriers, indirect paths.",
+      concept: "Poorly structured flows increase user friction—akin to inefficient form UX." },
+    
+    { id: 'newcrossgate-looping-navigation', name: 'New Cross Gate (Looping Navigation)', neighborhood: 'New Cross Gate', tubeStop: 'New Cross Gate', tubeLine: 'overground',
+      coordinates: [51.4745, -0.0340],
+      userBehavior: "Multiple paths return users to their starting point.",
+      navigationAids: "Poor signage, urban layout.",
+      concept: "Circular flows result from unclear navigation—users get stuck in loops." },
+    
+    { id: 'surrey-fastlane', name: 'Surrey Canal (Fast Lane UX)', neighborhood: 'Queens Road Peckham', tubeStop: 'Queens Road Peckham', tubeLine: 'overground',
+      coordinates: [51.4728, -0.0564],
+      userBehavior: "Cyclists and runners bypass local streets using dedicated path.",
+      navigationAids: "Pavement markings, no-interruptions route.",
+      concept: "Designed for experts—like power user shortcuts, command palettes or advanced filters." },
+    
+    // ----- Peckham Area -----
+    { id: 'queensroad-threshold-preview', name: 'Queens Road Peckham (Threshold Preview)', neighborhood: 'Peckham', tubeStop: 'Queens Road Peckham', tubeLine: 'overground',
+      coordinates: [51.4700, -0.0565],
+      userBehavior: "Travelers preview the area before committing to an exit.",
+      navigationAids: "Glass walls, elevated view.",
+      concept: "Interface previews allow users to decide if they want to continue—like preview cards or hover states." },
+    
+    { id: 'queensroad-compression-corridor', name: 'Queens Road Peckham (Compression Corridor)', neighborhood: 'Peckham', tubeStop: 'Queens Road Peckham', tubeLine: 'overground',
+      coordinates: [51.4703, -0.0560],
+      userBehavior: "Users are funneled through tight corridors at station exits.",
+      navigationAids: "Narrow paths, handrails.",
+      concept: "Compressed navigation flows reflect mobile-first responsive design layouts." },
+    
+    { id: 'peckham-chaotic-layout', name: 'Peckham Rye (Chaotic Layout)', neighborhood: 'Peckham', tubeStop: 'Peckham Rye', tubeLine: 'overground',
+      coordinates: [51.4680, -0.0670],
+      userBehavior: "Navigating markets and vibrant streets with layered stimuli.",
+      navigationAids: "Colors, sounds, signs.",
+      concept: "Complex sensory environments reflect data-dense UIs—overwhelming but rich." },
+    
+    { id: 'peckham-joyful-friction', name: 'Peckham Rye (Joyful Friction)', neighborhood: 'Peckham', tubeStop: 'Peckham Rye', tubeLine: 'overground',
+      coordinates: [51.4685, -0.0672],
+      userBehavior: "People slow down due to street performers and unexpected events.",
+      navigationAids: "Crowds, music, narrow lanes.",
+      concept: "Intentional friction can create engagement and delight—like loading animations or easter eggs." },
+    
+    { id: 'copeland-nested-systems', name: 'Copeland Park (Nested Systems)', neighborhood: 'Peckham', tubeStop: 'Peckham Rye', tubeLine: 'overground',
+      coordinates: [51.4691, -0.0687],
+      userBehavior: "Users explore layered spaces: gallery, café, bar, studios.",
+      navigationAids: "Ad-hoc signage, corridor discovery.",
+      concept: "Nested UI components—like accordions within tabs or modals in apps." },
+    
+    { id: 'peckhamlevels-progressive-disclosure', name: 'Peckham Levels (Progressive Disclosure)', neighborhood: 'Peckham', tubeStop: 'Peckham Rye', tubeLine: 'overground',
+      coordinates: [51.4685, -0.0691],
+      userBehavior: "Visitors move up through surprising creative spaces in a former car park.",
+      navigationAids: "Painted walls, floor guides, lights.",
+      concept: "Progressively revealed content mirrors expanding menus or onboarding sequences." },
+    
+    { id: 'peckhamplex-budget-ui', name: 'Peckhamplex (Budget UX)', neighborhood: 'Peckham', tubeStop: 'Peckham Rye', tubeLine: 'overground',
+      coordinates: [51.4693, -0.0692],
+      userBehavior: "Users navigate low-cost but functional interface (e.g., paper tickets, basic signage).",
+      navigationAids: "Posters, handwritten signs.",
+      concept: "Low-fi UX can still provide value—MVP interfaces that focus on core functionality." },
+    
+    { id: 'bellenden-character-ui', name: 'Bellenden Road (Character UI)', neighborhood: 'Peckham', tubeStop: 'Peckham Rye', tubeLine: 'overground',
+      coordinates: [51.4675, -0.0752],
+      userBehavior: "Users wander among independent shops with bespoke storefronts.",
+      navigationAids: "Unique signage, painted shutters, window displays.",
+      concept: "Distinctive visual branding—like custom UI themes or user-generated skins." },
+    
+    { id: 'peckhamlibrary-unexpected-flow', name: 'Peckham Library (Unexpected Entry)', neighborhood: 'Peckham', tubeStop: 'Peckham Rye', tubeLine: 'overground',
+      coordinates: [51.4678, -0.0695],
+      userBehavior: "Library is accessed via lift or side entrance rather than a prominent front door.",
+      navigationAids: "Minimal facade, indirect entry.",
+      concept: "Counterintuitive user flows—like hidden nav items or non-standard onboarding." },
 
+// --- from Peckham to Elephant & Castle  ---
+
+// Southampton Way / Peckham Road Junction
+{ id: 'southampton-disjointed-nav', name: 'Southampton Way (Disjointed Navigation)', neighborhood: 'Camberwell', tubeStop: 'Peckham Rye', tubeLine: 'overground',
+  coordinates: [51.4722, -0.0785],
+  userBehavior: "Pedestrians face inconsistent signs, street names, and design shifts.",
+  navigationAids: "Mixed road signs, corner shops, signal lights.",
+  concept: "Inconsistent navigation layers mirror broken breadcrumbs or flow mismatches in app design." },
+
+// East Street Market
+{ id: 'eaststreet-dynamic-feed', name: 'East Street Market (Dynamic Feed)', neighborhood: 'Walworth', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+  coordinates: [51.4903, -0.0947],
+  userBehavior: "Shoppers walk through constantly changing market stalls.",
+  navigationAids: "Vendor canopies, hand-written price signs.",
+  concept: "Markets mimic an infinite scroll feed—content appears in shifting order and layout." },
+
+// Brunswick Park
+{ id: 'brunswick-microui', name: 'Brunswick Park (Micro UI)', neighborhood: 'Camberwell', tubeStop: 'Oval', tubeLine: 'northern',
+  coordinates: [51.4772, -0.0924],
+  userBehavior: "Users sit briefly or cut across for errands.",
+  navigationAids: "Trees, minimal benches, no map.",
+  concept: "Micro UI zones offer temporary relief or refocus—like pause states, reading mode, or break timers." },
+
+// Camberwell Green (Laundromats + Takeaways)
+{ id: 'camberwell-async-ui', name: 'Camberwell Green (Async UI)', neighborhood: 'Camberwell', tubeStop: 'Oval', tubeLine: 'northern',
+  coordinates: [51.4745, -0.0922],
+  userBehavior: "Users engage with background tasks—laundry, food orders—then continue elsewhere.",
+  navigationAids: "Order screens, machine cycles.",
+  concept: "Async UX mirrors processes like uploads, background sync, or background rendering tasks." },
+
+// Benhill Road Community Garden
+{ id: 'benhill-user-content', name: 'Benhill Road (User Content Zone)', neighborhood: 'Camberwell', tubeStop: 'Kennington', tubeLine: 'northern',
+  coordinates: [51.4792, -0.0912],
+  userBehavior: "Locals maintain and decorate small community garden plots.",
+  navigationAids: "Painted fences, gardening signs.",
+  concept: "User-controlled space equals editable content or custom dashboards." },
+
+// Walworth Triangle / Thurlow Crossing
+{ id: 'walworth-interrupt', name: 'Walworth Road (System Interrupt)', neighborhood: 'Walworth', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+  coordinates: [51.4880, -0.0945],
+  userBehavior: "Pedestrians are forced to navigate awkward triangle detours.",
+  navigationAids: "Fencing, signal timing.",
+  concept: "Interrupts in UX—like modals or alerts—force reorientation and break momentum." },
+
+// Kennington Park (South Side)
+{ id: 'kennington-context-switch', name: 'Kennington Park (Context Switch)', neighborhood: 'Kennington', tubeStop: 'Kennington', tubeLine: 'northern',
+  coordinates: [51.4811, -0.1070],
+  userBehavior: "One half is calm and recreational, the other hosts protests and memorials.",
+  navigationAids: "Plaques, fences, open lawns.",
+  concept: "Context-sensitive zones in UI—similar to admin vs guest modes or state-based interface design." },
+    
+    // ----- Nunhead Area -----
+    { id: 'nunhead-versioning', name: 'Nunhead Cemetery (System Versioning)', neighborhood: 'Nunhead', tubeStop: 'Nunhead', tubeLine: 'overground',
+      coordinates: [51.4635, -0.0591],
+      userBehavior: "Visitors explore overgrown historic pathways and graves.",
+      navigationAids: "Stone paths, partial signage, statues.",
+      concept: "Legacy design remnants reflect archived or deprecated features still visible in UI." },
+    
+    // ----- Brockley Area -----
+    { id: 'brockleymarket-cards', name: 'Brockley Market (Modular Cards)', neighborhood: 'Brockley', tubeStop: 'Brockley', tubeLine: 'overground',
+      coordinates: [51.4632, -0.0369],
+      userBehavior: "Shoppers browse discrete food stalls arranged side by side.",
+      navigationAids: "Stall layout, chalk menus.",
+      concept: "Card-based UI design—modular content blocks for scanning and selection." },
+    
+    // ----- Borough Area -----
+    { id: 'borough-high-wide', name: 'Borough High Street (Wide)', neighborhood: 'Borough', tubeStop: 'Borough', tubeLine: 'northern',
+      coordinates: [51.5011, -0.0945],
+      userBehavior: "Pedestrians navigate a historic streetscape with modern elements.", 
+      navigationAids: "Historic architecture, street patterns.", 
+      concept: "Borough High Street blends historic navigation patterns with modern interventions." },
+    
+    { id: 'borough-high-transition', name: 'Borough High Street (Transition)', neighborhood: 'Borough', tubeStop: 'Borough', tubeLine: 'northern',
+      coordinates: [51.5008, -0.0943],
+      userBehavior: "Users transition between different neighborhood characters.", 
+      navigationAids: "Architectural shifts, changing streetscape.", 
+      concept: "Street transitions signal different neighborhood zones and functions." },
+    
+    { id: 'borough-high-closeup', name: 'Borough High Street (Close-up)', neighborhood: 'Borough', tubeStop: 'Borough', tubeLine: 'northern',
+      coordinates: [51.5014, -0.0947],
+      userBehavior: "Pedestrians engage with street-level details and businesses.", 
+      navigationAids: "Shopfronts, signage, street furniture.", 
+      concept: "Street-level details create engagement within the larger urban framework." },
+    
+    // ----- Bermondsey Area -----
+    { id: 'bermondsey-street-character', name: 'Bermondsey Street (Character)', neighborhood: 'Bermondsey', tubeStop: 'Bermondsey', tubeLine: 'jubilee',
+      coordinates: [51.4982, -0.0635],
+      userBehavior: "Visitors experience the distinctive character of the historic street.", 
+      navigationAids: "Historic architecture, street width.", 
+      concept: "The street\'s character creates a distinctive experiential context." },
+    
+    { id: 'bermondsey-street-cafe', name: 'Bermondsey Street (Café)', neighborhood: 'Bermondsey', tubeStop: 'Bermondsey', tubeLine: 'jubilee',
+      coordinates: [51.4986, -0.0637],
+      userBehavior: "People linger in the transitional space between cafe and street.", 
+      navigationAids: "Outdoor seating, facade design.", 
+      concept: "Cafe frontage creates a social buffer zone between public and private." },
+    
+    { id: 'bermondsey-street-material', name: 'Bermondsey Street (Material)', neighborhood: 'Bermondsey', tubeStop: 'Bermondsey', tubeLine: 'jubilee',
+      coordinates: [51.4984, -0.0633],
+      userBehavior: "Pedestrians navigate using material and textural cues.", 
+      navigationAids: "Street materials, textural changes.", 
+      concept: "Material changes subtly communicate functional zones and transitions." },
+    
+    // ----- London Bridge Area -----
+    { id: 'london-bridge-wide', name: 'London Bridge Station (Wide)', neighborhood: 'London Bridge', tubeStop: 'London Bridge', tubeLine: 'northern',
+      coordinates: [51.5050, -0.0865],
+      userBehavior: "Commuters navigate a major transportation hub with multiple systems.", 
+      navigationAids: "Architectural organization, signage systems.", 
+      concept: "The station design organizes multiple transportation systems clearly." },
+    
+    { id: 'london-bridge-decision', name: 'London Bridge Station (Decision Point)', neighborhood: 'London Bridge', tubeStop: 'London Bridge', tubeLine: 'northern',
+      coordinates: [51.5055, -0.0870],
+      userBehavior: "Travelers make choices at critical junction points.", 
+      navigationAids: "Decision-point signage, sight lines.", 
+      concept: "Station redesign places clear information at key decision points." },
+    
+    { id: 'london-bridge-user', name: 'London Bridge Station (User Behavior)', neighborhood: 'London Bridge', tubeStop: 'London Bridge', tubeLine: 'northern',
+      coordinates: [51.5052, -0.0868],
+      userBehavior: "Different user types (tourists, commuters) create varied movement patterns.", 
+      navigationAids: "Observing natural user flows and pain points.", 
+      concept: "Observing how different user types navigate the same environment." },
+    
+    // ----- Elephant & Castle / Walworth Area -----
+    { id: 'oldkent-system-lag', name: 'Old Kent Road (System Lag)', neighborhood: 'Southwark', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+      coordinates: [51.4885, -0.0765],
+      userBehavior: "Commuters and trucks move slowly through a long, congested route.",
+      navigationAids: "Traffic lights, narrow pavements.",
+      concept: "Heavy friction reflects slow-loading systems, scroll lag, or poorly optimized code." },
+    
+    { id: 'burgess-ambient-wayfinding', name: 'Burgess Park (Ambient Wayfinding)', neighborhood: 'Burgess Park', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+      coordinates: [51.4815, -0.0790],
+      userBehavior: "People navigate using park layout rather than signage.",
+      navigationAids: "Curving paths, trees, benches.",
+      concept: "Ambient cues can guide users subtly without overt instructions—like gesture-based interfaces." },
+    
+    { id: 'burgess-edge-transitions', name: 'Burgess Park (Edge Transitions)', neighborhood: 'Burgess Park', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+      coordinates: [51.4820, -0.0800],
+      userBehavior: "Users shift from green space to city grid at unclear boundaries.",
+      navigationAids: "Fence gaps, pavement shifts.",
+      concept: "Edge transitions in UX mark a change in system states—like switching between tools in a design suite." },
+    
+    { id: 'feminist-library-narrative-space', name: 'Feminist Library (Narrative Space)', neighborhood: 'Walworth', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+      coordinates: [51.4892, -0.0977],
+      userBehavior: "Visitors encounter feminist zines and archival content.",
+      navigationAids: "Posters, annotations, bulletin boards.",
+      concept: "Spaces that foreground community stories mimic user-centered design and co-creation." },
+    
+    { id: 'willowbrook-community-interface', name: 'Willowbrook Estate (Community Interface)', neighborhood: 'Walworth', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+      coordinates: [51.4890, -0.0972],
+      userBehavior: "Residents use shared outdoor areas for everyday interaction.",
+      navigationAids: "Benches, clotheslines, murals.",
+      concept: "Community UI is shaped through shared affordances—like comment threads or shared dashboards." },
+    
+    { id: 'walworth-retail-interface', name: 'Walworth Road (Retail Interface)', neighborhood: 'Walworth', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+      coordinates: [51.4905, -0.0978],
+      userBehavior: "Users scroll past endless shopfronts and pop-up markets.",
+      navigationAids: "Awnings, signage, varied typography.",
+      concept: "Scrolling through densely packed options mimics long-form or list-style UX." },
+    
+    { id: 'walworth-legacy-new-conflict', name: 'Walworth (Legacy vs. New)', neighborhood: 'Walworth', tubeStop: 'Kennington', tubeLine: 'northern',
+      coordinates: [51.4860, -0.0970],
+      userBehavior: "New buildings overwrite but don\'t fully replace older systems.",
+      navigationAids: "Contrasting architecture, mixed signage.",
+      concept: "Layered interfaces reflect legacy UI poorly integrated with new design systems." },
+    
+    { id: 'walworth-guerilla-ux', name: 'Walworth (Guerrilla UX)', neighborhood: 'Walworth', tubeStop: 'Kennington', tubeLine: 'northern',
+      coordinates: [51.4865, -0.0965],
+      userBehavior: "Users rely on informal stalls and ad-hoc urban infrastructure.",
+      navigationAids: "Taped signs, handwritten notes, mobile stalls.",
+      concept: "Improvised navigation reflects user innovation—like browser extensions or hacks." },
+    
+    { id: 'elephant-friction-map', name: 'Elephant & Castle (Friction Mapping)', neighborhood: 'Elephant & Castle', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+      coordinates: [51.4940, -0.1000],
+      userBehavior: "Pedestrians struggle to cross roundabout intersections.",
+      navigationAids: "Underpasses, detours, conflicting signs.",
+      concept: "High-friction transitions resemble poor onboarding experiences with multiple unclear steps." },
+    
+    { id: 'elephant-reset-design', name: 'Elephant & Castle (System Reset)', neighborhood: 'Elephant & Castle', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+      coordinates: [51.4945, -0.0995],
+      userBehavior: "Old shopping center demolished; new flows emerging.",
+      navigationAids: "Construction fencing, rerouted paths.",
+      concept: "Deleting a legacy feature before a new one is ready disrupts continuity—analogous to failed feature rollouts." },
+    
+    { id: 'stgeorge-crossroads-design', name: 'St George\'s Circus (Crossroads Design)', neighborhood: 'Southwark', tubeStop: 'Elephant & Castle', tubeLine: 'bakerloo',
+      coordinates: [51.4994, -0.1052],
+      userBehavior: "Users make real-time decisions at multiple crossing points.",
+      navigationAids: "Minimal signage, curved routes.",
+      concept: "Crossroad patterns challenge decision-making—akin to nav menus with too many top-level items." },
+    
+    // ----- Lambeth Area -----
+    { id: 'iwm-quiet-ui', name: 'Imperial War Museum (Quiet UX)', neighborhood: 'Lambeth', tubeStop: 'Lambeth North', tubeLine: 'bakerloo',
+      coordinates: [51.4958, -0.1118],
+      userBehavior: "Visitors pause in green space before entering museum.",
+      navigationAids: "Minimal signs, calm thresholds.",
+      concept: "Low-stimulus environments create mental space—similar to focus modes in writing tools." },
+    
+    { id: 'iwm-narrative-flow', name: 'Imperial War Museum (Narrative Flow)', neighborhood: 'Lambeth', tubeStop: 'Lambeth North', tubeLine: 'bakerloo',
+      coordinates: [51.4955, -0.1122],
+      userBehavior: "Users follow a linear, storytelling path through exhibits.",
+      navigationAids: "Directional floor markers, narrative sections.",
+      concept: "Guided storytelling interfaces—like onboarding tours—enhance comprehension through sequencing." },
+    
+    { id: 'iwm-memory-design', name: 'Imperial War Museum (Memory & Design)', neighborhood: 'Lambeth', tubeStop: 'Lambeth North', tubeLine: 'bakerloo',
+      coordinates: [51.4959, -0.1129],
+      userBehavior: "Users engage emotionally with exhibitions and silence.",
+      navigationAids: "Lighting, typography, object placement.",
+      concept: "Designing for reflection involves restraint—similar to empty state UX or confirmation dialogs." },
+    
+    { id: 'sovietmemorial-symbol-anchor', name: 'Soviet War Memorial (Symbol Anchor)', neighborhood: 'Lambeth', tubeStop: 'Lambeth North', tubeLine: 'bakerloo',
+      coordinates: [51.4957, -0.1132],
+      userBehavior: "Visitors pause and reflect beside a simple commemorative stone.",
+      navigationAids: "Floral offerings, plaques.",
+      concept: "Minimal symbolic content can convey deep meaning—like iconography or single-word feedback states." },
+    
+    { id: 'berlinwall-historical-fragment', name: 'Berlin Wall (Historical Fragment)', neighborhood: 'Lambeth', tubeStop: 'Lambeth North', tubeLine: 'bakerloo',
+      coordinates: [51.4956, -0.1130],
+      userBehavior: "Passersby discover an unexpected remnant of geopolitical history.",
+      navigationAids: "Stone markers, multilingual text.",
+      concept: "Easter eggs or legacy system nods in UX evoke surprise and emotional resonance." },
+    
+    { id: 'lambeth-orphaned-interface', name: 'Lambeth North (Orphaned Interface)', neighborhood: 'Lambeth North', tubeStop: 'Lambeth North', tubeLine: 'bakerloo',
+      coordinates: [51.4992, -0.1125],
+      userBehavior: "Users encounter a low-traffic, overlooked entrance.",
+      navigationAids: "Sparse signage, lack of context.",
+      concept: "Low-visibility features in design can confuse users—akin to abandoned pages or features." },
+    
+    // ----- South Bank / Waterloo Area -----
+    { id: 'southbank-centre-brutalist', name: 'Southbank Centre (Brutalist)', neighborhood: 'Southbank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5066, -0.1164],
+      userBehavior: "Brutalist architecture adapted with integrated ramps and lifts for accessibility.", 
+      navigationAids: "Concrete structure, integrated ramps/lifts.", 
+      concept: "The Southbank Centre\'s brutalist architecture has been adapted for accessibility without compromising its essential character." },
+    
+    { id: 'southbank-centre-signage', name: 'Southbank Centre (Signage)', neighborhood: 'Southbank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5062, -0.1162],
+      userBehavior: "Accessibility signage is designed to complement the brutalist aesthetic.", 
+      navigationAids: "Accessibility signage matching the aesthetic.", 
+      concept: "Accessibility signage designed to complement rather than conflict with the brutalist aesthetic—a model for integrated rather than appended solutions." },
+    
+    { id: 'southbank-centre-users', name: 'Southbank Centre (Diverse Users)', neighborhood: 'Southbank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5064, -0.1160],
+      userBehavior: "Users of different abilities successfully navigate and use the space.", 
+      navigationAids: "Accessible design, diverse users.", 
+      concept: "The result of successful integration: a heritage space that welcomes users of all abilities." },
+    
+    { id: 'southbank-river-walk', name: 'Southbank (River Walk)', neighborhood: 'Southbank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5068, -0.1175],
+      userBehavior: "Users navigate with the River Thames as a constant reference point.", 
+      navigationAids: "River Thames.", 
+      concept: "The River Thames provides a constant reference point along Southbank—similar to how persistent headers orient users in digital interfaces." },
+    
+    { id: 'waterloo-load-balancing', name: 'Waterloo (Load Balancing)', neighborhood: 'Waterloo', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5033, -0.1147],
+      userBehavior: "Commuters distribute across multiple exits and routes.",
+      navigationAids: "Multiple signs, dynamic wayfinding.",
+      concept: "Load balancing in UX ensures performance under pressure—like dynamic server routing or progressive enhancement." },
+    
+    { id: 'waterloo-meeting-anchor', name: 'Waterloo (Meeting Anchor)', neighborhood: 'Waterloo', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5036, -0.1145],
+      userBehavior: "Groups congregate under central clock tower.",
+      navigationAids: "Landmark, shared references.",
+      concept: "Shared UI anchors—like fixed navbars or chat heads—aid user orientation in complex systems." },
+    
+    { id: 'eye-loop-ui', name: 'London Eye (Loop Interface)', neighborhood: 'South Bank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5033, -0.1196],
+      userBehavior: "Users follow circular path of observation wheel.",
+      navigationAids: "Single-loop track, slow movement.",
+      concept: "Looped interfaces—like carousels or infinite scrolls—can offer passive immersion." },
+    
+    { id: 'eye-wait-reward', name: 'London Eye (Wait and Reward)', neighborhood: 'South Bank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5035, -0.1193],
+      userBehavior: "Long queues lead to panoramic views.",
+      navigationAids: "Queue ropes, time estimates.",
+      concept: "Delayed rewards mirror loading bars or progress unlocks in product design." },
+    
+    { id: 'southbank-horizontal-scroll', name: 'South Bank (Horizontal Scroll)', neighborhood: 'South Bank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5065, -0.1217],
+      userBehavior: "Pedestrians scroll past diverse zones along the river.",
+      navigationAids: "River as guide, food stalls, performers.",
+      concept: "Horizontal scroll interfaces showcase content in long, immersive journeys." },
+    
+    { id: 'southbank-modal-popups', name: 'South Bank (Modal Popups)', neighborhood: 'South Bank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5067, -0.1220],
+      userBehavior: "Buskers and performances grab attention mid-journey.",
+      navigationAids: "Sound, visual animation, spatial clusters.",
+      concept: "Unexpected modal popups interrupt flow but can delight or annoy depending on timing." },
+    
+    { id: 'jubileegardens-joy-navigation', name: 'Jubilee Gardens (Joyful Navigation)', neighborhood: 'South Bank', tubeStop: 'Waterloo', tubeLine: 'jubilee',
+      coordinates: [51.5030, -0.1180],
+      userBehavior: "Families and tourists relax in open green spaces with views.",
+      navigationAids: "Wide walkways, playground structures.",
+      concept: "Serendipitous and open discovery mirrors leisure-mode UX and app playgrounds." },
+    
+    // ===== WEST LONDON =====
+    
+    // ----- Wembley Area -----
+    { id: 'wembley-park-match', name: 'Wembley Park (Match Day)', neighborhood: 'Wembley', tubeStop: 'Wembley Park', tubeLine: 'metropolitan',
+      coordinates: [51.5632, -0.2790],
+      userBehavior: "Dense crowds selectively process wayfinding cues while navigating.", 
+      navigationAids: "Multiple information touchpoints, dense crowds.", 
+      concept: "Information filtering in action: Match day attendees at Wembley Park Station selectively process wayfinding cues while navigating through dense crowds—a physical manifestation of the same cognitive processes users employ when landing on feature-rich digital interfaces." },
+    
+    { id: 'wembley-temporary-signage', name: 'Wembley Temporary Signage', neighborhood: 'Wembley', tubeStop: 'Wembley Park', tubeLine: 'metropolitan',
+      coordinates: [51.5634, -0.2793],
+      userBehavior: "Temporary, event-specific signage is overlaid on permanent wayfinding.", 
+      navigationAids: "Temporary signage, permanent wayfinding.", 
+      concept: "Context-aware information: Temporary match day signage at Wembley Park demonstrates how physical environments adapt information presentation based on contextual factors—a principle that should guide adaptive digital interfaces." },
+    
+    { id: 'wembley-approach-wide', name: 'Wembley Approach (Wide)', neighborhood: 'Wembley', tubeStop: 'Wembley Park', tubeLine: 'metropolitan',
+      coordinates: [51.5560, -0.2795],
+      userBehavior: "Generous width of Olympic Way handles mass movement, preventing bottlenecks.", 
+      navigationAids: "Wide pedestrian approach (Olympic Way).", 
+      concept: "Olympic Way\'s generous width serves as a physical manifestation of digital load balancing, designed to prevent bottlenecks during peak flows." },
+    
+    { id: 'boxpark-wembley-mixed', name: 'BOXPARK Wembley (Mixed Scale)', neighborhood: 'Wembley', tubeStop: 'Wembley Park', tubeLine: 'metropolitan',
+      coordinates: [51.5625, -0.2805],
+      userBehavior: "Auxiliary spaces absorb excess crowd capacity before and after events.", 
+      navigationAids: "Gathering spaces (BOXPARK).", 
+      concept: "BOXPARK Wembley functions as a system buffer, absorbing excess crowd capacity before and after events to prevent stadium bottlenecks." },
+    
+    // ----- Hounslow Area -----
+    { id: 'hounslow-high-wide', name: 'Hounslow High Street (Wide)', neighborhood: 'Hounslow', tubeStop: 'Hounslow Central', tubeLine: 'piccadilly',
+      coordinates: [51.4705, -0.3666],
+      userBehavior: "Pedestrians naturally follow the curved architecture of the plaza.", 
+      navigationAids: "Semi-circular plaza architecture.", 
+      concept: "Curved architecture creates implicit pathways—physical manifestations of digital default settings." },
+    
+    { id: 'hounslow-high-transition', name: 'Hounslow High Street (Transition)', neighborhood: 'Hounslow', tubeStop: 'Hounslow Central', tubeLine: 'piccadilly',
+      coordinates: [51.4713, -0.3670],
+      userBehavior: "Different paving materials subtly indicate different functional zones.", 
+      navigationAids: "Changes in paving materials.", 
+      concept: "Material changes subtly communicate functional zones without explicit signage—the urban equivalent of well-designed UI affordances." },
+    
+    { id: 'hounslow-high-cultural', name: 'Hounslow High Street (Cultural)', neighborhood: 'Hounslow', tubeStop: 'Hounslow Central', tubeLine: 'piccadilly',
+      coordinates: [51.4717, -0.3653],
+      userBehavior: "Architectural details on building facades reflect multicultural influences.", 
+      navigationAids: "Architectural details with cultural references.", 
+      concept: "Inclusive defaults acknowledge diverse user populations through cultural references." },
+    
+    // ----- Wandsworth Area -----
+    { id: 'spencer-park-entrance', name: 'Spencer Park (Entrance)', neighborhood: 'Wandsworth', tubeStop: 'Wandsworth Town', tubeLine: 'overground',
+      coordinates: [51.4605, -0.1860],
+      userBehavior: "Local residents access a semi-private community park.", 
+      navigationAids: "Gated entrance, community signage.", 
+      concept: "The park entrance balances accessibility with community ownership." },
+    
+    { id: 'spencer-park-users', name: 'Spencer Park (Regular Users)', neighborhood: 'Wandsworth', tubeStop: 'Wandsworth Town', tubeLine: 'overground',
+      coordinates: [51.4608, -0.1865],
+      userBehavior: "Regular users navigate familiar space with established patterns.", 
+      navigationAids: "Familiarity, community knowledge.", 
+      concept: "Regular users develop efficient navigation patterns through familiarity." },
+    
+    { id: 'spencer-park-hierarchy', name: 'Spencer Park (Spatial Hierarchy)', neighborhood: 'Wandsworth', tubeStop: 'Wandsworth Town', tubeLine: 'overground',
+      coordinates: [51.4610, -0.1862],
+      userBehavior: "Visitors navigate between different activity zones in the park.", 
+      navigationAids: "Spatial organization, pathway hierarchy.", 
+      concept: "The park\'s spatial hierarchy guides users to appropriate activity zones." },
+    
+    // ----- Battersea Area -----
+    { id: 'battersea-park-aerial', name: 'Battersea Park (Aerial/Map)', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
+      coordinates: [51.4791, -0.1568],
+      userBehavior: "Users orient themselves based on activity zones and connecting pathways.", 
+      navigationAids: "Overall park layout, pathways, different zones.", 
+      concept: "Battersea Park\'s hub-and-spoke layout creates a zonal navigation system where users orient by activity areas rather than sequential paths." },
+    
+    { id: 'battersea-park-decision', name: 'Battersea Park (Decision Point)', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
+      coordinates: [51.4808, -0.1548],
+      userBehavior: "Users look at signage or visual cues before choosing a path at an intersection.", 
+      navigationAids: "Signage, visual cues.", 
+      concept: "Decision points in physical navigation provide insights for designing effective choice architecture in digital interfaces." },
+    
+    { id: 'battersea-park-user', name: 'Battersea Park (User Distribution)', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
+      coordinates: [51.4785, -0.1512],
+      userBehavior: "Different user groups naturally gather in their preferred activity zones.", 
+      navigationAids: "Natural grouping based on activities.", 
+      concept: "Different user segments naturally gravitate toward their preferred zones, demonstrating intuitive activity-based wayfinding." },
+    
+    { id: 'battersea-park-zoo', name: 'Battersea Park Children\'s Zoo Entrance', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
+      coordinates: [51.4800, -0.1552],
+      userBehavior: "Users transition from the general park environment to the specific visual language of the zoo.", 
+      navigationAids: "Entrance design, signage at child height.", 
+      concept: "Threshold design: The zoo entrance creates a narrowing of focus and introduction of the zoo\'s visual language—similar to an effective digital onboarding sequence." },
+    
+    { id: 'zoo-exhibit-panel', name: 'Zoo Exhibit Information Panel', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
+      coordinates: [51.4798, -0.1556],
+      userBehavior: "Child interacts with information displayed at their height level.", 
+      navigationAids: "Height positioning, potentially multi-sensory elements.", 
+      concept: "Information architecture in physical form: Content hierarchy designed for primary users (children) while remaining accessible to all." },
+    
+    { id: 'zoo-feeding-time', name: 'Zoo Feeding Time Demonstration', neighborhood: 'Battersea', tubeStop: 'Battersea Park', tubeLine: 'overground',
+      coordinates: [51.4795, -0.1558],
+      userBehavior: "Visitors gather for a scheduled event, and the space accommodates the crowd.", 
+      navigationAids: "Timed event, spatial organization.", 
+      concept: "Timed engagement points create rhythm and structure in physical experiences, similar to well-designed notification systems." },
+    
+    { id: 'battersea-power-station', name: 'Battersea Power Station (Contrast)', neighborhood: 'Battersea', tubeStop: 'Battersea Power Station', tubeLine: 'northern',
+      coordinates: [51.4817, -0.1440],
+      userBehavior: "Visitors observe the blend of historic structure and modern functionality.", 
+      navigationAids: "Historic elements, modern additions.", 
+      concept: "Battersea Power Station\'s blend of historic structure and modern functionality mirrors the challenge of modernizing legacy digital systems." },
+    
+    // ===== GENERAL / MULTI-LOCATION EXAMPLES =====
+    
+    // ----- Playground / Children's Areas -----
+    { id: 'childrens-playground', name: 'Children\'s Playground Equipment', neighborhood: 'Various Parks', tubeStop: 'Various', tubeLine: 'multiple',
+      coordinates: [51.5114, -0.1587],
+      userBehavior: "Children intuitively understand and use play elements without explicit instruction.", 
+      navigationAids: "Affordances of the equipment.", 
+      concept: "Physical affordances telegraph function without instruction—the ultimate goal of intuitive UI design." },
+    
+    // ----- Legible London -----
+    { id: 'legible-london-display', name: 'Legible London Display', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
+      coordinates: [51.5100, -0.1350],
+      userBehavior: "Pedestrians orient themselves using the mapped information.", 
+      navigationAids: "Map display, directional information.", 
+      concept: "Legible London provides consistent orienting information throughout the city." },
+    
+    { id: 'legible-london-pillar', name: 'Legible London Pillar (Detail)', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
+      coordinates: [51.5088, -0.1272],
+      userBehavior: "Users approach and interact with wayfinding elements.", 
+      navigationAids: "Pillar design, consistent mapping.", 
+      concept: "Consistent design language creates system recognition across the city." },
+    
+    { id: 'legible-london-signage', name: 'Legible London Signage (Detail)', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
+      coordinates: [51.5065, -0.1260],
+      userBehavior: "Pedestrians read and interpret directional signage.", 
+      navigationAids: "Walking time indicators, directional arrows.", 
+      concept: "Information density adjusted based on user needs at specific decision points." },
+    
+    // ----- User Behavior Studies -----
+    { id: 'user-behavior-decision', name: 'User Behavior (Decision Point)', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
+      coordinates: [51.5085, -0.1290],
+      userBehavior: "People pause and orient at key decision points.", 
+      navigationAids: "Observing orientation behaviors at junctions.", 
+      userBehavior: "People pause and orient at key decision points.", 
+      navigationAids: "Observing orientation behaviors at junctions.", 
+      concept: "Documenting common behavioral patterns at navigation decision points." },
+    
+    { id: 'user-behavior-intersection', name: 'User Behavior (Intersection)', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
+      coordinates: [51.5095, -0.1300],
+      userBehavior: "People negotiate shared space at pathway intersections.", 
+      navigationAids: "Observing social navigation protocols.", 
+      concept: "How users develop informal protocols for navigating shared spaces." },
+    
+    // ----- Comparative Studies -----
+    { id: 'tokyo-station-comparative', name: 'Tokyo Station Comparative', neighborhood: 'International', tubeStop: 'N/A', tubeLine: 'multiple',
+      coordinates: [51.5118, -0.1271],
+      userBehavior: "Foreign visitors navigate using universal design principles.", 
+      navigationAids: "Universal symbols, color coding.", 
+      concept: "Tokyo\'s station design uses universal principles that transcend language barriers." },
+    
+    { id: 'good-bad-friction', name: 'Good vs. Bad Friction (Comparative)', neighborhood: 'Various', tubeStop: 'Various', tubeLine: 'multiple',
+      coordinates: [51.5070, -0.1100],
+      userBehavior: "Users navigate intentional vs. unintentional friction points.", 
+      navigationAids: "Various intentional and unintentional barriers.", 
+      concept: "Comparing examples of helpful friction (for safety) vs. unhelpful friction (poor design)." },
+
+      // --- from Canary Wharf to Greenwich ---
+
+// Cubitt Town
+{ id: 'cubitttown-quietmode', name: 'Cubitt Town (Quiet Mode)', neighborhood: 'Isle of Dogs', tubeStop: 'Crossharbour', tubeLine: 'dlr',
+  coordinates: [51.4955, -0.0140],
+  userBehavior: "People move calmly through a quiet, residential zone with little signage or activity.",
+  navigationAids: "Low signage, evenly spaced paths.",
+  concept: "Low-stimulus environments mimic silent mode or distraction-free writing interfaces." },
+
+// Mudchute Park & Farm
+{ id: 'mudchute-surprise-system', name: 'Mudchute Farm (Surprise System)', neighborhood: 'Isle of Dogs', tubeStop: 'Mudchute', tubeLine: 'dlr',
+  coordinates: [51.4922, -0.0156],
+  userBehavior: "Urban walkers encounter a working farm inside a dense neighborhood.",
+  navigationAids: "Farm gates, animal signs, gravel paths.",
+  concept: "Unexpected discovery inside a structured system—like playful or gamified UX embedded in a formal app." },
+
+// Island Gardens
+{ id: 'islandgardens-modalexit', name: 'Island Gardens (Modal Exit)', neighborhood: 'Isle of Dogs', tubeStop: 'Island Gardens', tubeLine: 'dlr',
+  coordinates: [51.4879, -0.0095],
+  userBehavior: "Visitors reach river’s edge with framed view of Greenwich.",
+  navigationAids: "Stone benches, river wall.",
+  concept: "An emotionally satisfying final screen or modal—completion of a user journey." },
+
+// Blackwall
+{ id: 'blackwall-abandoned-feature', name: 'Blackwall (Abandoned Feature)', neighborhood: 'Poplar', tubeStop: 'Blackwall', tubeLine: 'dlr',
+  coordinates: [51.5072, -0.0077],
+  userBehavior: "Users rarely exit here; those who do face confusing layouts.",
+  navigationAids: "Sparse wayfinding, overhead roads.",
+  concept: "Poorly maintained or deprecated UI element still available in the system." },
+
+// East India Dock Basin
+{ id: 'eastindia-disabledcomponent', name: 'East India Basin (Disabled Component)', neighborhood: 'Poplar', tubeStop: 'East India', tubeLine: 'dlr',
+  coordinates: [51.5085, -0.0020],
+  userBehavior: "Birdwatchers quietly enter a disconnected historic dock area.",
+  navigationAids: "Gates, stone markers, wooden decks.",
+  concept: "A disabled or legacy component that still holds passive value." },
+
+// Trinity Buoy Wharf
+{ id: 'trinity-beta-feature', name: 'Trinity Buoy Wharf (Beta Feature)', neighborhood: 'Leamouth', tubeStop: 'Canning Town', tubeLine: 'jubilee',
+  coordinates: [51.5087, 0.0034],
+  userBehavior: "Users explore experimental art and lighthouse exhibits.",
+  navigationAids: "Graffiti, cargo containers, river edge.",
+  concept: "Experimental or lab feature zone, outside core product flow." },
+
+// Virginia Quay
+{ id: 'virginia-anchor-point', name: 'Virginia Quay (Anchor Point)', neighborhood: 'Leamouth', tubeStop: 'East India', tubeLine: 'dlr',
+  coordinates: [51.5082, 0.0010],
+  userBehavior: "Pedestrians pause at sculpture with river views.",
+  navigationAids: "Metal chain sculpture, viewing bench.",
+  concept: "Static anchor elements that orient users—like fixed nav bars or headers." },
+
+// Leamouth Peninsula
+{ id: 'leamouth-overdesigned-system', name: 'Leamouth Peninsula (Overdesigned System)', neighborhood: 'Leamouth', tubeStop: 'Canning Town', tubeLine: 'jubilee',
+  coordinates: [51.5105, 0.0030],
+  userBehavior: "People walk through a hyper-designed development with unclear flow.",
+  navigationAids: "Architectural repetition, mirrored surfaces.",
+  concept: "Overuse of design system elements can create alienation—too much structure without organic cues." },
+
+// Greenwich Peninsula Ecology Park
+{ id: 'greenwich-ecology-rest-mode', name: 'Greenwich Ecology Park (Rest Mode)', neighborhood: 'Greenwich', tubeStop: 'North Greenwich', tubeLine: 'jubilee',
+  coordinates: [51.5009, 0.0042],
+  userBehavior: "Visitors explore peaceful wetlands behind large-scale development.",
+  navigationAids: "Wooden bridges, reeds, silence.",
+  concept: "Calm zones in UX mirror quiet state—low attention demand, optional engagement." },
+
+// Emirates Air Line Terminal
+{ id: 'cablecar-overengineered', name: 'Emirates Cable Car (Overengineered UX)', neighborhood: 'Greenwich', tubeStop: 'North Greenwich', tubeLine: 'jubilee',
+  coordinates: [51.5012, 0.0036],
+  userBehavior: "Few users board the expensive scenic cable car for rare commutes.",
+  navigationAids: "Slick branding, ticket booths, empty queue lanes.",
+  concept: "Flashy, underused feature in an app—attractive but with low adoption." }
+
+];
 
             
             // For a real implementation, you would use all locations from the original data
@@ -1080,38 +1689,59 @@
             
             // Tube station coordinates (approximated)
             const tubeStationCoordinates = {
-                'Oxford Circus': [51.5152, -0.1415],
-    'Covent Garden': [51.5129, -0.1243],
-    'Battersea Park': [51.4770, -0.1467],
-    'Battersea Power Station': [51.4810, -0.1428],
-    'Hyde Park Corner': [51.5027, -0.1527],
-    'Stratford': [51.5416, -0.0042],
-    'Various': [51.5074, -0.1278], // Central London
-    'Hounslow Central': [51.4713, -0.3665],
-    'Westminster': [51.5014, -0.1257],
-    'Cutty Sark': [51.4827, -0.0096],
-    'Waterloo': [51.5036, -0.1143],
-    'Wembley Park': [51.5635, -0.2795],
-    'Liverpool Street': [51.5188, -0.0814],
-    'Victoria': [51.4965, -0.1447],
-    'Barbican': [51.5204, -0.0979],
-    'King\'s Cross': [51.5308, -0.1238],
-    'Old Street': [51.5263, -0.0873],
-    'Leicester Square': [51.5113, -0.1281],
-    'Borough': [51.5011, -0.0943],
-    'Farringdon': [51.5203, -0.1053],
-    'Canary Wharf': [51.5053, -0.0172],
-    'Sloane Square': [51.4924, -0.1565],
-    'Charing Cross': [51.5080, -0.1247],
-    'Wandsworth Town': [51.4618, -0.1870],
-    'Camden Town': [51.5394, -0.1426],
-    'Hampstead': [51.5568, -0.1780],
-    'Bermondsey': [51.4979, -0.0637],
-    'London Bridge': [51.5050, -0.0865],
-    'Tower Hill': [51.5108, -0.0766],
-    'Finsbury Park': [51.5642, -0.1066],
-    'Regent\'s Park': [51.5234, -0.1466],
-    'N/A': [51.5074, -0.1278] // Default for international comparisons
+  'Baker Street': [51.5205, -0.1548],
+  'Barbican': [51.5204, -0.0979],
+  'Battersea Park': [51.479, -0.1535],
+  'Battersea Power Station': [51.4817, -0.144],
+  'Bermondsey': [51.4979, -0.0637],
+  'Bond Street': [51.5144, -0.1501],
+  'Borough': [51.5011, -0.0943],
+  'Camden Town': [51.5394, -0.1426],
+  'Canary Wharf': [51.5053, -0.0172],
+  'Charing Cross': [51.508, -0.128],
+  'Covent Garden': [51.5135, -0.1268],
+  'Cutty Sark': [51.4827, -0.0096],
+  'Deptford': [51.4798, -0.022],
+  'Elephant & Castle': [51.4815, -0.079],
+  'Euston': [51.5281, -0.1332],
+  'Farringdon': [51.5203, -0.1053],
+  'Finsbury Park': [51.5642, -0.1066],
+  'Great Portland Street': [51.5265, -0.144],
+  'Green Park': [51.5097, -0.1452],
+  'Hampstead': [51.5568, -0.178],
+  'Hounslow Central': [51.4713, -0.3665],
+  'Hyde Park Corner': [51.5053, -0.1652],
+  'Island Gardens': [51.487, -0.009],
+  'Kennington': [51.486, -0.097],
+  'King\'s Cross': [51.5308, -0.1238],
+  'Knightsbridge': [51.505, -0.163],
+  'Lambeth North': [51.4958, -0.1118],
+  'Lancaster Gate': [51.5085, -0.1657],
+  'Leicester Square': [51.5113, -0.1281],
+  'Liverpool Street': [51.5188, -0.0814],
+  'London Bridge': [51.505, -0.0865],
+  'Marble Arch': [51.5136, -0.1586],
+  'N/A': [51.5118, -0.1271],
+  'New Cross': [51.4754, -0.0312],
+  'New Cross Gate': [51.474, -0.0355],
+  'Old Street': [51.5263, -0.0873],
+  'Oxford Circus': [51.5144, -0.14],
+  'Peckham Rye': [51.468, -0.067],
+  'Piccadilly Circus': [51.5101, -0.1337],
+  'Poplar': [51.509, -0.017],
+  'Queens Road Peckham': [51.47, -0.0565],
+  'Regent\'s Park': [51.5261, -0.1464],
+  'Russell Square': [51.5224, -0.1246],
+  'Sloane Square': [51.4918, -0.159],
+  'Stratford': [51.5431, -0.014],
+  'Tottenham Court Road': [51.5136, -0.1313],
+  'Tower Hill': [51.5115, -0.078],
+  'Various': [51.5114, -0.1587],
+  'Victoria': [51.4952, -0.1438],
+  'Wandsworth Town': [51.4605, -0.186],
+  'Waterloo': [51.5066, -0.1164],
+  'Wembley Park': [51.5635, -0.2795],
+  'Westminster': [51.5006, -0.1242],
 };
             
             // Tube line colors for markers
